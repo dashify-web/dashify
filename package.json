@@ -4,8 +4,22 @@
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {},
   "devDependencies": {
-    "lerna": "^8.1.8"
+    "@types/jest": "^29.5.12",
+    "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "jest": "^29.7.0",
+    "lerna": "^8.1.8",
+    "prettier": "^3.3.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "ts-jest": "^29.2.4",
+    "tsup": "^8.2.4",
+    "typescript": "^5.5.4"
+  },
+  "scripts": {
+    "lint": "npx lerna run lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   }
 }
