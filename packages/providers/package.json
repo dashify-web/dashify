@@ -36,8 +36,9 @@
   },
   "homepage": "https://github.com/dashify-web/dashify#readme",
   "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "@tanstack/react-query": "^5.52.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "gitHead": "e3d5a44b04f91b5db53e11ae7be9ca7f9ffbe04e"
 }
