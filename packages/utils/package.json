@@ -1,6 +1,6 @@
 {
   "name": "@dashify/utils",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Dashify common utils function",
   "keywords": [
     "utils",
