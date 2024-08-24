@@ -1,11 +1,19 @@
 {
-  "name": "root",
+  "name": "dashify-tools",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "build": "lerna run build",
+    "lint": "eslint --ext .js,.ts,.tsx \"./packages/**/lib/**/*.{js,ts,tsx}\" --max-warnings 0",
+    "format": "prettier --config ./.prettierrc --write \"packages/*/lib/**/*.{js,json,ts,tsx,css,md}\"",
+    "format:check": "prettier --config ./.prettierrc --check \"packages/*/lib/**/*.{js,json,ts,tsx,css,md}\""
+  },
   "devDependencies": {
+    "@swc/core": "^1.7.18",
     "@types/jest": "^29.5.12",
+    "@types/react": "^18.3.4",
     "@typescript-eslint/eslint-plugin": "^8.2.0",
     "@typescript-eslint/parser": "^8.2.0",
     "eslint": "^8.57.0",
@@ -21,11 +29,5 @@
     "ts-jest": "^29.2.4",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4"
-  },
-  "scripts": {
-    "build": "lerna run build",
-    "lint": "eslint --ext .js,.ts,.tsx \"./packages/**/lib/**/*.{js,ts,tsx}\" --max-warnings 0",
-    "format": "prettier --config ./.prettierrc --write \"packages/*/lib/**/*.{js,json,ts,tsx,css,md}\"",
-    "format:check": "prettier --config ./.prettierrc --check \"packages/*/lib/**/*.{js,json,ts,tsx,css,md}\""
   }
 }
