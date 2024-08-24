@@ -1,6 +1,7 @@
 {
   "name": "@dashify/providers",
   "version": "0.0.1",
+  "private": false,
   "description": "Dashify providers",
   "author": "\"RickaPrincy\" <\"rckprincy@gmail.com\">",
   "license": "MIT",
@@ -37,5 +38,6 @@
   "peerDependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
-  }
+  },
+  "gitHead": "e3d5a44b04f91b5db53e11ae7be9ca7f9ffbe04e"
 }

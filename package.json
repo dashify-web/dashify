@@ -1,6 +1,6 @@
 {
   "name": "dashify-tools",
-  "private": true,
+  "private": false,
   "workspaces": [
     "packages/*"
   ],
