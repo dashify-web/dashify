@@ -40,5 +40,6 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
-  "gitHead": "e3d5a44b04f91b5db53e11ae7be9ca7f9ffbe04e"
+  "gitHead": "e3d5a44b04f91b5db53e11ae7be9ca7f9ffbe04e",
+  "nx": {}
 }

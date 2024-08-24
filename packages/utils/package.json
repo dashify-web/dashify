@@ -16,10 +16,6 @@
     "lib": "lib",
     "test": "__tests__"
   },
-  "exports": {
-    ".": "./dist/index.js",
-    "./messages": "./dist/messages.js"
-  },
   "files": [
     "*.md",
     "dist",
@@ -34,5 +30,6 @@
   },
   "bugs": {
     "url": "https://github.com/dashify-web/dashify/issues"
-  }
+  },
+  "nx": {}
 }
