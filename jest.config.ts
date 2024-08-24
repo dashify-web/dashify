@@ -14,6 +14,7 @@ const config: Config.InitialOptions = {
     {
       testPathIgnorePatterns: ["<rootDir>/node_modules/"],
       preset: "ts-jest",
+      testEnvironment: "jsdom",
       displayName: "providers",
       testMatch: ["<rootDir>/packages/providers/__tests__/**/*.spec.ts"],
     }

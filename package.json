@@ -7,18 +7,16 @@
   "scripts": {
     "build": "lerna run build",
     "test:providers": "jest --selectProjects=providers",
-    "lint": "eslint --ext .js,.ts,.tsx \"./packages/**/lib/**/*.{js,ts,tsx}\" --max-warnings 0",
-    "format": "prettier --config ./.prettierrc --write \"packages/*/lib/**/*.{js,json,ts,tsx,css,md}\"",
-    "format:check": "prettier --config ./.prettierrc --check \"packages/*/lib/**/*.{js,json,ts,tsx,css,md}\""
+    "lint": "eslint \"./packages/**/lib/**/*.{js,ts,tsx}\" \"./packages/**/__tests__/**/*.{spec.ts,spec.tsx}\" --max-warnings 0",
+    "format": "prettier --config ./.prettierrc --write \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\"",
+    "format:check": "prettier --config ./.prettierrc --check \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\""
   },
   "devDependencies": {
-    "@swc/core": "^1.7.18",
     "@testing-library/react": "^16.0.0",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.3.4",
     "@typescript-eslint/eslint-plugin": "^8.2.0",
     "@typescript-eslint/parser": "^8.2.0",
-    "babel-jest": "^29.7.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -31,7 +29,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "ts-jest": "^29.2.4",
-    "ts-node": "^10.9.2",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4"
   }
