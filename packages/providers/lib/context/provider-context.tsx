@@ -1,5 +1,4 @@
-import React from 'react';
-import { createContext, FC } from 'react';
+import React, { createContext, FC } from 'react';
 import { Provider } from '../types';
 import { ReactQueryProvider } from './react-query-provider';
 
