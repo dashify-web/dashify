@@ -1,27 +1,41 @@
 {
-  "name": "providers",
+  "name": "@dashify/providers",
   "version": "0.0.0",
-  "description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
-  "keywords": [],
+  "description": "Dashify providers",
   "author": "\"RickaPrincy\" <\"rckprincy@gmail.com\">",
-  "license": "ISC",
-  "main": "lib/providers.js",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "keywords": [
+    "dashboard",
+    "dashify",
+    "react",
+    "providers",
+    "query"
+  ],
   "directories": {
     "lib": "lib",
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "*.md",
+    "dist",
+    "package.json"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dashify-web/dashify.git"
   },
   "scripts": {
-    "test": "node ./__tests__/providers.test.js"
+    "build": "tsup"
   },
   "bugs": {
     "url": "https://github.com/dashify-web/dashify/issues"
   },
-  "homepage": "https://github.com/dashify-web/dashify#readme"
+  "homepage": "https://github.com/dashify-web/dashify#readme",
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
 }
