@@ -1,19 +1,19 @@
-import { useState } from "react"
+import { useState } from 'react';
 
 export const useCalculator = () => {
-  const [result, setResult] = useState(0);
+  const [value, setValue] = useState(0);
 
   const sum = (a: number, b: number) => {
-    setResult(a + b);
-  }
+    setValue(a + b);
+  };
 
   const diff = (a: number, b: number) => {
-    setResult(a - b);
-  }
+    setValue(a - b);
+  };
 
   return {
-    result,
+    value,
     diff,
-    sum
-  }
-}
+    sum,
+  };
+};
