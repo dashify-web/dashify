@@ -6,12 +6,14 @@
   ],
   "scripts": {
     "build": "lerna run build",
-    "test:providers": "jest --selectProjects=providers",
     "lint": "eslint \"./packages/**/lib/**/*.{js,ts,tsx}\" \"./packages/**/__tests__/**/*.{spec.ts,spec.tsx}\" --max-warnings 0",
     "format": "prettier --config ./.prettierrc --write \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\"",
-    "format:check": "prettier --config ./.prettierrc --check \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\""
+    "format:check": "prettier --config ./.prettierrc --check \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\"",
+    "test": "jest",
+    "test:providers": "jest --selectProjects=providers"
   },
   "devDependencies": {
+    "@tanstack/react-query": "^5.52.1",
     "@testing-library/react": "^16.0.0",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.3.4",
