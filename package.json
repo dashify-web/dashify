@@ -6,8 +6,13 @@
   ],
   "devDependencies": {
     "@types/jest": "^29.5.12",
-    "eslint": "^9.9.0",
+    "@typescript-eslint/eslint-plugin": "^8.2.0",
+    "@typescript-eslint/parser": "^8.2.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.11",
     "jest": "^29.7.0",
     "lerna": "^8.1.8",
     "prettier": "^3.3.3",
@@ -18,8 +23,9 @@
     "typescript": "^5.5.4"
   },
   "scripts": {
-    "lint": "npx lerna run lint",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "build": "lerna run build",
+    "lint": "eslint --ext .js,.ts,.tsx \"./packages/**/lib/**/*.{js,ts,tsx}\" --max-warnings 0",
+    "format": "prettier --config ./.prettierrc --write \"packages/*/lib/**/*.{js,json,ts,tsx,css,md}\"",
+    "format:check": "prettier --config ./.prettierrc --check \"packages/*/lib/**/*.{js,json,ts,tsx,css,md}\""
   }
 }
