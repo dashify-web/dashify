@@ -1,6 +1,6 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 
-import { CreateArgsType, ResourceType } from '../types';
+import { CreateArgsType, RequiredResourceName, ResourceType } from '../types';
 import { useProvider } from './use-provider';
 
 export type UseCreateArgsType<
@@ -8,9 +8,10 @@ export type UseCreateArgsType<
   Meta = any,
   Params = any,
   Error = any,
-> = Omit<CreateArgsType<T, Meta, Params>, 'payload'> & {
-  useMutatioOptions?: Partial<UseMutationOptions<T, Error, T>>;
-};
+> = Omit<CreateArgsType<T, Meta, Params>, 'payload'> &
+  RequiredResourceName & {
+    useMutatioOptions?: Partial<UseMutationOptions<T, Error, T>>;
+  };
 
 export const useCreate = <
   T extends ResourceType = any,
@@ -21,7 +22,7 @@ export const useCreate = <
   useMutatioOptions,
   ...mutationProps
 }: UseCreateArgsType<T, Meta, Params, Error>) => {
-  const { create } = useProvider<T>();
+  const { create } = useProvider<T>({ resource: mutationProps.resource });
 
   const response = useMutation<T, Error, T>({
     mutationFn: (payload: T) =>

@@ -1,3 +1,4 @@
+export * from './use-facade-provider';
 export * from './use-provider';
 export * from './use-get-by-id';
 export * from './use-get-list';

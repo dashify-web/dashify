@@ -13,6 +13,9 @@ export type Sort = {
 export type Query<Meta, Params> = {
   meta?: Meta;
   params?: Params;
+};
+
+export type RequiredResourceName = {
   resource: string;
 };
 
@@ -39,7 +42,7 @@ export type DeleteArgsType<Payload = any, Meta = any, Params = any> = Query<
   payload: Payload;
 };
 
-export type Provider<T extends ResourceType> = {
+export type Provider<T extends ResourceType> = RequiredResourceName & {
   getList: <Meta = any, Params = any>(
     args: GetListsArgsType<Meta, Params>
   ) => Promise<T[]>;
@@ -55,4 +58,11 @@ export type Provider<T extends ResourceType> = {
   delete: <Meta = any, Params = any>(
     args: DeleteArgsType<T, Meta, Params>
   ) => Promise<T>;
+};
+
+export type FacadeProvider = {
+  readonly providers: Provider<any>[];
+  readonly getProvider: <T extends ResourceType>({
+    resource,
+  }: RequiredResourceName) => Provider<T>;
 };

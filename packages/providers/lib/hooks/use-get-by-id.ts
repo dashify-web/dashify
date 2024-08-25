@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
-import { GetByIdArgsType, ResourceType } from '../types';
+import { GetByIdArgsType, RequiredResourceName, ResourceType } from '../types';
 import { useProvider } from './use-provider';
 
 export type UseGetByIdArgsType<
@@ -8,9 +8,10 @@ export type UseGetByIdArgsType<
   Meta = any,
   Params = any,
   Error = any,
-> = GetByIdArgsType<Meta, Params> & {
-  useQueryOptions?: Partial<UseQueryOptions<T, Error>>;
-};
+> = GetByIdArgsType<Meta, Params> &
+  RequiredResourceName & {
+    useQueryOptions?: Partial<UseQueryOptions<T, Error>>;
+  };
 
 export const useGetById = <
   T extends ResourceType = any,
@@ -21,7 +22,7 @@ export const useGetById = <
   useQueryOptions,
   ...queryProps
 }: UseGetByIdArgsType<T, Meta, Params, Error>) => {
-  const { getById } = useProvider<T>();
+  const { getById } = useProvider<T>({ resource: queryProps.resource });
 
   const response = useQuery<T, Error>({
     queryFn: () => getById<Meta, Params>(queryProps),

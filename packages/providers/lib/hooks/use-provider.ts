@@ -1,14 +1,9 @@
-import { useContext } from 'react';
-import { undefinedContextMessage } from '@dashify/utils';
-import { ResourceType, Provider } from '../types';
-import { PROVIDER_CONTEXT } from '../context';
+import { ResourceType, RequiredResourceName } from '../types';
+import { useFacadeProvider } from './use-facade-provider';
 
-export const useProvider = <T extends ResourceType>() => {
-  const provider = useContext<Provider<T> | null>(PROVIDER_CONTEXT);
-
-  if (provider == null) {
-    throw new Error(undefinedContextMessage('useProvider', 'ProviderContext'));
-  }
-
-  return provider;
+export const useProvider = <T extends ResourceType>({
+  resource,
+}: RequiredResourceName) => {
+  const facadeProvider = useFacadeProvider();
+  return facadeProvider.getProvider<T>({ resource });
 };
