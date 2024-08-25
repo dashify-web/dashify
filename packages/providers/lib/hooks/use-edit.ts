@@ -19,15 +19,16 @@ export const useEdit = <
   Params = any,
   Error = any,
 >({
+  resource,
   useMutatioOptions,
   ...mutationProps
 }: UseEditArgsType<T, Meta, Params, Error>) => {
-  const { edit } = useProvider<T>({ resource: mutationProps.resource });
+  const { edit } = useProvider<T>({ resource });
 
   const response = useMutation<T, Error, T>({
     mutationFn: (payload: T) =>
       edit<Meta, Params>({ payload, ...mutationProps }),
-    mutationKey: [mutationProps.resource],
+    mutationKey: [resource],
     ...useMutatioOptions,
   });
 

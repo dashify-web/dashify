@@ -19,15 +19,16 @@ export const useCreate = <
   Params = any,
   Error = any,
 >({
+  resource,
   useMutatioOptions,
   ...mutationProps
 }: UseCreateArgsType<T, Meta, Params, Error>) => {
-  const { create } = useProvider<T>({ resource: mutationProps.resource });
+  const { create } = useProvider<T>({ resource });
 
   const response = useMutation<T, Error, T>({
     mutationFn: (payload: T) =>
       create<Meta, Params>({ payload, ...mutationProps }),
-    mutationKey: [mutationProps.resource],
+    mutationKey: [resource],
     ...useMutatioOptions,
   });
 

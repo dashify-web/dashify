@@ -19,14 +19,15 @@ export const useGetById = <
   Params = any,
   Error = any,
 >({
+  resource,
   useQueryOptions,
   ...queryProps
 }: UseGetByIdArgsType<T, Meta, Params, Error>) => {
-  const { getById } = useProvider<T>({ resource: queryProps.resource });
+  const { getById } = useProvider<T>({ resource });
 
   const response = useQuery<T, Error>({
     queryFn: () => getById<Meta, Params>(queryProps),
-    queryKey: [queryProps.resource],
+    queryKey: [resource],
     ...useQueryOptions,
   });
 
