@@ -2,34 +2,35 @@ import { renderHook } from '@testing-library/react';
 import { useQuery } from '@tanstack/react-query';
 
 import { GetByIdArgsType, useGetById } from '../../lib';
-import { Dummy, setupProviderMock, dummyOne } from './utils';
+import { Dummy, setupUseQueryMock, dummyOne } from './utils';
 
-const dummyProviderGetById = jest
-  .fn()
-  .mockResolvedValue(dummyOne);
+const dummyProviderGetById = jest.fn().mockResolvedValue(dummyOne);
 
 jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn(),
-  QueryClient: jest.fn() // have to mock 'cause @dashify/providers use an instance of QueryClient globaly
+  QueryClient: jest.fn(), // have to mock 'cause @dashify/providers use an instance of QueryClient globaly
 }));
 jest.mock('../../lib/hooks/use-provider', () => ({
-  useProvider: jest.fn()
+  useProvider: jest.fn(),
 }));
 
-describe('useGetList', () => {
+describe('useGetById', () => {
   beforeAll(() => {
-    setupProviderMock({
-      toMock: "getById",
+    setupUseQueryMock({
+      toMock: 'getById',
       response: dummyOne,
-      mockImplementation: dummyProviderGetById
-    })
+      mockImplementation: dummyProviderGetById,
+    });
   });
 
   it('should return the correct getByIdResponse', async () => {
     const resource = 'dummy';
     const resourceId = 'dummyId';
 
-    const queryOptions: GetByIdArgsType<{ userName: string }, { minAge: number }> = {
+    const queryOptions: GetByIdArgsType<
+      { userName: string },
+      { minAge: number }
+    > = {
       id: resourceId,
       meta: {
         userName: 'dummyName',

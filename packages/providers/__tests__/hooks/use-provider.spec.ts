@@ -12,7 +12,7 @@ const mockProvider: Provider<any> = {
   getById: jest.fn(),
   create: jest.fn(),
   edit: jest.fn(),
-  delete: jest.fn(),
+  deleteOne: jest.fn(),
 };
 
 describe('useProvider', () => {

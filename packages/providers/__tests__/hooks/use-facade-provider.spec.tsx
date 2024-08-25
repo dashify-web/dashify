@@ -9,7 +9,7 @@ const MOCK_DUMMY_PROVIDER: Provider<any> = {
   getList: jest.fn(),
   edit: jest.fn(),
   create: jest.fn(),
-  delete: jest.fn(),
+  deleteOne: jest.fn(),
   getById: jest.fn(),
 };
 

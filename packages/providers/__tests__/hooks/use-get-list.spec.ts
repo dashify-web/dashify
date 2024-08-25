@@ -2,27 +2,25 @@ import { renderHook } from '@testing-library/react';
 import { useQuery } from '@tanstack/react-query';
 
 import { GetListsArgsType, useGetList } from '../../lib';
-import { Dummy, DUMMIES, setupProviderMock } from './utils';
+import { Dummy, DUMMIES, setupUseQueryMock } from './utils';
 
-const dummyProviderGetList = jest
-  .fn()
-  .mockResolvedValue(DUMMIES);
+const dummyProviderGetList = jest.fn().mockResolvedValue(DUMMIES);
 
 jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn(),
-  QueryClient: jest.fn() // have to mock 'cause @dashify/providers use an instance of QueryClient globaly
+  QueryClient: jest.fn(), // have to mock 'cause @dashify/providers use an instance of QueryClient globaly
 }));
 jest.mock('../../lib/hooks/use-provider', () => ({
-  useProvider: jest.fn()
+  useProvider: jest.fn(),
 }));
 
 describe('useGetList', () => {
   beforeAll(() => {
-    setupProviderMock({
-      toMock: "getList",
+    setupUseQueryMock({
+      toMock: 'getList',
       response: DUMMIES,
-      mockImplementation: dummyProviderGetList
-    })
+      mockImplementation: dummyProviderGetList,
+    });
   });
 
   it('should return the correct getListResponse', async () => {

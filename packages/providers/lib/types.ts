@@ -55,7 +55,7 @@ export type Provider<T extends ResourceType> = RequiredResourceName & {
   edit: <Meta = any, Params = any>(
     args?: CreateArgsType<T, Meta, Params>
   ) => Promise<T>;
-  delete: <Meta = any, Params = any>(
+  deleteOne: <Meta = any, Params = any>(
     args?: DeleteArgsType<T, Meta, Params>
   ) => Promise<T>;
 };
