@@ -10,7 +10,8 @@
     "format": "prettier --config ./.prettierrc --write \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\"",
     "format:check": "prettier --config ./.prettierrc --check \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\"",
     "test": "jest",
-    "test:providers": "jest --selectProjects=providers"
+    "test:providers": "jest --selectProjects=providers",
+    "test:utils": "jest --selectProjects=utils"
   },
   "devDependencies": {
     "@swc/core": "^1.7.18",

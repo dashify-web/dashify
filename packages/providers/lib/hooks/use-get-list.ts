@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
-import { GetListsArgsType, ResourceType } from '../types';
+import { GetListsArgsType, RequiredResourceName, ResourceType } from '../types';
 import { useProvider } from './use-provider';
 
 export type UseGetListArgsType<
@@ -8,9 +8,10 @@ export type UseGetListArgsType<
   Meta = any,
   Params = any,
   Error = any,
-> = GetListsArgsType<Meta, Params> & {
-  useQueryOptions?: Partial<UseQueryOptions<T, Error>>;
-};
+> = GetListsArgsType<Meta, Params> &
+  RequiredResourceName & {
+    useQueryOptions?: Partial<UseQueryOptions<T, Error>>;
+  };
 
 export const useGetList = <
   T extends ResourceType = any,
@@ -18,16 +19,17 @@ export const useGetList = <
   Params = any,
   Error = any,
 >({
+  resource,
   useQueryOptions,
   ...queryProps
 }: UseGetListArgsType<T[], Meta, Params, Error>) => {
-  const { getList } = useProvider<T>();
+  const { getList } = useProvider<T>({ resource });
 
   const response = useQuery<T[], Error>({
     queryFn: () => getList<Meta, Params>(queryProps),
-    queryKey: [queryProps.resource],
+    queryKey: [resource],
     ...useQueryOptions,
   });
 
-  return response;
+  return { ...response, data: response.data ?? [] };
 };
