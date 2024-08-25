@@ -6,6 +6,18 @@ export type Dummy = {
   name: string;
 };
 
+export const dummyOne: Dummy = {
+  id: "dummy1",
+  name: "dummy1Name"
+}
+
+export const dummyTwo: Dummy = {
+  id: "dummy2",
+  name: "dummy2Name"
+}
+
+export const DUMMIES = [dummyOne, dummyTwo];
+
 export const setupProviderMock = ({ toMock, response, mockImplementation }: { mockImplementation: jest.Mock, response: any, toMock: keyof Omit<Provider<any>, "resource"> }) => {
   (useProvider as jest.Mock).mockReturnValue({
     [toMock]: mockImplementation

@@ -2,9 +2,8 @@ import { renderHook } from '@testing-library/react';
 import { useQuery } from '@tanstack/react-query';
 
 import { GetListsArgsType, useGetList } from '../../lib';
-import { Dummy, setupProviderMock } from './utils';
+import { Dummy, DUMMIES, setupProviderMock } from './utils';
 
-const DUMMIES: Dummy[] = [{ id: 'dummy', name: 'dummy' }];
 const dummyProviderGetList = jest
   .fn()
   .mockResolvedValue(DUMMIES);
