@@ -37,6 +37,7 @@
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
     "tsup": "^8.2.4",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "zustand": "^4.5.5"
   }
 }

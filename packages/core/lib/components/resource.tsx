@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 export type ResourceProps = {
   name: string;
@@ -18,12 +18,10 @@ export const Resource: FC<ResourceProps> = ({
 }) => {
   return (
     <>
-      <Routes>
-        {list && <Route path={`/${name}`} element={list} />}
-        {create && <Route path={`/${name}/create`} element={create} />}
-        {show && <Route path={`/${name}/:id/show`} element={show} />}
-        {edit && <Route path={`/${name}/:id/edit`} element={edit} />}
-      </Routes>
+      {list && <Route path={`/${name}`} element={list} />}
+      {create && <Route path={`/${name}/create`} element={create} />}
+      {show && <Route path={`/${name}/:id`} element={show} />}
+      {edit && <Route path={`/${name}/:id/edit`} element={edit} />}
     </>
   );
 };
