@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "@dashify/core",
   "version": "0.0.0",
   "description": "Dashify core",
   "keywords": [
@@ -11,22 +11,33 @@
   "author": "\"RickaPrincy\" <\"rckprincy@gmail.com\">",
   "homepage": "https://github.com/dashify-web/dashify#readme",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "*.md",
+    "dist",
+    "package.json"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dashify-web/dashify.git"
   },
   "scripts": {
-    "test": "node ./__tests__/core.test.js"
+    "build": "tsup"
   },
   "bugs": {
     "url": "https://github.com/dashify-web/dashify/issues"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.52.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "@dashify/providers": "^0.0.1",
+    "react-router-dom": "^6.26.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@dashify/providers",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "Dashify providers",
   "author": "\"RickaPrincy\" <\"rckprincy@gmail.com\">",
@@ -35,6 +35,9 @@
     "url": "https://github.com/dashify-web/dashify/issues"
   },
   "homepage": "https://github.com/dashify-web/dashify#readme",
+  "dependencies": {
+    "@dashify/utils": "^0.0.1"
+  },
   "peerDependencies": {
     "@tanstack/react-query": "^5.52.1",
     "react": "^18.0.0",
