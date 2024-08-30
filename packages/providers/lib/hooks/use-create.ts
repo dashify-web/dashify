@@ -1,4 +1,8 @@
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+import {
+  useMutation,
+  UseMutationOptions,
+  UseMutationResult,
+} from '@tanstack/react-query';
 
 import { CreateArgsType, RequiredResourceName, ResourceType } from '../types';
 import { useProvider } from './use-provider';
@@ -22,7 +26,11 @@ export const useCreate = <
   resource,
   useMutatioOptions,
   ...mutationProps
-}: UseCreateArgsType<T, Meta, Params, Error>) => {
+}: UseCreateArgsType<T, Meta, Params, Error>): UseMutationResult<
+  T,
+  Error,
+  T
+> => {
   const { create } = useProvider<T>({ resource });
 
   const response = useMutation<T, Error, T>({

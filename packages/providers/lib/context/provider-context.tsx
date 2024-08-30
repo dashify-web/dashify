@@ -10,7 +10,7 @@ import {
 
 export const PROVIDER_CONTEXT = createContext<FacadeProvider | null>(null);
 
-const getProvider = <T extends ResourceType>({
+const getProvider = <T extends ResourceType = any>({
   providers,
   resource,
 }: { providers: Provider<any>[] } & RequiredResourceName): Provider<T> => {

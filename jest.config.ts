@@ -25,6 +25,6 @@ const config: Config.InitialOptions = {
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest",
   },
-  projects: projects("providers", "utils")
+  projects: projects("utils", "providers", "core")
 };
 export default config;

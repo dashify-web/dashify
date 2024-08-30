@@ -44,25 +44,25 @@ export type DeleteArgsType<Payload = any, Meta = any, Params = any> = Query<
 
 export type Provider<T extends ResourceType> = RequiredResourceName & {
   getList: <Meta = any, Params = any>(
-    args?: GetListsArgsType<Meta, Params>
+    args: GetListsArgsType<Meta, Params>
   ) => Promise<T[]>;
   getById: <Meta = any, Params = any>(
-    args?: GetByIdArgsType<Meta, Params>
+    args: GetByIdArgsType<Meta, Params>
   ) => Promise<T>;
   create: <Meta = any, Params = any>(
-    args?: CreateArgsType<T, Meta, Params>
+    args: CreateArgsType<T, Meta, Params>
   ) => Promise<T>;
   edit: <Meta = any, Params = any>(
-    args?: CreateArgsType<T, Meta, Params>
+    args: CreateArgsType<T, Meta, Params>
   ) => Promise<T>;
   deleteOne: <Meta = any, Params = any>(
-    args?: DeleteArgsType<T, Meta, Params>
+    args: DeleteArgsType<T, Meta, Params>
   ) => Promise<T>;
 };
 
 export type FacadeProvider = {
   readonly providers: Provider<any>[];
-  readonly getProvider: <T extends ResourceType>({
+  readonly getProvider: <T extends ResourceType = any>({
     resource,
   }: RequiredResourceName) => Provider<T>;
 };

@@ -10,8 +10,9 @@
     "format": "prettier --config ./.prettierrc --write \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\"",
     "format:check": "prettier --config ./.prettierrc --check \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\"",
     "test": "jest",
+    "test:utils": "jest --selectProjects=utils",
     "test:providers": "jest --selectProjects=providers",
-    "test:utils": "jest --selectProjects=utils"
+    "test:core": "jest --selectProjects=core"
   },
   "devDependencies": {
     "@swc/core": "^1.7.18",
@@ -32,9 +33,11 @@
     "prettier": "^3.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
     "tsup": "^8.2.4",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "zustand": "^4.5.5"
   }
 }

@@ -1,4 +1,8 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import {
+  useQuery,
+  UseQueryOptions,
+  UseQueryResult,
+} from '@tanstack/react-query';
 
 import { GetByIdArgsType, RequiredResourceName, ResourceType } from '../types';
 import { useProvider } from './use-provider';
@@ -22,7 +26,7 @@ export const useGetById = <
   resource,
   useQueryOptions,
   ...queryProps
-}: UseGetByIdArgsType<T, Meta, Params, Error>) => {
+}: UseGetByIdArgsType<T, Meta, Params, Error>): UseQueryResult<T, Error> => {
   const { getById } = useProvider<T>({ resource });
 
   const response = useQuery<T, Error>({

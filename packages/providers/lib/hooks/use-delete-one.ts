@@ -1,4 +1,8 @@
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+import {
+  useMutation,
+  UseMutationOptions,
+  UseMutationResult,
+} from '@tanstack/react-query';
 
 import { DeleteArgsType, RequiredResourceName, ResourceType } from '../types';
 import { useProvider } from './use-provider';
@@ -22,7 +26,11 @@ export const useDelete = <
   resource,
   useMutatioOptions,
   ...mutationProps
-}: UseDeleteArgsType<T, Meta, Params, Error>) => {
+}: UseDeleteArgsType<T, Meta, Params, Error>): UseMutationResult<
+  T,
+  Error,
+  T
+> => {
   const { deleteOne } = useProvider<T>({ resource });
 
   const response = useMutation<T, Error, T>({
