@@ -62,7 +62,7 @@ export type Provider<T extends ResourceType> = RequiredResourceName & {
 
 export type FacadeProvider = {
   readonly providers: Provider<any>[];
-  readonly getProvider: <T extends ResourceType>({
+  readonly getProvider: <T extends ResourceType = any>({
     resource,
   }: RequiredResourceName) => Provider<T>;
 };
