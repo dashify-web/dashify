@@ -10,7 +10,7 @@ const projects = (...projectNames: string[]): Config.InitialProjectOptions[] => 
       `<rootDir>/packages/${projectName}/__tests__/**/*.spec.ts`,
       `<rootDir>/packages/${projectName}/__tests__/**/*.spec.tsx`,
       `<rootDir>/packages/${projectName}/__tests__/**/**/*.spec.ts`,
-      `<rootDir>/packages/${projectName}/__tests__/**/**/*.spec.tsx`,
+      `<rootDir>/packages/${projectName}/__tests__/**/**/*.spec.tsx`
     ],
   }))
 }

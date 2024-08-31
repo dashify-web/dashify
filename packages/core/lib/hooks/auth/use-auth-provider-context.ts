@@ -1,9 +1,18 @@
 import { useContext } from 'react';
-import { undefinedContextMessage } from '@dashify/utils';
-import { AUTH_PROVIDER_CONTEXT } from '../../context';
+import { Nullable, undefinedContextMessage } from '@dashify/utils';
+import { AUTH_PROVIDER_CONTEXT, AuthProviderContextType } from '../../context';
 
-export const useAuthProviderContext = () => {
-  const response = useContext(AUTH_PROVIDER_CONTEXT);
+export const useAuthProviderContext = <
+  UserCredentials = any,
+  SigninData = any,
+  SignupData = any,
+  Role = any,
+>() => {
+  const response = useContext<
+    Nullable<
+      AuthProviderContextType<UserCredentials, SigninData, SignupData, Role>
+    >
+  >(AUTH_PROVIDER_CONTEXT);
 
   if (response === null) {
     throw new Error(

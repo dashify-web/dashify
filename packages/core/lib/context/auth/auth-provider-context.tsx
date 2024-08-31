@@ -1,12 +1,18 @@
 import React, { createContext, ReactNode, FC } from 'react';
+import { Nullable } from '@dashify/utils';
 import { AuthProvider } from '../../types';
 
-export type AuthProviderContextType = {
-  provider: AuthProvider;
+export type AuthProviderContextType<
+  UserCredentials = any,
+  SigninData = any,
+  SignupData = any,
+  Role = any,
+> = {
+  provider: AuthProvider<UserCredentials, SigninData, SignupData, Role>;
 };
 
 export const AUTH_PROVIDER_CONTEXT =
-  createContext<AuthProviderContextType | null>(null);
+  createContext<Nullable<AuthProviderContextType>>(null);
 
 export type AuthProviderContextProps = AuthProviderContextType & {
   children: ReactNode;

@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode } from 'react';
+import { Nullable } from '@dashify/utils';
 import { useRequiredAuthentication, useRequiredRole } from '../../hooks';
 
 export type RequiredAuthValueContextType<Role = any> = {
@@ -12,7 +13,7 @@ export type RequiredAuthValueContextProps<Role = any> =
   };
 
 export const REQUIRED_AUTH_VALUE_CONTEXT =
-  createContext<RequiredAuthValueContextType | null>(null);
+  createContext<Nullable<RequiredAuthValueContextType>>(null);
 
 export const RequiredAuthValueContext = <Role = any,>({
   children,

@@ -5,6 +5,7 @@ import {
   useGetList,
 } from '@dashify/providers';
 import { UseQueryResult } from '@tanstack/react-query';
+import { Nullable } from '@dashify/utils';
 
 export type ListControllerType<
   T extends ResourceType = any,
@@ -26,7 +27,7 @@ export type ListContextType<
   ) => void;
 };
 
-export const LIST_CONTEXT = createContext<ListContextType<any> | null>(null);
+export const LIST_CONTEXT = createContext<Nullable<ListContextType<any>>>(null);
 
 export type ListContextProps<
   T extends ResourceType = any,

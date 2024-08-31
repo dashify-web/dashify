@@ -1,29 +1,55 @@
 export type ResourceView = 'list' | 'show' | 'edit' | 'create';
 
-export type AuthenticationStatus = 'CONNECTED' | 'UNKNOWN' | 'NOT_CONNECTED';
-export type AuthenticationErrorType<AuthError = any> = {
-  authError?: { error: AuthError };
-  unknownError?: { data?: any; error: any };
-};
+export enum AuthenticationStatus {
+  UNKNOWN, // still checking
+  CONNECTED,
+  NOT_CONNECTED,
+}
 
-export type AuthProviderBase = {
-  signin: <Data = any, Response = any>(data: Data) => Promise<Response>;
-  signup: <Data = any, Response = any>(data: Data) => Promise<Response>;
+export enum AuthErrorType {
+  ROLE_PERMISSION_ERROR,
+  AUTHENTICATION_ERROR,
+  UNKNOWN_ERROR,
+}
+
+export type OnErrorType = (args: {
+  erroType: AuthErrorType;
+  isRequired: boolean;
+}) => void;
+
+export type AuthProviderBase<
+  UserCredentials = any,
+  SigninData = any,
+  SignupData = any,
+> = {
+  signin: (data: SigninData) => Promise<UserCredentials>;
+  signup: (data: SignupData) => Promise<UserCredentials>;
   signout: () => Promise<void>;
-  checkAuth: <UserCredentials = any>() => Promise<UserCredentials>;
+  checkAuth: () => Promise<UserCredentials>;
   checkError: (error: any) => Promise<void>;
+  onError: OnErrorType;
   getRole: never;
-  checkRole: never;
+  compareRole: never;
 };
 
-export type AuthProviderWithRole<Role = any> = Omit<
-  AuthProviderBase,
-  'checkRole' | 'getRole'
+export type AuthProviderWithRole<
+  UserCredentials = any,
+  SigninData = any,
+  SignupData = any,
+  Role = any,
+> = Omit<
+  AuthProviderBase<UserCredentials, SigninData, SignupData>,
+  'compareRole' | 'getRole'
 > & {
-  getRole: <Data = any>(data: Data) => Promise<Role>;
-  checkRole: <Role = any>(candidateRole: Role, payload: Role) => boolean; // TODO: maybe changed to promise
+  getRole: (data: UserCredentials) => Promise<Role>;
+  compareRole: (args: { candidateRole: Role; role: Role }) => Promise<void>;
 };
 
-export type AuthProvider<Role = any> =
-  | AuthProviderBase
-  | AuthProviderWithRole<Role>;
+export type AuthProvider<
+  UserCredentials = any,
+  SigninData = any,
+  SignupData = any,
+  Role = any,
+> =
+  | AuthProviderBase<UserCredentials, SigninData, SignupData>
+  | AuthProviderWithRole<UserCredentials, SigninData, SignupData, Role>;

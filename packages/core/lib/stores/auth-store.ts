@@ -13,7 +13,7 @@ export type AuthStoreType<UserCredentials = any, Role = any> = {
 const useAuthStoreBase = create<AuthStoreType>((set) => ({
   role: null,
   userCredentials: null,
-  authenticationStatus: 'UNKNOWN',
+  authenticationStatus: AuthenticationStatus.UNKNOWN,
   setRole: (role) => set({ role }),
   setUserCredentials: (userCredentials) => set({ userCredentials }),
   setAuthenticationStatus: (authenticationStatus) =>

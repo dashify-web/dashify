@@ -1,22 +1,35 @@
 import { useLayoutEffect } from 'react';
 import { useAuthProviderContext } from './use-auth-provider-context';
 import { useRole } from './use-role';
+import { AuthErrorType, OnErrorType } from '../../types';
 
 export type UseRequiredRoleArgs<Role = any> = {
   role: Role;
-  onError: () => void;
+  onError?: OnErrorType;
 };
 
 export const useRequiredRole = <Role = any>({
   role,
   onError,
 }: UseRequiredRoleArgs<Role>) => {
-  const authProvider = useAuthProviderContext();
+  const { provider: authProvider } = useAuthProviderContext();
   const { role: candidateRole } = useRole();
 
   useLayoutEffect(() => {
-    if (!authProvider.provider.checkRole(candidateRole, role)) {
-      onError();
-    }
+    const checkAuth = async () => {
+      await authProvider.compareRole({ candidateRole, role }).catch(() => {
+        onError
+          ? onError({
+              erroType: AuthErrorType.ROLE_PERMISSION_ERROR,
+              isRequired: true,
+            })
+          : authProvider.onError({
+              erroType: AuthErrorType.ROLE_PERMISSION_ERROR,
+              isRequired: true,
+            });
+      });
+    };
+
+    checkAuth();
   }, [onError, role, candidateRole]);
 };

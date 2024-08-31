@@ -28,6 +28,7 @@
     "url": "git+https://github.com/dashify-web/dashify.git"
   },
   "scripts": {
+    "build": "tsup"
   },
   "bugs": {
     "url": "https://github.com/dashify-web/dashify/issues"
