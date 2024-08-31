@@ -1,28 +1,22 @@
+import { useLayoutEffect } from 'react';
+import { useAuthProviderContext } from './use-auth-provider-context';
 import { useRole } from './use-role';
 
-export type UseRequiredRoleArgs<Role = any> =
-  | {
-      role: Role;
-      redirect: string;
-      onError: never;
-    }
-  | {
-      role: Role;
-      onError: () => void;
-      redirect: never;
-    };
+export type UseRequiredRoleArgs<Role = any> = {
+  role: Role;
+  onError: () => void;
+};
 
 export const useRequiredRole = <Role = any>({
   role,
-  redirect,
   onError,
 }: UseRequiredRoleArgs<Role>) => {
-  const { role: userConnectedRole } = useRole<Role>();
+  const authProvider = useAuthProviderContext();
+  const { role: candidateRole } = useRole();
 
-  if (role !== userConnectedRole) {
-    if (redirect) {
-      return (window.location.href = redirect);
+  useLayoutEffect(() => {
+    if (!authProvider.provider.checkRole(candidateRole, role)) {
+      onError();
     }
-    onError();
-  }
+  }, [onError, role, candidateRole]);
 };

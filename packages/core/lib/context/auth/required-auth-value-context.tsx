@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode } from 'react';
+import { useRequiredAuthentication, useRequiredRole } from '../../hooks';
 
 export type RequiredAuthValueContextType<Role = any> = {
   requireAuth: boolean;
@@ -18,6 +19,20 @@ export const RequiredAuthValueContext = <Role = any,>({
   requireRole,
   requireAuth,
 }: RequiredAuthValueContextProps<Role>) => {
+  useRequiredAuthentication({
+    requireAuth,
+    onError: () => {
+      window.location.href = '/login'; // TODO
+    },
+  });
+
+  useRequiredRole({
+    role: requireRole,
+    onError: () => {
+      window.location.href = '/login'; // TODO
+    },
+  });
+
   return (
     <REQUIRED_AUTH_VALUE_CONTEXT.Provider value={{ requireAuth, requireRole }}>
       {children}

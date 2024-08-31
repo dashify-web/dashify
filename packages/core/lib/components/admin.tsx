@@ -1,7 +1,7 @@
 import React, {
   ComponentType,
   FC,
-  ReactNode,
+  ReactElement,
   useCallback,
   useEffect,
   useState,
@@ -9,24 +9,27 @@ import React, {
 import { BrowserRouter, Routes, useLocation } from 'react-router-dom';
 import { Provider, ProviderContext } from '@dashify/providers';
 import { AuthProviderContext, RequiredAuthValueContext } from '../context';
-import { AuthProvider } from '../types';
+import { AuthenticationErrorType, AuthProvider } from '../types';
 import { useAdminStore } from '../stores';
 import {
   useAuthProviderContext,
   useRequiredAuthValueContext,
   useRole,
+  useUserCredentials,
 } from '../hooks';
 import { useAuthenticationStatus } from '../hooks/auth/use-authentication-status';
+import { Resource } from './resource';
+import { WithAuthRoutes } from './with-auth-routes';
+import { NoAuthRoutes } from './no-auth-routes';
 
-export type AuthenticationErrorType<AuthError = any> = {
-  authError?: { error: AuthError };
-  unknownError?: { data?: any; error: any };
-};
+export type AppAuthorizedChildren = ReactElement<
+  typeof Resource | typeof WithAuthRoutes | typeof NoAuthRoutes
+>;
 
 export type AppBaseProps = {
   AuthLoadingComponent: ComponentType;
   AuthErrorComponent: ComponentType<AuthenticationErrorType>;
-  children: ReactNode;
+  children: AppAuthorizedChildren | AppAuthorizedChildren[];
 };
 
 export type AppProps = AppBaseProps & {
@@ -70,11 +73,12 @@ const AppBase: FC<AppBaseProps> = ({
 }) => {
   const [authError, setAuthError] = useState<AuthenticationErrorType>({});
   const { provider: authProvider } = useAuthProviderContext();
-  const location = useLocation();
+  const { setRole } = useRole();
+  const { requireAuth } = useRequiredAuthValueContext();
+  const { setUserCredentials } = useUserCredentials();
   const { authenticationStatus, setAuthenticationStatus } =
     useAuthenticationStatus();
-  const { setRole } = useRole();
-  const requiredAuthValueContext = useRequiredAuthValueContext();
+  const location = useLocation();
 
   const handleAuthError = useCallback(
     async (error: any) => {
@@ -88,6 +92,7 @@ const AppBase: FC<AppBaseProps> = ({
           authProvider
             .signout()
             .then(() => {
+              setUserCredentials(null);
               setAuthError({ authError: { error } });
             })
             .catch((error) => {
@@ -101,6 +106,7 @@ const AppBase: FC<AppBaseProps> = ({
   const handleAuthSuccess = useCallback(
     async (data: any) => {
       setAuthenticationStatus('CONNECTED');
+      setUserCredentials(data);
 
       if (!authProvider.getRole) {
         return;
@@ -127,7 +133,7 @@ const AppBase: FC<AppBaseProps> = ({
   }
 
   if (
-    requiredAuthValueContext?.requireAuth &&
+    requireAuth &&
     (authError.authError?.error || authError.unknownError?.error)
   ) {
     return <AuthErrorComponent {...authError} />;
