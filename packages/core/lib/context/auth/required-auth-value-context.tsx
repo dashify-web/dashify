@@ -1,9 +1,9 @@
 import React, { createContext, ReactNode } from 'react';
 import { Nullable } from '@dashify/utils';
-import { useRequiredAuthentication, useRequiredRole } from '../../hooks';
+import { useRequiredAuthentication, useRequiredAuthValueContext, useRequiredRole } from '../../hooks';
 
 export type RequiredAuthValueContextType<Role = any> = {
-  requireAuth: boolean;
+  requireAuth?: boolean;
   requireRole?: Role;
 };
 
@@ -20,22 +20,12 @@ export const RequiredAuthValueContext = <Role = any,>({
   requireRole,
   requireAuth,
 }: RequiredAuthValueContextProps<Role>) => {
-  useRequiredAuthentication({
-    requireAuth,
-    onError: () => {
-      window.location.href = '/login'; // TODO
-    },
-  });
-
-  useRequiredRole({
-    role: requireRole,
-    onError: () => {
-      window.location.href = '/login'; // TODO
-    },
-  });
+  const { requireAuth: inheritRequireAuth, requireRole: inheritRequireRole } = useRequiredAuthValueContext();
+  useRequiredAuthentication({ requireAuth: requireAuth ?? inheritRequireAuth });
+  useRequiredRole({ requiredRole: requireRole ?? inheritRequireRole });
 
   return (
-    <REQUIRED_AUTH_VALUE_CONTEXT.Provider value={{ requireAuth, requireRole }}>
+    <REQUIRED_AUTH_VALUE_CONTEXT.Provider value={{ requireAuth: requireAuth ?? inheritRequireRole, requireRole: requireRole ?? inheritRequireRole }}>
       {children}
     </REQUIRED_AUTH_VALUE_CONTEXT.Provider>
   );

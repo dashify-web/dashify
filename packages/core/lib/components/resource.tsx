@@ -1,10 +1,9 @@
 import React, { FC, ReactNode } from 'react';
-import { Route as _Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import {
   RequiredAuthValueContext,
   RequiredAuthValueContextType,
 } from '../context';
-import { useRequiredAuthValueContext } from '../hooks';
 
 export type ResourceProps = Partial<RequiredAuthValueContextType> & {
   name: string;
@@ -23,18 +22,14 @@ export const Resource: FC<ResourceProps> = ({
   requireRole,
   requireAuth,
 }) => {
-  const { requireAuth: inheritRequiredAuth, requireRole: inheritRequiredRole } =
-    useRequiredAuthValueContext();
-
   return (
-    <RequiredAuthValueContext
-      requireRole={requireRole || inheritRequiredRole}
-      requireAuth={requireAuth || inheritRequiredAuth}
-    >
-      {list && <_Route path={`/${name}`} element={list} />}
-      {create && <_Route path={`/${name}/create`} element={create} />}
-      {show && <_Route path={`/${name}/:id`} element={show} />}
-      {edit && <_Route path={`/${name}/:id/edit`} element={edit} />}
+    <RequiredAuthValueContext requireRole={requireRole} requireAuth={requireAuth}>
+      <Routes>
+        {list && <Route path={`/${name}`} element={list} />}
+        {create && <Route path={`/${name}/create`} element={create} />}
+        {show && <Route path={`/${name}/:id`} element={show} />}
+        {edit && <Route path={`/${name}/:id/edit`} element={edit} />}
+      </Routes>
     </RequiredAuthValueContext>
   );
 };

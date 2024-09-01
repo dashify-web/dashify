@@ -1,20 +1,11 @@
 export type ResourceView = 'list' | 'show' | 'edit' | 'create';
-
-export enum AuthenticationStatus {
-  UNKNOWN, // still checking
-  CONNECTED,
-  NOT_CONNECTED,
-}
-
-export enum AuthErrorType {
-  ROLE_PERMISSION_ERROR,
-  AUTHENTICATION_ERROR,
-  UNKNOWN_ERROR,
-}
+export type AuthenticationStatus = "UNKNOWN" | "CONNECTED" | "NOT_CONNECTED";
+export type AuthErrorType = "ROLE_PERMISSION_ERROR" | "AUTHENTICATION_ERROR" | "UNKNOWN_ERROR";
 
 export type OnErrorType = (args: {
-  erroType: AuthErrorType;
+  errorType: AuthErrorType;
   isRequired: boolean;
+  navigate: (path: string) => void;
 }) => void;
 
 export type AuthProviderBase<
@@ -42,7 +33,7 @@ export type AuthProviderWithRole<
   'compareRole' | 'getRole'
 > & {
   getRole: (data: UserCredentials) => Promise<Role>;
-  compareRole: (args: { candidateRole: Role; role: Role }) => Promise<void>;
+  compareRole: (args: { candidateRole: Role; requiredRole: Role }) => Promise<void>;
 };
 
 export type AuthProvider<

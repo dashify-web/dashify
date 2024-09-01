@@ -1,6 +1,7 @@
 import { useLayoutEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { OnErrorType } from '../../types';
 import { useAuthenticationStatus } from './use-authentication-status';
-import { AuthenticationStatus, AuthErrorType, OnErrorType } from '../../types';
 import { useAuthProviderContext } from './use-auth-provider-context';
 
 export type UseRequiredAuthenticationArgs = {
@@ -13,21 +14,26 @@ export const useRequiredAuthentication = ({
 }: UseRequiredAuthenticationArgs) => {
   const { authenticationStatus } = useAuthenticationStatus();
   const { provider: authProvider } = useAuthProviderContext();
+  const navigate = useNavigate();
 
   useLayoutEffect(() => {
     if (
       requireAuth &&
-      authenticationStatus !== AuthenticationStatus.CONNECTED
+      authenticationStatus !== "CONNECTED"
     ) {
-      onError
-        ? onError({
-            erroType: AuthErrorType.AUTHENTICATION_ERROR,
-            isRequired: true,
-          })
-        : authProvider.onError({
-            erroType: AuthErrorType.AUTHENTICATION_ERROR,
-            isRequired: true,
-          });
+      if (onError) {
+        onError({
+          errorType: "AUTHENTICATION_ERROR",
+          isRequired: true,
+          navigate
+        })
+        return;
+      }
+      authProvider.onError({
+        errorType: "AUTHENTICATION_ERROR",
+        isRequired: true,
+        navigate
+      });
     }
-  }, [onError, requireAuth, authenticationStatus]);
+  }, [onError, requireAuth, authenticationStatus, navigate]);
 };
