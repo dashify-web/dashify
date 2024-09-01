@@ -18,6 +18,7 @@ const projects = (...projectNames: string[]): Config.InitialProjectOptions[] => 
 const config: Config.InitialOptions = {
   verbose: true,
   testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testPathIgnorePatterns: [
     '/node_modules/',
     '/dist'

@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Route } from 'react-router-dom';
-import { Dashboard, NoAuthRoutes, Resource, useRequiredAuthentication, useRequiredRole, WithAuthRoutes, } from '../../../lib';
+import { Dashboard, NoAuthRoutes, Resource, useRequiredAuthentication, useRequiredRole, WithAuthRoutes, } from '@dashify/core';
 import { Role } from './types';
 import { authProvider } from './auth-provider';
 import { adminProvider, customerProvider } from './providers';
@@ -19,7 +19,7 @@ const RoleAllComponent = () => {
 }
 
 /* dashboard provider */
-export const ItWrapper: FC = () => {
+export const DashboardApp: FC = () => {
   return (
     <Dashboard
       requiredAuth
@@ -30,6 +30,7 @@ export const ItWrapper: FC = () => {
       <Resource requireAuth={false} name='customers' list={<p>customers-list</p>} />
       <Resource requireAuth requireRole={Role.ADMIN} name='admins' list={<p>admins-list</p>} />
       <NoAuthRoutes>
+        <Route path='/login' element={<p id="login-page">login</p>} />
         <Route path='/role-anonymous' element={<p>role-anonymous</p>} />
         <Route path='/role-admins' element={<RoleAdminsComponent />} /> {/* role specified with useRequiredRole*/}
         <Route path='/role-all' element={<RoleAllComponent />} /> {/* auth specified with useRequiredAuthentication*/}
