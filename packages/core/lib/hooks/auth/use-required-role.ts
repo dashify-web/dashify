@@ -21,24 +21,30 @@ export const useRequiredRole = <Role = any>({
 
   useLayoutEffect(() => {
     const checkRole = async () => {
-      await authProvider.compareRole({ candidateRole, requiredRole }).catch(() => {
-        if (onError) {
-          onError({
-            errorType: "ROLE_PERMISSION_ERROR",
+      await authProvider
+        .compareRole({ candidateRole, requiredRole })
+        .catch(() => {
+          if (onError) {
+            onError({
+              errorType: 'ROLE_PERMISSION_ERROR',
+              isRequired: true,
+              navigate,
+            });
+            return;
+          }
+          authProvider.onError({
+            errorType: 'ROLE_PERMISSION_ERROR',
             isRequired: true,
-            navigate
-          })
-          return;
-        }
-        authProvider.onError({
-          errorType: "ROLE_PERMISSION_ERROR",
-          isRequired: true,
-          navigate
+            navigate,
+          });
         });
-      });
     };
 
-    if (requiredRole !== undefined && requiredRole !== null && authenticationStatus === "CONNECTED") {
+    if (
+      requiredRole !== undefined &&
+      requiredRole !== null &&
+      authenticationStatus === 'CONNECTED'
+    ) {
       checkRole();
     }
   }, [onError, requiredRole, candidateRole, navigate, authenticationStatus]);

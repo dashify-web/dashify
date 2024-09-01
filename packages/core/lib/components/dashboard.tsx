@@ -32,16 +32,23 @@ export const Dashboard: FC<DashboardProps> = ({
             <DashboardBase {...appBaseProps}>{children}</DashboardBase>
           </BrowserRouter>
         </ProviderContext>
-      </AuthProviderContext >
+      </AuthProviderContext>
     </REQUIRED_AUTH_VALUE_CONTEXT.Provider>
   );
 };
 
-const DashboardBase: FC<Required<DashboardBaseProps>> = ({ children, authLoadingComponent }) => {
+const DashboardBase: FC<Required<DashboardBaseProps>> = ({
+  children,
+  authLoadingComponent,
+}) => {
   const { provider: authProvider } = useAuthProviderContext();
-  const setUserCredentials = useAuthStore(authStore => authStore.setUserCredentials);
-  const setAuthenticationStatus = useAuthStore(authStore => authStore.setAuthenticationStatus);
-  const setRole = useAuthStore(authStore => authStore.setRole);
+  const setUserCredentials = useAuthStore(
+    (authStore) => authStore.setUserCredentials
+  );
+  const setAuthenticationStatus = useAuthStore(
+    (authStore) => authStore.setAuthenticationStatus
+  );
+  const setRole = useAuthStore((authStore) => authStore.setRole);
   const navigate = useNavigate();
 
   const { onError } = authProvider;
@@ -49,14 +56,14 @@ const DashboardBase: FC<Required<DashboardBaseProps>> = ({ children, authLoading
 
   const handleAuthError = useCallback(
     async (baseError: any) => {
-      setAuthenticationStatus("NOT_CONNECTED");
+      setAuthenticationStatus('NOT_CONNECTED');
       authProvider
         .checkError(baseError)
         .then(() => {
           onError({
-            errorType: "UNKNOWN_ERROR",
+            errorType: 'UNKNOWN_ERROR',
             isRequired: false,
-            navigate
+            navigate,
           });
         })
         .catch(() => {
@@ -64,16 +71,16 @@ const DashboardBase: FC<Required<DashboardBaseProps>> = ({ children, authLoading
             .signout()
             .then(() => {
               onError({
-                errorType: "AUTHENTICATION_ERROR",
+                errorType: 'AUTHENTICATION_ERROR',
                 isRequired: false,
-                navigate
+                navigate,
               });
             })
             .catch(() => {
               onError({
-                errorType: "UNKNOWN_ERROR",
+                errorType: 'UNKNOWN_ERROR',
                 isRequired: false,
-                navigate
+                navigate,
               });
             });
         });
@@ -83,7 +90,7 @@ const DashboardBase: FC<Required<DashboardBaseProps>> = ({ children, authLoading
 
   const handleAuthSuccess = useCallback(
     async (userCredentials: any) => {
-      setAuthenticationStatus("CONNECTED");
+      setAuthenticationStatus('CONNECTED');
       setUserCredentials(userCredentials);
 
       if (!authProvider.getRole) {
@@ -96,7 +103,7 @@ const DashboardBase: FC<Required<DashboardBaseProps>> = ({ children, authLoading
           setRole(role);
         })
         .catch(() => {
-          onError({ errorType: "UNKNOWN_ERROR", isRequired: false, navigate });
+          onError({ errorType: 'UNKNOWN_ERROR', isRequired: false, navigate });
         });
     },
     [authProvider, navigate]
@@ -110,15 +117,18 @@ const DashboardBase: FC<Required<DashboardBaseProps>> = ({ children, authLoading
     <DashboardContent authLoadingComponent={authLoadingComponent}>
       {children}
     </DashboardContent>
-  )
+  );
 };
 
-const DashboardContent: FC<Required<DashboardBaseProps>> = ({ authLoadingComponent, children }) => {
+const DashboardContent: FC<Required<DashboardBaseProps>> = ({
+  authLoadingComponent,
+  children,
+}) => {
   const { authenticationStatus } = useAuthenticationStatus();
 
-  if (authenticationStatus === "UNKNOWN") {
+  if (authenticationStatus === 'UNKNOWN') {
     return authLoadingComponent;
   }
 
-  return <>{children} </>
-}
+  return <>{children} </>;
+};

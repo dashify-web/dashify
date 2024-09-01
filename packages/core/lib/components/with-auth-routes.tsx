@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import { RequiredAuthValueContext } from '../context';
-import { Routes } from 'react-router-dom';
+import { Routes } from './routes';
 
 export const WithAuthRoutes: FC<{ children: ReactNode; requireRole?: any }> = ({
   children,
@@ -8,9 +8,7 @@ export const WithAuthRoutes: FC<{ children: ReactNode; requireRole?: any }> = ({
 }) => {
   return (
     <RequiredAuthValueContext requireAuth={true} requireRole={requireRole}>
-      <Routes>
-        {children}
-      </Routes>
+      <Routes>{children}</Routes>
     </RequiredAuthValueContext>
   );
 };

@@ -15,19 +15,19 @@ export type Customer = {
 
 export enum Role {
   ADMIN,
-  CUSTOMER
+  CUSTOMER,
 }
 
 export type SigninData = {
   username: string;
   password: string;
-}
+};
 
 export type SignupData = SigninData & {
   email: string;
-}
+};
 
 export type UserDetails = {
   id: string;
   role: Role;
-}
+};
