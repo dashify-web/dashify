@@ -17,22 +17,19 @@ export const useRequiredAuthentication = ({
   const navigate = useNavigate();
 
   useLayoutEffect(() => {
-    if (
-      requireAuth &&
-      authenticationStatus !== "CONNECTED"
-    ) {
+    if (requireAuth && authenticationStatus !== 'CONNECTED') {
       if (onError) {
         onError({
-          errorType: "AUTHENTICATION_ERROR",
+          errorType: 'AUTHENTICATION_ERROR',
           isRequired: true,
-          navigate
-        })
+          navigate,
+        });
         return;
       }
       authProvider.onError({
-        errorType: "AUTHENTICATION_ERROR",
+        errorType: 'AUTHENTICATION_ERROR',
         isRequired: true,
-        navigate
+        navigate,
       });
     }
   }, [onError, requireAuth, authenticationStatus, navigate]);

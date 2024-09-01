@@ -1,9 +1,10 @@
 import React, { FC, ReactNode } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import {
   RequiredAuthValueContext,
   RequiredAuthValueContextType,
 } from '../context';
+import { Routes } from './routes';
 
 export type ResourceProps = Partial<RequiredAuthValueContextType> & {
   name: string;
@@ -23,7 +24,10 @@ export const Resource: FC<ResourceProps> = ({
   requireAuth,
 }) => {
   return (
-    <RequiredAuthValueContext requireRole={requireRole} requireAuth={requireAuth}>
+    <RequiredAuthValueContext
+      requireRole={requireRole}
+      requireAuth={requireAuth}
+    >
       <Routes>
         {list && <Route path={`/${name}`} element={list} />}
         {create && <Route path={`/${name}/create`} element={create} />}

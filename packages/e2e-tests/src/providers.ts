@@ -47,7 +47,9 @@ export const customerProvider: Provider<Customer> = {
     return Promise.resolve(CUSTOMER_MOCKS.slice(page - 1, pageSize)!);
   },
   getById: async ({ id }) => {
-    return Promise.resolve(CUSTOMER_MOCKS.find((customer) => customer.id === id)!);
+    return Promise.resolve(
+      CUSTOMER_MOCKS.find((customer) => customer.id === id)!
+    );
   },
   deleteOne: async ({ payload }) => {
     return Promise.resolve(
