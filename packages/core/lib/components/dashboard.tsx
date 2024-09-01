@@ -11,18 +11,18 @@ import {
   useUserCredentials,
 } from '../hooks';
 
-export type AppBaseProps = {
+export type DashboardBaseProps = {
   authLoadingComponent: ReactNode;
   children: ReactNode;
 };
 
-export type AppProps = AppBaseProps & {
+export type DashboardProps = DashboardBaseProps & {
   providers: Provider<any>[];
   authProvider: AuthProvider<any>;
   requiredAuth?: boolean;
 };
 
-export const App: FC<AppProps> = ({
+export const Dashboard: FC<DashboardProps> = ({
   children,
   authProvider,
   providers,
@@ -34,7 +34,7 @@ export const App: FC<AppProps> = ({
       <RequiredAuthValueContext requireAuth={requiredAuth}>
         <BrowserRouter>
           <ProviderContext providers={providers}>
-            <AppBase {...appBaseProps}>{children}</AppBase>
+            <DashboardBase {...appBaseProps}>{children}</DashboardBase>
           </ProviderContext>
         </BrowserRouter>
       </RequiredAuthValueContext>
@@ -42,7 +42,7 @@ export const App: FC<AppProps> = ({
   );
 };
 
-const AppBase: FC<AppBaseProps> = ({ children, authLoadingComponent }) => {
+const DashboardBase: FC<DashboardBaseProps> = ({ children, authLoadingComponent }) => {
   const { provider: authProvider } = useAuthProviderContext();
   const { setRole } = useRole();
   const { requireAuth } = useRequiredAuthValueContext();

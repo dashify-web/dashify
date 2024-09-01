@@ -22,8 +22,8 @@ export type AuthProviderBase<
   SigninData = any,
   SignupData = any,
 > = {
-  signin: (data: SigninData) => Promise<UserCredentials>;
-  signup: (data: SignupData) => Promise<UserCredentials>;
+  signin: (data: SigninData) => Promise<void>;
+  signup: (data: SignupData) => Promise<void>;
   signout: () => Promise<void>;
   checkAuth: () => Promise<UserCredentials>;
   checkError: (error: any) => Promise<void>;
