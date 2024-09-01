@@ -1,4 +1,4 @@
-import { AuthErrorType, AuthProvider } from "@dashify/core";
+import { AuthProvider } from "@dashify/core";
 import { UserDetails, SignupData, SigninData, Role, Admin, Customer } from "./types"
 import { ADMIN_MOCKS, CUSTOMER_MOCKS } from "./users";
 
@@ -15,8 +15,8 @@ const verifyUsernameAndPassword = ({ password, username }: { username: string; p
 
 const TOKEN_SEPARATOR = "--";
 const getUserByToken = (token: string): Promise<Customer | Admin> => {
-  if (!token.includes(TOKEN_SEPARATOR)) {
-    return Promise.reject({ status: 404, message: "wrong token" }); // for not signout, so let's just use 404
+  if (!token.includes(TOKEN_SEPARATOR) || token.length < 4) {
+    return Promise.reject({ status: 403, message: "missing token" });
   }
 
   const customer = CUSTOMER_MOCKS.find(customer => customer.username === token.split(TOKEN_SEPARATOR)[0] && customer.password === token.split(TOKEN_SEPARATOR)[1]);
@@ -54,18 +54,29 @@ export const authProvider: AuthProvider<UserDetails, SigninData, SignupData, Rol
     }
     return Promise.resolve();
   },
-  onError: ({ erroType, isRequired }) => {
-    if (erroType === AuthErrorType.AUTHENTICATION_ERROR && isRequired) {
-      return window.location.href = "/login";
+  onError: ({ errorType, isRequired, navigate }) => {
+    if (errorType === "AUTHENTICATION_ERROR" && isRequired) {
+      navigate("/auth-error")
+      return;
     }
-    alert("Error");
+
+    if (errorType === "ROLE_PERMISSION_ERROR" && isRequired) {
+      navigate("/role-error")
+      return;
+    }
+
+    if (errorType === "UNKNOWN_ERROR") {
+      navigate("/unknown-error")
+    }
+
+    return;
   },
   signout: () => Promise.resolve(localStorage.setItem(TOKEN_CACHE_NAME, "")),
   getRole: (useDetails) => {
     return Promise.resolve(useDetails.role);
   },
-  compareRole: ({ role, candidateRole }) => {
-    if (role === candidateRole) {
+  compareRole: ({ requiredRole, candidateRole }) => {
+    if (requiredRole === candidateRole) {
       return Promise.resolve();
     }
     return Promise.reject();

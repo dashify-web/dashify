@@ -1,15 +1,10 @@
 import React, { FC, ReactNode, useCallback, useEffect } from 'react';
-import { BrowserRouter, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { Provider, ProviderContext } from '@dashify/providers';
-import { AuthProviderContext, RequiredAuthValueContext } from '../context';
-import { AuthenticationStatus, AuthErrorType, AuthProvider } from '../types';
-import {
-  useAuthProviderContext,
-  useAuthenticationStatus,
-  useRequiredAuthValueContext,
-  useRole,
-  useUserCredentials,
-} from '../hooks';
+import { AuthProviderContext, REQUIRED_AUTH_VALUE_CONTEXT } from '../context';
+import { AuthProvider } from '../types';
+import { useAuthProviderContext, useAuthenticationStatus } from '../hooks';
+import { useAuthStore } from '../stores';
 
 export type DashboardBaseProps = {
   authLoadingComponent: ReactNode;
@@ -19,48 +14,49 @@ export type DashboardBaseProps = {
 export type DashboardProps = DashboardBaseProps & {
   providers: Provider<any>[];
   authProvider: AuthProvider<any>;
-  requiredAuth?: boolean;
+  requireAuth?: boolean;
 };
 
 export const Dashboard: FC<DashboardProps> = ({
   children,
   authProvider,
   providers,
-  requiredAuth = true,
+  requireAuth = true,
   ...appBaseProps
 }) => {
   return (
-    <AuthProviderContext provider={authProvider}>
-      <RequiredAuthValueContext requireAuth={requiredAuth}>
-        <BrowserRouter>
-          <ProviderContext providers={providers}>
+    <REQUIRED_AUTH_VALUE_CONTEXT.Provider value={{ requireAuth }}>
+      <AuthProviderContext provider={authProvider}>
+        <ProviderContext providers={providers}>
+          <BrowserRouter>
             <DashboardBase {...appBaseProps}>{children}</DashboardBase>
-          </ProviderContext>
-        </BrowserRouter>
-      </RequiredAuthValueContext>
-    </AuthProviderContext>
+          </BrowserRouter>
+        </ProviderContext>
+      </AuthProviderContext >
+    </REQUIRED_AUTH_VALUE_CONTEXT.Provider>
   );
 };
 
-const DashboardBase: FC<DashboardBaseProps> = ({ children, authLoadingComponent }) => {
+const DashboardBase: FC<Required<DashboardBaseProps>> = ({ children, authLoadingComponent }) => {
   const { provider: authProvider } = useAuthProviderContext();
-  const { setRole } = useRole();
-  const { requireAuth } = useRequiredAuthValueContext();
-  const { setUserCredentials } = useUserCredentials();
-  const { authenticationStatus, setAuthenticationStatus } =
-    useAuthenticationStatus();
+  const setUserCredentials = useAuthStore(authStore => authStore.setUserCredentials);
+  const setAuthenticationStatus = useAuthStore(authStore => authStore.setAuthenticationStatus);
+  const setRole = useAuthStore(authStore => authStore.setRole);
+  const navigate = useNavigate();
+
   const { onError } = authProvider;
   const location = useLocation();
 
   const handleAuthError = useCallback(
     async (baseError: any) => {
-      setAuthenticationStatus(AuthenticationStatus.CONNECTED);
+      setAuthenticationStatus("NOT_CONNECTED");
       authProvider
         .checkError(baseError)
         .then(() => {
           onError({
-            erroType: AuthErrorType.UNKNOWN_ERROR,
-            isRequired: requireAuth,
+            errorType: "UNKNOWN_ERROR",
+            isRequired: false,
+            navigate
           });
         })
         .catch(() => {
@@ -68,24 +64,26 @@ const DashboardBase: FC<DashboardBaseProps> = ({ children, authLoadingComponent 
             .signout()
             .then(() => {
               onError({
-                erroType: AuthErrorType.AUTHENTICATION_ERROR,
-                isRequired: requireAuth,
+                errorType: "AUTHENTICATION_ERROR",
+                isRequired: false,
+                navigate
               });
             })
             .catch(() => {
               onError({
-                erroType: AuthErrorType.UNKNOWN_ERROR,
-                isRequired: requireAuth,
+                errorType: "UNKNOWN_ERROR",
+                isRequired: false,
+                navigate
               });
             });
         });
     },
-    [authProvider]
+    [authProvider, navigate]
   );
 
   const handleAuthSuccess = useCallback(
     async (userCredentials: any) => {
-      setAuthenticationStatus(AuthenticationStatus.CONNECTED);
+      setAuthenticationStatus("CONNECTED");
       setUserCredentials(userCredentials);
 
       if (!authProvider.getRole) {
@@ -98,19 +96,29 @@ const DashboardBase: FC<DashboardBaseProps> = ({ children, authLoadingComponent 
           setRole(role);
         })
         .catch(() => {
-          onError({ erroType: AuthErrorType.UNKNOWN_ERROR, isRequired: false });
+          onError({ errorType: "UNKNOWN_ERROR", isRequired: false, navigate });
         });
     },
-    [authProvider]
+    [authProvider, navigate]
   );
 
   useEffect(() => {
     authProvider.checkAuth().then(handleAuthSuccess).catch(handleAuthError);
-  }, [location, handleAuthSuccess, handleAuthError]);
+  }, [location]);
 
-  if (authenticationStatus === AuthenticationStatus.UNKNOWN) {
+  return (
+    <DashboardContent authLoadingComponent={authLoadingComponent}>
+      {children}
+    </DashboardContent>
+  )
+};
+
+const DashboardContent: FC<Required<DashboardBaseProps>> = ({ authLoadingComponent, children }) => {
+  const { authenticationStatus } = useAuthenticationStatus();
+
+  if (authenticationStatus === "UNKNOWN") {
     return authLoadingComponent;
   }
 
-  return <Routes>{children}</Routes>;
-};
+  return <>{children} </>
+}
