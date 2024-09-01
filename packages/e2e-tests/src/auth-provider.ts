@@ -1,4 +1,4 @@
-import { AuthErrorType, AuthProvider } from "../../../lib";
+import { AuthErrorType, AuthProvider } from "@dashify/core";
 import { UserDetails, SignupData, SigninData, Role, Admin, Customer } from "./types"
 import { ADMIN_MOCKS, CUSTOMER_MOCKS } from "./users";
 
