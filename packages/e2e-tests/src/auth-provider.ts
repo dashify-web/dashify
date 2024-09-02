@@ -1,13 +1,7 @@
 import { AuthProvider } from '@dashify/core';
-import {
-  UserDetails,
-  SignupData,
-  SigninData,
-  Role,
-  Admin,
-  Customer,
-} from './types';
+import { UserDetails, SignupData, SigninData, Role } from './types';
 import { ADMIN_MOCKS, CUSTOMER_MOCKS } from './users';
+import axios, { AxiosError } from 'axios';
 
 const verifyUsernameAndPassword = ({
   password,
@@ -31,29 +25,7 @@ const verifyUsernameAndPassword = ({
   return Promise.resolve();
 };
 
-const TOKEN_SEPARATOR = '--';
-const getUserByToken = (token: string): Promise<Customer | Admin> => {
-  if (!token.includes(TOKEN_SEPARATOR) || token.length < 4) {
-    return Promise.reject({ status: 403, message: 'missing token' });
-  }
-
-  const customer = CUSTOMER_MOCKS.find(
-    (customer) =>
-      customer.username === token.split(TOKEN_SEPARATOR)[0] &&
-      customer.password === token.split(TOKEN_SEPARATOR)[1]
-  );
-  const admin = ADMIN_MOCKS.find(
-    (admin) =>
-      admin.username === token.split(TOKEN_SEPARATOR)[0] &&
-      admin.password === token.split(TOKEN_SEPARATOR)[1]
-  );
-
-  if (!customer && !admin) {
-    return Promise.reject({ status: 403, message: 'Forbidden' });
-  }
-
-  return Promise.resolve(admin! ?? customer!);
-};
+export const TOKEN_SEPARATOR = '--';
 
 export const TOKEN_CACHE_NAME = 'token';
 export const authProvider: AuthProvider<
@@ -63,30 +35,21 @@ export const authProvider: AuthProvider<
   Role
 > = {
   signin: async (signinData) => {
-    return verifyUsernameAndPassword(signinData).then(() => {
-      localStorage.setItem(
-        TOKEN_CACHE_NAME,
-        signinData.password + '--' + signinData.username
-      );
-    });
+    return verifyUsernameAndPassword(signinData);
   },
   signup: async (signupData) => {
-    return verifyUsernameAndPassword(signupData).then(() => {
-      localStorage.setItem(
-        TOKEN_CACHE_NAME,
-        signupData.password + '--' + signupData.username
-      );
-    });
+    return verifyUsernameAndPassword(signupData);
   },
   checkAuth: async () => {
-    const token = localStorage.getItem(TOKEN_CACHE_NAME) || '';
-    return getUserByToken(token).then((user) => ({
-      id: user.id,
-      role: 'salary' in user ? Role.ADMIN : Role.CUSTOMER,
-    }));
+    return axios
+      .get<UserDetails>('http://dummy.com/whoami')
+      .then((response) => response.data);
   },
-  checkError: ({ status }: { status: number }) => {
-    if (status === 403) {
+  checkError: (error) => {
+    if (!(error instanceof AxiosError)) {
+      return Promise.resolve();
+    }
+    if (error.status! === 403) {
       return Promise.reject();
     }
     return Promise.resolve();
