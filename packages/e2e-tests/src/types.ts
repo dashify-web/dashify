@@ -13,10 +13,7 @@ export type Customer = {
   password: string;
 };
 
-export enum Role {
-  ADMIN,
-  CUSTOMER,
-}
+export type Role = 'CUSTOMER' | 'ADMIN';
 
 export type SigninData = {
   username: string;
