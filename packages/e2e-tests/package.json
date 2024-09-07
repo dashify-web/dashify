@@ -32,7 +32,6 @@
   "dependencies": {
     "@dashify/core": "^0.0.0",
     "@dashify/providers": "^0.0.1",
-    "@dashify/utils": "^0.0.1",
     "@tanstack/react-query": "^5.53.1",
     "axios": "^1.7.7",
     "react": "^18.3.1",
