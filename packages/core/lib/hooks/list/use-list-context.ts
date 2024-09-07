@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ResourceType } from '@dashify/providers';
 import { undefinedContextMessage } from '@dashify/utils';
-import { LIST_CONTEXT, ListContextType } from '../context';
+import { LIST_CONTEXT, ListContextType } from '../../context';
 
 export const useListContext = <
   T extends ResourceType = any,

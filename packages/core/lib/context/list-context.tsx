@@ -1,11 +1,11 @@
-import React, { createContext, ReactNode, useState } from 'react';
+import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import {
   ResourceType,
   UseGetListArgsType,
   useGetList,
 } from '@dashify/providers';
 import { UseQueryResult } from '@tanstack/react-query';
-import { Nullable } from '@dashify/utils';
+import { Nullable, StateSetter } from '@dashify/utils';
 
 export type ListControllerType<
   T extends ResourceType = any,
@@ -21,11 +21,10 @@ export type ListContextType<
   Meta = any,
   Params = any,
   Error = any,
-> = UseQueryResult<T[], Error> & {
-  controller: (
-    args: Partial<ListControllerType<T, Meta, Params, Error>>
-  ) => void;
-};
+> = UseQueryResult<T[], Error> &
+  ListControllerType<T, Meta, Params, Error> & {
+    controller: StateSetter<ListControllerType<T, Meta, Params, Error>>;
+  };
 
 export const LIST_CONTEXT = createContext<Nullable<ListContextType<any>>>(null);
 
@@ -58,16 +57,15 @@ export const ListContext = <
     ...queryOptions,
   });
 
-  //WARNING : refech or queryKey ?
-  const setter: ListContextType<T, Meta, Params, Error>['controller'] = (
-    args
-  ) => {
-    setQueryOptions((prev) => ({ ...prev, ...args }));
+  useEffect(() => {
+    //WARNING : refech or queryKey ?
     response.refetch();
-  };
+  }, [JSON.stringify(queryOptions)]);
 
   return (
-    <LIST_CONTEXT.Provider value={{ ...response, controller: setter }}>
+    <LIST_CONTEXT.Provider
+      value={{ ...response, ...queryOptions, controller: setQueryOptions }}
+    >
       {children}
     </LIST_CONTEXT.Provider>
   );

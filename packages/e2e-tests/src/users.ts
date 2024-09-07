@@ -17,7 +17,7 @@ export const CUSTOME_ONE: Customer = {
 
 export const ADMIN_MOCKS: Admin[] = [
   ADMIN_ONE,
-  ...Array.of(5)
+  ...Array(5)
     .fill(0)
     .map((_, index) => ({
       username: 'admin' + index,
@@ -30,12 +30,12 @@ export const ADMIN_MOCKS: Admin[] = [
 
 export const CUSTOMER_MOCKS: Customer[] = [
   CUSTOME_ONE,
-  ...Array.of(5)
+  ...Array(5)
     .fill(0)
     .map((_, index) => ({
-      username: 'admin' + index,
-      password: 'admin' + index,
-      id: 'admin' + index,
-      email: 'admin@gmail.com' + index,
+      username: 'customer' + index,
+      password: 'customer' + index,
+      id: 'customer' + index,
+      email: 'customer@gmail.com' + index,
     })),
 ];

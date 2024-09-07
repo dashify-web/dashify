@@ -9,6 +9,7 @@ import {
   useRequiredRole,
 } from '@dashify/core';
 import { Role } from './types';
+import { CustomerList } from './customer-list';
 import { authProvider } from './auth-provider';
 import { adminProvider, customerProvider } from './providers';
 
@@ -44,11 +45,7 @@ export const DashboardApp: FC = () => {
         requireRoles={['ADMIN']}
         list={<p>admins-list</p>}
       />
-      <Resource
-        requireAuth={false}
-        name="customers"
-        list={<p>customers-list</p>}
-      />
+      <Resource requireAuth={false} name="customers" list={<CustomerList />} />
       <NoAuthRoutes>
         <Route path="/auth-error" element={<p>auth-error</p>} />
         <Route path="/role-error" element={<p>role-error</p>} />

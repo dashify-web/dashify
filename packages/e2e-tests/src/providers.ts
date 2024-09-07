@@ -17,7 +17,9 @@ export const adminProvider: Provider<Admin> = {
   },
   getList: async ({ pagination }) => {
     const { page = 1, pageSize = 2 } = pagination || {};
-    return Promise.resolve(ADMIN_MOCKS.slice(page - 1, pageSize));
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return Promise.resolve(ADMIN_MOCKS.slice(startIndex, endIndex));
   },
   getById: async ({ id }) => {
     return Promise.resolve(ADMIN_MOCKS.find((admin) => id === admin.id)!);
@@ -44,7 +46,9 @@ export const customerProvider: Provider<Customer> = {
   },
   getList: async ({ pagination }) => {
     const { page = 1, pageSize = 2 } = pagination || {};
-    return Promise.resolve(CUSTOMER_MOCKS.slice(page - 1, pageSize)!);
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return Promise.resolve(CUSTOMER_MOCKS.slice(startIndex, endIndex));
   },
   getById: async ({ id }) => {
     return Promise.resolve(
