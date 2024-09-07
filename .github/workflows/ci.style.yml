@@ -1,0 +1,48 @@
+name: ci
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.4.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Prettier
+        run: npm run format:check
+
+      - name: Run Eslint
+        run: npm run lint
+
+      - name: Run Build
+        run: npm run build
+        continue-on-error: true
+
+      - name: Debug
+        run: ls ./packages/providers/dist
+        continue-on-error: true
+
+      - name: Debug 2
+        run: ls ./packages/auth-routes/dist
+        continue-on-error: true
+
+      - name: Debug 3
+        run: ls ./packages/core/dist
+        continue-on-error: true
+
+      - name: Debug 4
+        run: ls ./packages/e2e-tests/dist
+        continue-on-error: true
