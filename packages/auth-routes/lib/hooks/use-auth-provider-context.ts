@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Nullable, undefinedContextMessage } from '@dashify/utils';
-import { AUTH_PROVIDER_CONTEXT, AuthProviderContextType } from '../../context';
+import { AUTH_PROVIDER_CONTEXT, AuthProviderContextType } from '../context';
 
 export const useAuthProviderContext = <
   UserCredentials = any,

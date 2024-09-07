@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, FC } from 'react';
 import { Nullable } from '@dashify/utils';
-import { AuthProvider } from '../../types';
+import { AuthProvider } from '../types';
 
 export type AuthProviderContextType<
   UserCredentials = any,

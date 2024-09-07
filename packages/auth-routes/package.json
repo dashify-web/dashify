@@ -1,7 +1,7 @@
 {
-  "name": "@dashify/core",
+  "name": "@dashify/auth-routes",
   "version": "0.0.0",
-  "description": "Dashify core",
+  "description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
   "keywords": [
     "dashboard",
     "core",
@@ -9,7 +9,6 @@
     "admin"
   ],
   "author": "\"RickaPrincy\" <\"rckprincy@gmail.com\">",
-  "homepage": "https://github.com/dashify-web/dashify#readme",
   "license": "MIT",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -23,6 +22,9 @@
     "dist",
     "package.json"
   ],
+  "publishConfig": {
+    "registry": "https://npm-bpartners-app-688605879718.d.codeartifact.eu-west-3.amazonaws.com/npm/bpartners-store/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dashify-web/dashify.git"
@@ -33,14 +35,12 @@
   "bugs": {
     "url": "https://github.com/dashify-web/dashify/issues"
   },
+  "homepage": "https://github.com/dashify-web/dashify#readme",
   "peerDependencies": {
     "react": "^18.0.0",
     "zustand": "^4.5.5",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.26.1",
-    "@tanstack/react-query": "^5.52.1",
-    "@dashify/utils": "^0.0.1",
-    "@dashify/providers": "^0.0.1",
-    "@dashify/auth-routes": "^0.0.0"
+    "@dashify/utils": "^0.0.0"
   }
 }

@@ -23,10 +23,15 @@ const getProvider = <T extends ResourceType = any>({
   return providerValue;
 };
 
-export const ProviderContext: FC<{
+export type ProviderContextProps = {
   providers: Provider<any>[];
   children: React.ReactNode;
-}> = ({ children, providers }) => {
+};
+
+export const ProviderContext: FC<ProviderContextProps> = ({
+  children,
+  providers,
+}) => {
   return (
     <ReactQueryProvider>
       <PROVIDER_CONTEXT.Provider

@@ -4,7 +4,11 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-import { GetListsArgsType, RequiredResourceName, ResourceType } from '../../types';
+import {
+  GetListsArgsType,
+  RequiredResourceName,
+  ResourceType,
+} from '../../types';
 import { useProvider } from '../use-provider';
 
 export type UseGetListArgsType<

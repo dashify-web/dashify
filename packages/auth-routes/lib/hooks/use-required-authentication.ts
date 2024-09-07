@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { OnErrorType } from '../../types';
+import { OnErrorType } from '../types';
 import { useAuthenticationStatus } from './use-authentication-status';
 import { useAuthProviderContext } from './use-auth-provider-context';
 

@@ -1,10 +1,10 @@
 import React, { FC, ReactNode } from 'react';
 import { Route } from 'react-router-dom';
 import {
+  Routes,
   RequiredAuthValueContext,
   RequiredAuthValueContextType,
-} from '../context';
-import { Routes } from './routes';
+} from '@dashify/auth-routes';
 
 export type ResourceProps = Partial<RequiredAuthValueContextType> & {
   name: string;

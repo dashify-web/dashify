@@ -1,4 +1,4 @@
-import { useAuthStore } from '../../stores';
+import { useAuthStore } from '../stores';
 
 export const useUserCredentials = <UserCredentials = any>() => {
   const userCredentials = useAuthStore<UserCredentials>(

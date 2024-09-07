@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode } from 'react';
 import { Nullable } from '@dashify/utils';
-import { useRequiredAuthValueContext } from '../../hooks';
+import { useRequiredAuthValueContext } from '../hooks';
 
 export type RequiredAuthValueContextType<Role = any> = {
   requireAuth?: boolean;

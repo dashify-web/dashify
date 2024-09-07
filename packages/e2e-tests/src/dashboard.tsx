@@ -1,13 +1,12 @@
 import { FC } from 'react';
 import { Route } from 'react-router-dom';
+import { Dashboard, Resource } from '@dashify/core';
 import {
-  Dashboard,
   NoAuthRoutes,
-  Resource,
   WithAuthRoutes,
   useRequiredAuthentication,
   useRequiredRole,
-} from '@dashify/core';
+} from '@dashify/auth-routes';
 import { Role } from './types';
 import { CustomerList } from './customer-list';
 import { authProvider } from './auth-provider';
