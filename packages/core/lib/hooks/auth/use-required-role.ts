@@ -6,12 +6,12 @@ import { useRole } from './use-role';
 import { useAuthenticationStatus } from './use-authentication-status';
 
 export type UseRequiredRoleArgs<Role = any> = {
-  requiredRole?: Role;
+  requiredRoles?: Role[];
   onError?: OnErrorType;
 };
 
 export const useRequiredRole = <Role = any>({
-  requiredRole,
+  requiredRoles,
   onError,
 }: UseRequiredRoleArgs<Role>) => {
   const { authenticationStatus } = useAuthenticationStatus();
@@ -22,7 +22,7 @@ export const useRequiredRole = <Role = any>({
   useLayoutEffect(() => {
     const checkRole = async () => {
       await authProvider
-        .compareRole({ candidateRole, requiredRole })
+        .compareRole({ candidateRole, requiredRoles: requiredRoles ?? [] })
         .catch(() => {
           if (onError) {
             onError({
@@ -41,11 +41,11 @@ export const useRequiredRole = <Role = any>({
     };
 
     if (
-      requiredRole !== undefined &&
-      requiredRole !== null &&
+      requiredRoles !== undefined &&
+      requiredRoles !== null &&
       authenticationStatus === 'CONNECTED'
     ) {
       checkRole();
     }
-  }, [onError, requiredRole, candidateRole, navigate, authenticationStatus]);
+  }, [onError, requiredRoles, candidateRole, navigate, authenticationStatus]);
 };

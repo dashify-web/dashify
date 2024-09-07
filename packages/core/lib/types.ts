@@ -38,7 +38,7 @@ export type AuthProviderWithRole<
   getRole: (data: UserCredentials) => Promise<Role>;
   compareRole: (args: {
     candidateRole: Role;
-    requiredRole: Role;
+    requiredRoles: Role[];
   }) => Promise<void>;
 };
 

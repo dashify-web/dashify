@@ -15,7 +15,7 @@ import { adminProvider, customerProvider } from './providers';
 const RoleAdminsComponent = () => {
   useRequiredAuthentication({ requireAuth: true });
   useRequiredRole<Role>({
-    requiredRole: 'ADMIN',
+    requiredRoles: ['ADMIN'],
   });
 
   return <div>nrole-admins</div>;
@@ -34,12 +34,16 @@ const RoleAnonymousComponent = () => {
 export const DashboardApp: FC = () => {
   return (
     <Dashboard
-      requireAuth={true}
+      requireAuth
       authProvider={authProvider}
       authLoadingComponent={<p>auth-loading</p>}
       providers={[adminProvider, customerProvider]}
     >
-      <Resource name="admins" requireRole={'ADMIN'} list={<p>admins-list</p>} />
+      <Resource
+        name="admins"
+        requireRoles={['ADMIN']}
+        list={<p>admins-list</p>}
+      />
       <Resource
         requireAuth={false}
         name="customers"
@@ -56,7 +60,7 @@ export const DashboardApp: FC = () => {
       <WithAuthRoutes>
         <Route path="/wrole-all" element={<p>wrole-all</p>} />
       </WithAuthRoutes>
-      <WithAuthRoutes requireRole={'ADMIN'}>
+      <WithAuthRoutes requireRoles={['ADMIN']}>
         <Route path="/wrole-admins" element={<p>wrole-admins</p>} />
       </WithAuthRoutes>
     </Dashboard>

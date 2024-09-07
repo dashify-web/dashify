@@ -4,7 +4,7 @@ import { useRequiredAuthValueContext } from '../../hooks';
 
 export type RequiredAuthValueContextType<Role = any> = {
   requireAuth?: boolean;
-  requireRole?: Role;
+  requireRoles?: Role[];
 };
 
 export type RequiredAuthValueContextProps<Role = any> =
@@ -17,16 +17,16 @@ export const REQUIRED_AUTH_VALUE_CONTEXT =
 
 export const RequiredAuthValueContext = <Role = any,>({
   children,
-  requireRole,
+  requireRoles,
   requireAuth,
 }: RequiredAuthValueContextProps<Role>) => {
-  const { requireAuth: inheritRequireAuth, requireRole: inheritRequireRole } =
+  const { requireAuth: inheritRequireAuth, requireRoles: inheritRequireRole } =
     useRequiredAuthValueContext();
   return (
     <REQUIRED_AUTH_VALUE_CONTEXT.Provider
       value={{
         requireAuth: requireAuth ?? inheritRequireAuth,
-        requireRole: requireRole ?? inheritRequireRole,
+        requireRoles: requireRoles ?? inheritRequireRole,
       }}
     >
       {children}

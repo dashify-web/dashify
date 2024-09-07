@@ -20,12 +20,12 @@ export const Resource: FC<ResourceProps> = ({
   edit,
   show,
   create,
-  requireRole,
+  requireRoles,
   requireAuth,
 }) => {
   return (
     <RequiredAuthValueContext
-      requireRole={requireRole}
+      requireRoles={requireRoles}
       requireAuth={requireAuth}
     >
       <Routes>

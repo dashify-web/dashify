@@ -12,9 +12,9 @@ import {
 } from '../hooks';
 
 const ElementWrapper: FC<{ children: ReactNode }> = ({ children }) => {
-  const { requireAuth, requireRole } = useRequiredAuthValueContext();
+  const { requireAuth, requireRoles } = useRequiredAuthValueContext();
   useRequiredAuthentication({ requireAuth });
-  useRequiredRole({ requiredRole: requireRole });
+  useRequiredRole({ requiredRoles: requireRoles });
 
   return <>{children}</>;
 };

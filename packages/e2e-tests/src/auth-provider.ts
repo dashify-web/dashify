@@ -75,8 +75,8 @@ export const authProvider: AuthProvider<
   getRole: (useDetails) => {
     return Promise.resolve(useDetails.role);
   },
-  compareRole: ({ requiredRole, candidateRole }) => {
-    if (requiredRole === candidateRole) {
+  compareRole: ({ requiredRoles, candidateRole }) => {
+    if (requiredRoles.includes(candidateRole)) {
       return Promise.resolve();
     }
     return Promise.reject();
