@@ -7,8 +7,8 @@
   "scripts": {
     "build": "lerna run build",
     "lint": "eslint \"./packages/**/lib/**/*.{js,ts,tsx}\" \"./packages/**/__tests__/**/*.{spec.ts,spec.tsx}\" --max-warnings 0",
-    "format": "prettier --config ./.prettierrc --write \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\"",
-    "format:check": "prettier --config ./.prettierrc --check \"packages/*/*/**/*.{js,json,ts,tsx,css,md,spec.ts,spec.tsx}\"",
+    "format": "prettier --config ./.prettierrc --write .",
+    "format:check": "prettier --config ./.prettierrc --check .",
     "test": "jest",
     "test:utils": "jest --selectProjects=utils",
     "test:providers": "jest --selectProjects=providers",

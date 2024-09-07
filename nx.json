@@ -4,9 +4,7 @@
       "dependsOn": []
     },
     "build": {
-      "dependsOn": [
-        "test"
-      ]
+      "dependsOn": ["test"]
     }
   }
 }
