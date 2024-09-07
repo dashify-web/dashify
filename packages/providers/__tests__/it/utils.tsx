@@ -1,6 +1,5 @@
 import React, { FC, ReactNode } from 'react';
 import { Provider, ProviderContext } from '../../lib';
-import { dumbLoading } from '@dashify/utils';
 
 /* dummyProvider */
 export type Dummy = {
@@ -73,7 +72,7 @@ export const personProvider: Provider<Person> = {
   getList: async ({ pagination }) => {
     const { page = 1, pageSize = 2 } = pagination || {};
     return new Promise((resolve) =>
-      dumbLoading(() => resolve(PEOPLE_MOCKS.slice(page - 1, pageSize)!))
+      setTimeout(() => resolve(PEOPLE_MOCKS.slice(page - 1, pageSize)!), 500)
     );
   },
   getById: async ({ id }) => {

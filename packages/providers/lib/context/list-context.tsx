@@ -1,6 +1,12 @@
-import React, { createContext, ReactNode, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { UseQueryResult } from '@tanstack/react-query';
-import { Nullable, StateSetter } from '@dashify/utils';
 import { ResourceType } from '../types';
 import { useGetList, UseGetListArgsType } from '../hooks';
 
@@ -20,10 +26,12 @@ export type ListContextType<
   Error = any,
 > = UseQueryResult<T[], Error> &
   ListControllerType<T, Meta, Params, Error> & {
-    controller: StateSetter<ListControllerType<T, Meta, Params, Error>>;
+    controller: Dispatch<
+      SetStateAction<ListControllerType<T, Meta, Params, Error>>
+    >;
   };
 
-export const LIST_CONTEXT = createContext<Nullable<ListContextType<any>>>(null);
+export const LIST_CONTEXT = createContext<ListContextType<any> | null>(null);
 
 export type ListContextProps<
   T extends ResourceType = any,

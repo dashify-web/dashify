@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { undefinedContextMessage } from '@dashify/utils';
 import { LIST_CONTEXT, ListContextType } from '../../context';
 import { ResourceType } from '../../types';
 
@@ -12,7 +11,7 @@ export const useListContext = <
   const response = useContext(LIST_CONTEXT);
 
   if (response === null) {
-    throw new Error(undefinedContextMessage('useListContext', 'ListContext'));
+    throw new Error('useListContext must be wrapped by ListContext');
   }
 
   return response as ListContextType<T, Meta, Params, Error>;

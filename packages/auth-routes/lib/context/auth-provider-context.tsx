@@ -1,5 +1,4 @@
 import React, { createContext, ReactNode, FC } from 'react';
-import { Nullable } from '@dashify/utils';
 import { AuthProvider } from '../types';
 
 export type AuthProviderContextType<
@@ -12,7 +11,7 @@ export type AuthProviderContextType<
 };
 
 export const AUTH_PROVIDER_CONTEXT =
-  createContext<Nullable<AuthProviderContextType>>(null);
+  createContext<AuthProviderContextType | null>(null);
 
 export type AuthProviderContextProps = AuthProviderContextType & {
   children: ReactNode;

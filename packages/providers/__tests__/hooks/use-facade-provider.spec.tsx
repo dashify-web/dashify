@@ -1,6 +1,5 @@
 import React, { FC, ReactNode } from 'react';
 import { renderHook } from '@testing-library/react';
-import { undefinedContextMessage } from '@dashify/utils';
 
 import { ProviderContext, Provider, useFacadeProvider } from '../../lib';
 
@@ -25,7 +24,7 @@ describe('useFacadeProvider', () => {
   it('Should throw if not wrapped by ProviderContext', () => {
     expect(() => {
       renderHook(() => useFacadeProvider());
-    }).toThrow(undefinedContextMessage('useFacadeProvider', 'ProviderContext'));
+    }).toThrow('useFacadeProvider must be wrapped by ProviderContext');
   });
 
   it('should return the provider if context is provided', () => {
