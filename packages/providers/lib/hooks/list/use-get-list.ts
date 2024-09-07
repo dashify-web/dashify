@@ -4,8 +4,8 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-import { GetListsArgsType, RequiredResourceName, ResourceType } from '../types';
-import { useProvider } from './use-provider';
+import { GetListsArgsType, RequiredResourceName, ResourceType } from '../../types';
+import { useProvider } from '../use-provider';
 
 export type UseGetListArgsType<
   T extends ResourceType = any,

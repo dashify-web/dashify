@@ -1,6 +1,6 @@
-import { Pagination } from '@dashify/providers';
 import { useCallback } from 'react';
 import { useListContext } from './use-list-context';
+import { Pagination } from '../../types';
 
 export const usePagination = () => {
   const { pagination, controller } = useListContext();

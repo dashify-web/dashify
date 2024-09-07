@@ -1,11 +1,8 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
-import {
-  ResourceType,
-  UseGetListArgsType,
-  useGetList,
-} from '@dashify/providers';
 import { UseQueryResult } from '@tanstack/react-query';
 import { Nullable, StateSetter } from '@dashify/utils';
+import { ResourceType } from '../types';
+import { useGetList, UseGetListArgsType } from '../hooks';
 
 export type ListControllerType<
   T extends ResourceType = any,

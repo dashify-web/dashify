@@ -10,7 +10,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test:open": "concurrently \"npm run dev\" \"npx cypress open\"",
-    "test:e2e": "cypress run --spec cypress/e2e/**/*"
+    "test:e2e": "concurrently \"npm run dev\" \"npx cypress run --spec cypress/e2e/**/*\""
   },
   "main": "lib/e2e-tests.js",
   "repository": {

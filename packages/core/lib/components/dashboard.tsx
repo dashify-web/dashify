@@ -111,7 +111,7 @@ const DashboardBase: FC<Required<DashboardBaseProps>> = ({
 
   useEffect(() => {
     authProvider.checkAuth().then(handleAuthSuccess).catch(handleAuthError);
-  }, [location]);
+  }, [location, handleAuthSuccess, handleAuthError]);
 
   return (
     <DashboardContent authLoadingComponent={authLoadingComponent}>

@@ -1,9 +1,10 @@
+import { ListContext, useListContext, usePagination } from '@dashify/providers';
 import { Customer } from './types';
-import { ListContext, useListContext, usePagination } from '@dashify/core';
 
 export const CustomerList = () => {
   return (
     <ListContext resource="customers" pagination={{ page: 1, pageSize: 2 }}>
+      <p>customers-list</p>
       <CustomerListContent />
     </ListContext>
   );

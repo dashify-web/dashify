@@ -1,4 +1,4 @@
-import { ResourceType } from '@dashify/providers';
+import { ResourceType } from '../../types';
 import { useListContext } from './use-list-context';
 
 export const useListController = <
