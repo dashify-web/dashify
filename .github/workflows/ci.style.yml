@@ -2,9 +2,9 @@ name: ci
 
 on:
   push:
-    branches: ['main']
+    branches: ['dev']
   pull_request:
-    branches: ['main']
+    branches: ['dev']
 
 jobs:
   style:
@@ -29,20 +29,3 @@ jobs:
 
       - name: Run Build
         run: npm run build
-        continue-on-error: true
-
-      - name: Debug
-        run: ls ./packages/providers/dist
-        continue-on-error: true
-
-      - name: Debug 2
-        run: ls ./packages/auth-routes/dist
-        continue-on-error: true
-
-      - name: Debug 3
-        run: ls ./packages/core/dist
-        continue-on-error: true
-
-      - name: Debug 4
-        run: ls ./packages/e2e-tests/dist
-        continue-on-error: true
