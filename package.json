@@ -1,6 +1,6 @@
 {
-  "name": "dashify-tools",
-  "private": false,
+  "name": "root",
+  "private": true,
   "workspaces": [
     "packages/*"
   ],
@@ -16,19 +16,24 @@
   },
   "devDependencies": {
     "@swc/core": "^1.7.18",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
     "@tanstack/react-query": "^5.52.1",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.0",
     "@types/jest": "^29.5.12",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^8.2.0",
     "@typescript-eslint/parser": "^8.2.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "axios": "^1.7.7",
+    "concurrently": "^8.2.2",
+    "cypress": "^13.14.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.11",
+    "globals": "^15.9.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "lerna": "^8.1.8",
@@ -40,6 +45,7 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
+    "vite": "^5.4.1",
     "zustand": "^4.5.5"
   }
 }

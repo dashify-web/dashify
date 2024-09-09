@@ -1,10 +1,19 @@
 {
   "name": "@dashify/e2e-tests",
-  "version": "1.0.0",
-  "description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
-  "keywords": [],
+  "private": true,
+  "version": "0.0.1",
+  "description": "> TODO: description",
   "author": "\"RickaPrincy\" <\"rckprincy@gmail.com\">",
-  "license": "ISC",
+  "homepage": "",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -12,27 +21,19 @@
     "test:open": "concurrently \"npm run dev\" \"npx cypress open\"",
     "test:e2e": "concurrently \"npm run dev\" \"npx cypress run --spec cypress/e2e/**/*\""
   },
-  "main": "lib/e2e-tests.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dashify-web/dashify.git"
-  },
-  "bugs": {
-    "url": "https://github.com/dashify-web/dashify/issues"
-  },
-  "homepage": "https://github.com/dashify-web/dashify#readme",
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
     "concurrently": "^8.2.2",
     "cypress": "^13.14.1",
     "globals": "^15.9.0",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "vite": "^5.4.1"
   },
   "dependencies": {
-    "@dashify/core": "^0.0.0",
+    "@dashify/auth-routes": "^0.0.1",
+    "@dashify/core": "^0.0.1",
     "@dashify/providers": "^0.0.1",
-    "@tanstack/react-query": "^5.53.1",
+    "@tanstack/react-query": "^5.55.4",
     "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

@@ -1,7 +1,7 @@
 {
   "name": "@dashify/auth-routes",
-  "version": "0.0.0",
-  "description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
+  "version": "0.0.1",
+  "description": "auth-routes",
   "keywords": [
     "dashboard",
     "core",
@@ -22,9 +22,6 @@
     "dist",
     "package.json"
   ],
-  "publishConfig": {
-    "registry": "https://npm-bpartners-app-688605879718.d.codeartifact.eu-west-3.amazonaws.com/npm/bpartners-store/"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dashify-web/dashify.git"
@@ -36,10 +33,16 @@
     "url": "https://github.com/dashify-web/dashify/issues"
   },
   "homepage": "https://github.com/dashify-web/dashify#readme",
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.26.1",
+    "zustand": "^4.5.5"
+  },
   "peerDependencies": {
     "react": "^18.0.0",
-    "zustand": "^4.5.5",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^6.26.1"
+    "react-router-dom": "^6.26.1",
+    "zustand": "^4.5.5"
   }
 }

@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const auth-routes = require('auth-routes');
+const authRoutes = require('auth-routes');
 
 // TODO: DEMONSTRATE API
 ```

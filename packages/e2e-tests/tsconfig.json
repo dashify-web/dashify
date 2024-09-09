@@ -8,5 +8,8 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "declarationMap": false
+  }
 }
