@@ -44,7 +44,7 @@ describe('useDelete', () => {
       useDelete<Dummy>({
         ...mutationOptions,
         resource,
-        useMutatioOptions: {
+        useMutationOptions: {
           retry: 1,
         },
       })

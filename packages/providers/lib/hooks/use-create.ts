@@ -14,7 +14,7 @@ export type UseCreateArgsType<
   Error = any,
 > = Omit<CreateArgsType<T, Meta, Params>, 'payload'> &
   RequiredResourceName & {
-    useMutatioOptions?: Partial<UseMutationOptions<T, Error, T>>;
+    useMutationOptions?: Partial<UseMutationOptions<T, Error, T>>;
   };
 
 export const useCreate = <
@@ -24,7 +24,7 @@ export const useCreate = <
   Error = any,
 >({
   resource,
-  useMutatioOptions,
+  useMutationOptions = {},
   ...mutationProps
 }: UseCreateArgsType<T, Meta, Params, Error>): UseMutationResult<
   T,
@@ -32,12 +32,13 @@ export const useCreate = <
   T
 > => {
   const { create } = useProvider<T>({ resource });
+  const { mutationKey = [], ...restMutationOptions } = useMutationOptions;
 
   const response = useMutation<T, Error, T>({
     mutationFn: (payload: T) =>
       create<Meta, Params>({ payload, ...mutationProps }),
-    mutationKey: [resource],
-    ...useMutatioOptions,
+    mutationKey: [resource, ...mutationKey],
+    ...restMutationOptions,
   });
 
   return response;

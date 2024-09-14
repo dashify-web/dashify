@@ -44,7 +44,7 @@ describe('useEdit', () => {
       useEdit<Dummy>({
         ...mutationOptions,
         resource,
-        useMutatioOptions: {
+        useMutationOptions: {
           retry: 1,
         },
       })

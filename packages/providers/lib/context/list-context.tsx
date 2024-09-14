@@ -3,7 +3,6 @@ import React, {
   Dispatch,
   ReactNode,
   SetStateAction,
-  useEffect,
   useState,
 } from 'react';
 import { UseQueryResult } from '@tanstack/react-query';
@@ -50,22 +49,21 @@ export const ListContext = <
 >({
   children,
   resource,
-  useQueryOptions,
+  useQueryOptions = {},
   ...useGetListOptions
 }: ListContextProps<T, Meta, Params, Error>) => {
   const [queryOptions, setQueryOptions] =
     useState<ListControllerType<T, Meta, Params, Error>>(useGetListOptions);
+  const { queryKey = [], ...restQueryOptions } = useQueryOptions;
 
   const response = useGetList<T, Meta, Params, Error>({
     resource,
-    useQueryOptions,
+    useQueryOptions: {
+      queryKey: [queryOptions, queryKey],
+      ...restQueryOptions
+    },
     ...queryOptions,
   });
-
-  useEffect(() => {
-    //WARNING : refech or queryKey ?
-    response.refetch();
-  }, [JSON.stringify(queryOptions)]);
 
   return (
     <LIST_CONTEXT.Provider

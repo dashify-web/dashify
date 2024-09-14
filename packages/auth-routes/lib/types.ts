@@ -10,6 +10,8 @@ export type OnErrorType = (args: {
   navigate: (path: string) => void;
 }) => void;
 
+export type Dict = Record<string, any>;
+
 export type AuthProviderBase<
   UserCredentials = any,
   SigninData = any,

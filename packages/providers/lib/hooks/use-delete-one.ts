@@ -14,7 +14,7 @@ export type UseDeleteArgsType<
   Error = any,
 > = Omit<DeleteArgsType<T, Meta, Params>, 'payload'> &
   RequiredResourceName & {
-    useMutatioOptions?: Partial<UseMutationOptions<T, Error, T>>;
+    useMutationOptions?: Partial<UseMutationOptions<T, Error, T>>;
   };
 
 export const useDelete = <
@@ -24,7 +24,7 @@ export const useDelete = <
   Error = any,
 >({
   resource,
-  useMutatioOptions,
+  useMutationOptions = {},
   ...mutationProps
 }: UseDeleteArgsType<T, Meta, Params, Error>): UseMutationResult<
   T,
@@ -32,12 +32,13 @@ export const useDelete = <
   T
 > => {
   const { deleteOne } = useProvider<T>({ resource });
+  const { mutationKey = [], ...restMutationOptions } = useMutationOptions;
 
   const response = useMutation<T, Error, T>({
     mutationFn: (payload) =>
       deleteOne<Meta, Params>({ payload, ...mutationProps }),
-    mutationKey: [resource],
-    ...useMutatioOptions,
+    mutationKey: [resource, ...mutationKey],
+    ...restMutationOptions,
   });
 
   return response;

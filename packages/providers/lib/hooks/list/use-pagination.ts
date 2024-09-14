@@ -15,7 +15,7 @@ export const usePagination = () => {
         },
       }));
     },
-    [controller]
+    [controller, pagination?.pageSize, pagination?.page]
   );
 
   const setPage = useCallback(
@@ -40,7 +40,7 @@ export const usePagination = () => {
         page: (prev.pagination?.page ?? 0) + 1,
       },
     }));
-  }, [controller]);
+  }, [controller, pagination?.page, pagination?.pageSize]);
 
   const doPrevPage = useCallback(() => {
     controller((prev) => ({
@@ -50,7 +50,7 @@ export const usePagination = () => {
         page: (prev.pagination?.page ?? 2) - 1,
       },
     }));
-  }, [controller]);
+  }, [controller, pagination?.page, pagination?.pageSize]);
 
   return {
     pagination,

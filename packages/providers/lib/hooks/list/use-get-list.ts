@@ -28,15 +28,16 @@ export const useGetList = <
   Error = any,
 >({
   resource,
-  useQueryOptions,
+  useQueryOptions = {},
   ...queryProps
 }: UseGetListArgsType<T, Meta, Params, Error>): UseQueryResult<T[], Error> => {
   const { getList } = useProvider<T>({ resource });
+  const { queryKey = [], ...restQueryOptions } = useQueryOptions;
 
   const response = useQuery<T[], Error>({
     queryFn: () => getList<Meta, Params>(queryProps),
-    queryKey: [resource],
-    ...useQueryOptions,
+    queryKey: [resource, ...queryKey],
+    ...restQueryOptions,
   });
 
   return response;

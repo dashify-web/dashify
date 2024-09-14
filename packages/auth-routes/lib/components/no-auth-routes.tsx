@@ -2,7 +2,9 @@ import React, { FC, ReactNode } from 'react';
 import { RequiredAuthValueContext } from '../context';
 import { Routes } from './routes';
 
-export const NoAuthRoutes: FC<{ children: ReactNode }> = ({ children }) => {
+export type NoAuthRoutesProps = { children: ReactNode };
+
+export const NoAuthRoutes: FC<NoAuthRoutesProps> = ({ children }) => {
   return (
     <RequiredAuthValueContext requireAuth={false}>
       <Routes>{children}</Routes>

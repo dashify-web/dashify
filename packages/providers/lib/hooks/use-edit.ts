@@ -14,7 +14,7 @@ export type UseEditArgsType<
   Error = any,
 > = Omit<EditArgsType<T, Meta, Params>, 'payload'> &
   RequiredResourceName & {
-    useMutatioOptions?: Partial<UseMutationOptions<T, Error, T>>;
+    useMutationOptions?: Partial<UseMutationOptions<T, Error, T>>;
   };
 
 export const useEdit = <
@@ -24,16 +24,17 @@ export const useEdit = <
   Error = any,
 >({
   resource,
-  useMutatioOptions,
+  useMutationOptions = {},
   ...mutationProps
 }: UseEditArgsType<T, Meta, Params, Error>): UseMutationResult<T, Error, T> => {
   const { edit } = useProvider<T>({ resource });
+  const { mutationKey = [], ...restMutationOptions } = useMutationOptions;
 
   const response = useMutation<T, Error, T>({
     mutationFn: (payload: T) =>
       edit<Meta, Params>({ payload, ...mutationProps }),
-    mutationKey: [resource],
-    ...useMutatioOptions,
+    mutationKey: [resource, ...mutationKey],
+    ...restMutationOptions,
   });
 
   return response;

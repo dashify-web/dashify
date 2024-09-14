@@ -11,7 +11,7 @@ import {
   useRequiredRole,
 } from '../hooks';
 
-const ElementWrapper: FC<{ children: ReactNode }> = ({ children }) => {
+const RouteWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   const { requireAuth, requireRoles } = useRequiredAuthValueContext();
   useRequiredAuthentication({ requireAuth });
   useRequiredRole({ requiredRoles: requireRoles });
@@ -19,14 +19,16 @@ const ElementWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   return <>{children}</>;
 };
 
+export type RoutesProps = _RoutesProps;
+
 export const Routes: FC<_RoutesProps> = ({ children, ..._routesProps }) => {
   return (
     <_Routes {..._routesProps}>
       <_Route
         element={
-          <ElementWrapper>
+          <RouteWrapper>
             <Outlet />
-          </ElementWrapper>
+          </RouteWrapper>
         }
       >
         {children}
