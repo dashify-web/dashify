@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@dashify/core",
   "version": "0.0.1",
   "description": "core",

@@ -101,7 +101,14 @@ const AuthAppBase: FC<Required<AuthAppBaseProps>> = ({
           onError({ errorType: 'UNKNOWN_ERROR', isRequired: false, navigate });
         });
     },
-    [authProvider, onError, navigate, setRole, setAuthenticationStatus, setUserCredentials]
+    [
+      authProvider,
+      onError,
+      navigate,
+      setRole,
+      setAuthenticationStatus,
+      setUserCredentials,
+    ]
   );
 
   useEffect(() => {

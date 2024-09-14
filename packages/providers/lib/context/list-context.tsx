@@ -60,7 +60,7 @@ export const ListContext = <
     resource,
     useQueryOptions: {
       queryKey: [queryOptions, queryKey],
-      ...restQueryOptions
+      ...restQueryOptions,
     },
     ...queryOptions,
   });

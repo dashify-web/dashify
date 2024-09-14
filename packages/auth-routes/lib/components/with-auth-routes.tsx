@@ -5,9 +5,12 @@ import { Routes } from './routes';
 export type WithAuthRoutesProps = {
   children: ReactNode;
   requireRoles?: any;
-}
+};
 
-export const WithAuthRoutes: FC<WithAuthRoutesProps> = ({ children, requireRoles }) => {
+export const WithAuthRoutes: FC<WithAuthRoutesProps> = ({
+  children,
+  requireRoles,
+}) => {
   return (
     <RequiredAuthValueContext requireAuth={true} requireRoles={requireRoles}>
       <Routes>{children}</Routes>

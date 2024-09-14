@@ -1,6 +1,7 @@
 {
+  "private": false,
   "name": "@dashify/providers",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "providers",
   "keywords": [
     "dashboard",
@@ -34,7 +35,7 @@
   "bugs": {
     "url": "https://github.com/dashify-web/dashify/issues"
   },
-  "gitHead": "e3d5a44b04f91b5db53e11ae7be9ca7f9ffbe04e",
+  "gitHead": "94655820e058499d75ab5de997b9621b1a76ab60",
   "nx": {},
   "dependencies": {
     "@tanstack/react-query": "^5.12.1",
