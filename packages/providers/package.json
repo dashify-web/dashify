@@ -35,7 +35,7 @@
   "bugs": {
     "url": "https://github.com/dashify-web/dashify/issues"
   },
-  "gitHead": "94655820e058499d75ab5de997b9621b1a76ab60",
+  "gitHead": "3f6e14d24b6646f9d4ab16c6272da0ce542091fd",
   "nx": {},
   "dependencies": {
     "@tanstack/react-query": "^5.12.1",

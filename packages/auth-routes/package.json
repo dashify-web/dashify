@@ -1,5 +1,5 @@
 {
-  "private": false,
+  "private": true,
   "name": "@dashify/auth-routes",
   "version": "0.0.1",
   "description": "auth-routes",
@@ -46,5 +46,5 @@
     "react-router-dom": "^6.26.1",
     "zustand": "^4.5.5"
   },
-  "gitHead": "94655820e058499d75ab5de997b9621b1a76ab60"
+  "gitHead": "3f6e14d24b6646f9d4ab16c6272da0ce542091fd"
 }
