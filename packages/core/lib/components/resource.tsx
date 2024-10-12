@@ -4,7 +4,7 @@ import {
   Routes,
   RequiredAuthValueContext,
   RequiredAuthValueContextType,
-} from '@dashify/auth-routes';
+} from '@dashify/auth';
 
 export type ResourceProps = Partial<RequiredAuthValueContextType> & {
   name: string;

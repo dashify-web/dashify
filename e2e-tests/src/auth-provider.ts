@@ -1,4 +1,4 @@
-import { AuthProvider } from '@dashify/auth-routes';
+import { AuthProvider } from '@dashify/auth';
 import { UserDetails, SignupData, SigninData, Role } from './types';
 import { ADMIN_MOCKS, CUSTOMER_MOCKS } from './users';
 import axios, { AxiosError } from 'axios';

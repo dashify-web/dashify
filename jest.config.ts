@@ -25,6 +25,6 @@ const config: Config.InitialOptions = {
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  projects: projects('providers', 'auth-routes', 'core'),
+  projects: projects('provider', 'auth', 'core'),
 };
 export default config;

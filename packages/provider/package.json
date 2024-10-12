@@ -1,15 +1,17 @@
 {
   "private": true,
-  "name": "@dashify/auth-routes",
-  "version": "0.0.1",
-  "description": "auth-routes",
+  "name": "@dashify/provider",
+  "version": "0.0.0",
+  "description": "provider",
   "keywords": [
     "dashboard",
-    "core",
     "dashify",
-    "admin"
+    "react",
+    "provider",
+    "query"
   ],
   "author": "\"RickaPrincy\" <\"rckprincy@gmail.com\">",
+  "homepage": "https://github.com/dashify-web/dashify#readme",
   "license": "MIT",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -33,18 +35,17 @@
   "bugs": {
     "url": "https://github.com/dashify-web/dashify/issues"
   },
-  "homepage": "https://github.com/dashify-web/dashify#readme",
   "dependencies": {
+    "@tanstack/react-query": "^5.12.1",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.26.1",
-    "zustand": "^4.5.5"
+    "react-dom": "^18.0.0"
   },
   "peerDependencies": {
+    "@tanstack/react-query": "^5.12.1",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.26.1",
-    "zustand": "^4.5.5"
+    "react-dom": "^18.0.0"
   },
-  "gitHead": "3f6e14d24b6646f9d4ab16c6272da0ce542091fd"
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
 }

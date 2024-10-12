@@ -1,4 +1,4 @@
-import { ListContext, useListContext, usePagination } from '@dashify/providers';
+import { ListContext, useListContext, usePagination } from '@dashify/provider';
 import { Customer } from './types';
 
 export const CustomerList = () => {

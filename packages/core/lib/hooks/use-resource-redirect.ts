@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { RequiredResourceName, ResourceType } from '@dashify/providers';
+import { RequiredResourceName, ResourceType } from '@dashify/provider';
 
 export type UseResourceRedirectArgs =
   | (RequiredResourceName & {

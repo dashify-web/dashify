@@ -1,0 +1,1 @@
+{"root":["./src/auth-provider.ts","./src/customer-list.tsx","./src/dashboard.tsx","./src/main.tsx","./src/providers.ts","./src/types.ts","./src/users.ts","./src/vite-env.d.ts","./cypress/e2e/auth.routes.cy.ts","./cypress/e2e/list.cy.ts","./cypress/support/commands.ts","./cypress/support/e2e.ts","./cypress/support/global.d.ts"],"version":"5.6.3"}

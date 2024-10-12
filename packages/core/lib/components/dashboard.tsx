@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
-import { AuthApp, AuthAppProps } from '@dashify/auth-routes';
-import { ProviderContext, ProviderContextProps } from '@dashify/providers';
+import { AuthApp, AuthAppProps } from '@dashify/auth';
+import { ProviderContext, ProviderContextProps } from '@dashify/provider';
 
 export type DashboardProps = AuthAppProps &
   ProviderContextProps & {

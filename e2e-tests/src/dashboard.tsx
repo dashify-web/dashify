@@ -6,7 +6,7 @@ import {
   WithAuthRoutes,
   useRequiredAuthentication,
   useRequiredRole,
-} from '@dashify/auth-routes';
+} from '@dashify/auth';
 import { Role } from './types';
 import { CustomerList } from './customer-list';
 import { authProvider } from './auth-provider';

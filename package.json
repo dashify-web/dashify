@@ -1,5 +1,6 @@
 {
-  "name": "root",
+  "name": "dashium-tools",
+  "private": false,
   "workspaces": [
     "packages/*",
     "e2e-tests"
@@ -9,12 +10,10 @@
     "lint": "eslint \"./packages/**/lib/**/*.{js,ts,tsx}\" \"./packages/**/__tests__/**/*.{spec.ts,spec.tsx}\" --max-warnings 0",
     "format": "prettier --config ./.prettierrc --write .",
     "format:check": "prettier --config ./.prettierrc --check .",
-    "test": "jest",
-    "test:utils": "jest --selectProjects=utils",
-    "test:providers": "jest --selectProjects=providers",
-    "test:core": "jest --selectProjects=core"
+    "test": "jest"
   },
   "devDependencies": {
+    "@dashify/chakra": "^0.0.0",
     "@swc/core": "^1.7.18",
     "@tanstack/react-query": "^5.52.1",
     "@testing-library/jest-dom": "^6.5.0",
@@ -44,7 +43,7 @@
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
     "tsup": "^8.2.4",
-    "typescript": "^5.5.4",
+    "typescript": "^5.6.3",
     "vite": "^5.4.1",
     "zustand": "^4.5.5"
   }

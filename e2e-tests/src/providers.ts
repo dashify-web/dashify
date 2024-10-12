@@ -1,4 +1,4 @@
-import { Provider } from '@dashify/providers';
+import { Provider } from '@dashify/provider';
 import { Admin, Customer } from './types';
 import { ADMIN_MOCKS, CUSTOMER_MOCKS } from './users';
 

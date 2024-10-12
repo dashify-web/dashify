@@ -1,43 +1,40 @@
 {
-  "name": "@dashify/e2e-tests",
+  "name": "e2e-tests",
   "private": true,
-  "version": "0.0.1",
-  "description": "> TODO: description",
-  "author": "\"RickaPrincy\" <\"rckprincy@gmail.com\">",
-  "homepage": "",
-  "license": "MIT",
-  "main": "dist/index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
+  "type": "module",
+  "version": "0.0.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "lint": "eslint .",
     "preview": "vite preview",
     "test:open": "concurrently \"npm run dev\" \"npx cypress open\"",
     "test:e2e": "concurrently \"npm run dev\" \"npx cypress run --spec cypress/e2e/**/*\""
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1",
-    "concurrently": "^8.2.2",
-    "cypress": "^13.14.1",
-    "globals": "^15.9.0",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.1"
+    "@eslint/js": "^9.12.0",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.2",
+    "eslint": "^9.12.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.12",
+    "globals": "^15.11.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.8.1",
+    "vite": "^5.4.8"
   },
   "dependencies": {
-    "@dashify/auth-routes": "^0.0.1",
-    "@dashify/core": "^0.0.1",
-    "@dashify/providers": "^0.0.1",
-    "@tanstack/react-query": "^5.55.4",
+    "@dashify/auth": "^0.0.0",
+    "@dashify/core": "^0.0.0",
+    "@dashify/provider": "^0.0.0",
+    "@tanstack/react-query": "^5.59.11",
     "axios": "^1.7.7",
+    "concurrently": "^9.0.1",
+    "cypress": "^13.15.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.1",
+    "react-router-dom": "^6.27.0",
     "zustand": "^4.5.5"
   }
 }
