@@ -4,7 +4,7 @@ import { RequiredResourceName, ResourceType } from '@dashify/provider';
 export type UseResourceRedirectArgs =
   | (RequiredResourceName & {
       view: 'list' | 'create';
-      id: never;
+      id?: never;
     })
   | (ResourceType &
       RequiredResourceName & {
