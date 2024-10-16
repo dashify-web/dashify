@@ -4,8 +4,17 @@ import {
   ButtonProps as ChakraButtonProps,
 } from '@chakra-ui/react';
 
-export type ButtonProps = ChakraButtonProps;
+export type BaseButtonProps = ChakraButtonProps;
 
-export const Button: FC<ButtonProps> = ({ sx, ...chakraButtonProps }) => {
-  return <ChakraButton variant="solid" {...chakraButtonProps} />;
+export const BaseButton: FC<BaseButtonProps> = ({
+  sx,
+  ...chakraButtonProps
+}) => {
+  return (
+    <ChakraButton
+      variant="solid"
+      sx={{ ...sx /*TODO, add custom xs*/ }}
+      {...chakraButtonProps}
+    />
+  );
 };

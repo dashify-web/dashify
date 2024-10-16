@@ -1,19 +1,22 @@
 import React, { useCallback } from 'react';
 import { BaseButtonProps } from './base-button-type';
 import { HocComponentType } from '../../types';
-import { useResourceRedirect, UseResourceRedirectArgs } from '../../../hooks';
+import { UseResourceRedirectArgs, useResourceRedirect } from '../../../hooks';
 
-export type ResourceLinkButttonProps<OtherButtonProps> = OtherButtonProps &
-  UseResourceRedirectArgs &
-  BaseButtonProps;
-export type HocResourceLinkButtonComponentType<OtherButtonProps> =
-  HocComponentType<
-    ResourceLinkButttonProps<OtherButtonProps>,
-    UseResourceRedirectArgs
-  >;
+export type ResourceLinkButttonProps<ComponentProps extends BaseButtonProps> =
+  ComponentProps & UseResourceRedirectArgs;
 
-export const withResourceLinkButtonFeatures = <OtherButtonProps = {},>(
-  ResourceLinkButtton: HocResourceLinkButtonComponentType<OtherButtonProps>
+export type HocResourceLinkButtonComponentType<
+  ComponentProps extends BaseButtonProps,
+> = HocComponentType<
+  ResourceLinkButttonProps<ComponentProps>,
+  UseResourceRedirectArgs
+>;
+
+export const withResourceLinkButtonFeatures = <
+  ComponentProps extends BaseButtonProps,
+>(
+  ResourceLinkButtton: HocResourceLinkButtonComponentType<ComponentProps>
 ) => {
   const redirect = useResourceRedirect();
 
@@ -22,20 +25,20 @@ export const withResourceLinkButtonFeatures = <OtherButtonProps = {},>(
     id,
     resource,
     onClick,
-    ...buttonProps
-  }: ResourceLinkButttonProps<OtherButtonProps>) => {
+    ...componentProps
+  }: ResourceLinkButttonProps<ComponentProps>) => {
     const redirectOnClick = useCallback(() => {
       redirect({
-        resource,
         id,
         view,
+        resource,
       } as UseResourceRedirectArgs);
     }, [resource, view, id]);
 
     return (
       <ResourceLinkButtton
         onClick={onClick || redirectOnClick}
-        {...(buttonProps as ResourceLinkButttonProps<OtherButtonProps>)}
+        {...(componentProps as ResourceLinkButttonProps<ComponentProps>)}
       />
     );
   };
