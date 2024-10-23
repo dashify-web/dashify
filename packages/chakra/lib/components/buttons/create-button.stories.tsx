@@ -20,12 +20,12 @@ export default meta;
 
 type Story = StoryObj<typeof CreateButton>;
 
-export const Basic: Story = {};
+export const Default: Story = {};
 
-export const CustomIcon: Story = {
+export const Custom: Story = {
   args: {
     leftIcon: <Icon as={MdExtension} />,
     children: 'New',
-    variant: 'ghost',
+    variant: 'outline',
   },
 };

@@ -8,8 +8,9 @@ import {
 import { BaseButton, BaseButtonProps } from './base-button';
 
 export type CreateButtonProps = CoreCreateButtonProps<BaseButtonProps>;
-const CreateButtonIntance =
-  withCreateButtonFeatures<BaseButtonProps>(BaseButton);
+
+const CreateButtonInstance =
+  withCreateButtonFeatures<CreateButtonProps>(BaseButton);
 
 export const CreateButton: FC<CreateButtonProps> = ({
   children = 'Create',
@@ -17,8 +18,8 @@ export const CreateButton: FC<CreateButtonProps> = ({
   ...baseButtonProps
 }) => {
   return (
-    <CreateButtonIntance leftIcon={leftIcon} {...baseButtonProps}>
+    <CreateButtonInstance leftIcon={leftIcon} {...baseButtonProps}>
       {children}
-    </CreateButtonIntance>
+    </CreateButtonInstance>
   );
 };

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Icon } from '@chakra-ui/react';
-import { MdAdd as EditIcon } from 'react-icons/md';
+import { MdEdit as EditIcon } from 'react-icons/md';
 import {
   EditButtonProps as CoreEditButtonProps,
   withEditButtonFeatures,
@@ -8,6 +8,7 @@ import {
 import { BaseButton, BaseButtonProps } from './base-button';
 
 export type EditButtonProps = CoreEditButtonProps<BaseButtonProps>;
+
 const EditButtonIntance = withEditButtonFeatures<BaseButtonProps>(BaseButton);
 
 export const EditButton: FC<EditButtonProps> = ({
@@ -15,5 +16,9 @@ export const EditButton: FC<EditButtonProps> = ({
   leftIcon = <Icon as={EditIcon} />,
   ...baseButtonProps
 }) => {
-  return <EditButtonIntance {...baseButtonProps}>{children}</EditButtonIntance>;
+  return (
+    <EditButtonIntance leftIcon={leftIcon} {...baseButtonProps}>
+      {children}
+    </EditButtonIntance>
+  );
 };

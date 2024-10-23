@@ -6,15 +6,6 @@ import {
 
 export type BaseButtonProps = ChakraButtonProps;
 
-export const BaseButton: FC<BaseButtonProps> = ({
-  sx,
-  ...chakraButtonProps
-}) => {
-  return (
-    <ChakraButton
-      variant="solid"
-      sx={{ ...sx /*TODO, add custom xs*/ }}
-      {...chakraButtonProps}
-    />
-  );
+export const BaseButton: FC<BaseButtonProps> = (chakraButtonProps) => {
+  return <ChakraButton {...chakraButtonProps} />;
 };

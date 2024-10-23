@@ -20,12 +20,12 @@ export default meta;
 
 type Story = StoryObj<typeof EditButton>;
 
-export const Basic: Story = {};
+export const Default: Story = {};
 
 export const Custom: Story = {
   args: {
     leftIcon: <Icon as={MdEditNote} />,
     children: 'Modify',
-    variant: 'ghost',
+    variant: 'outline',
   },
 };

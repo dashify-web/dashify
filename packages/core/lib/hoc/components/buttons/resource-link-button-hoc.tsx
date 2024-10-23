@@ -18,8 +18,6 @@ export const withResourceLinkButtonFeatures = <
 >(
   ResourceLinkButtton: HocResourceLinkButtonComponentType<ComponentProps>
 ) => {
-  const redirect = useResourceRedirect();
-
   return ({
     view,
     id,
@@ -27,6 +25,7 @@ export const withResourceLinkButtonFeatures = <
     onClick,
     ...componentProps
   }: ResourceLinkButttonProps<ComponentProps>) => {
+    const redirect = useResourceRedirect();
     const redirectOnClick = useCallback(() => {
       redirect({
         id,
