@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   ResourceLinkButttonProps as CoreResourceLinkButttonProps,
   withResourceLinkButtonFeatures,

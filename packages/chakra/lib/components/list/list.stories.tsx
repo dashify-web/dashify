@@ -1,19 +1,17 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Icon } from '@chakra-ui/react';
-import { MdExtension } from 'react-icons/md';
-import { CreateButton } from './create-button';
+import { List } from './list';
 import {
   BrowserRouterProvider,
   ChakraProvider,
 } from '../../utils/stories-provider';
 
-const meta: Meta<typeof CreateButton> = {
-  component: CreateButton,
+const meta: Meta<typeof List> = {
+  component: List,
   render: (props) => (
     <ChakraProvider>
       <BrowserRouterProvider>
-        <CreateButton {...props} />
+        <List {...props} />
       </BrowserRouterProvider>
     </ChakraProvider>
   ),
@@ -21,14 +19,10 @@ const meta: Meta<typeof CreateButton> = {
 
 export default meta;
 
-type Story = StoryObj<typeof CreateButton>;
+type Story = StoryObj<typeof List>;
 
 export const Default: Story = {};
 
 export const Custom: Story = {
-  args: {
-    leftIcon: <Icon as={MdExtension} />,
-    children: 'New',
-    variant: 'outline',
-  },
+  args: {},
 };

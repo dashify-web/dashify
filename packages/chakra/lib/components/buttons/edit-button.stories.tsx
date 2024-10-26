@@ -1,9 +1,12 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { MdEditNote } from 'react-icons/md';
-import { ChakraProvider, Icon } from '@chakra-ui/react';
+import { Icon } from '@chakra-ui/react';
 import { EditButton } from './edit-button';
-import { BrowserRouterProvider } from '../../utils/stories-provider';
+import {
+  ChakraProvider,
+  BrowserRouterProvider,
+} from '../../utils/stories-provider';
 
 const meta: Meta<typeof EditButton> = {
   component: EditButton,

@@ -42,7 +42,7 @@
     "zustand": "^5.0.0-rc.2"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.10.2",
+    "@chakra-ui/react": "^3.0.1",
     "@dashify/auth": "^0.0.0",
     "@dashify/core": "^0.0.0",
     "@dashify/provider": "^0.0.0",
