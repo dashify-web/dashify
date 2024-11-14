@@ -5,6 +5,7 @@ import {
   RequiredAuthValueContext,
   RequiredAuthValueContextType,
 } from '@dashify/auth';
+import { ResourceNameContext } from '../context';
 
 export type ResourceProps = Partial<RequiredAuthValueContextType> & {
   name: string;
@@ -24,16 +25,18 @@ export const Resource: FC<ResourceProps> = ({
   requireAuth,
 }) => {
   return (
-    <RequiredAuthValueContext
-      requireRoles={requireRoles}
-      requireAuth={requireAuth}
-    >
-      <Routes>
-        {list && <Route path={`/${name}`} element={list} />}
-        {create && <Route path={`/${name}/create`} element={create} />}
-        {show && <Route path={`/${name}/:id`} element={show} />}
-        {edit && <Route path={`/${name}/:id/edit`} element={edit} />}
-      </Routes>
-    </RequiredAuthValueContext>
+    <ResourceNameContext resource={name}>
+      <RequiredAuthValueContext
+        requireRoles={requireRoles}
+        requireAuth={requireAuth}
+      >
+        <Routes>
+          {list && <Route path={`/${name}`} element={list} />}
+          {create && <Route path={`/${name}/create`} element={create} />}
+          {show && <Route path={`/${name}/:id`} element={show} />}
+          {edit && <Route path={`/${name}/:id/edit`} element={edit} />}
+        </Routes>
+      </RequiredAuthValueContext>
+    </ResourceNameContext>
   );
 };

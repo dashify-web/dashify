@@ -1,19 +1,23 @@
 import { useNavigate } from 'react-router-dom';
-import { RequiredResourceName, ResourceType } from '@dashify/provider';
+import { ResourceType } from '@dashify/provider';
+import { useResourceName } from './use-resource-name';
 
 export type UseResourceRedirectArgs =
-  | (RequiredResourceName & {
+  | {
+      resource?: string;
       view: 'list' | 'create';
-      id: never;
-    })
-  | (ResourceType &
-      RequiredResourceName & {
-        view: 'show' | 'edit';
-      });
+      id?: never;
+    }
+  | (ResourceType & {
+      resource?: string;
+      view: 'show' | 'edit';
+    });
 
 export const useResourceRedirect = () => {
   const navigate = useNavigate();
-  return ({ resource, view, id }: UseResourceRedirectArgs) => {
+  const resourceName = useResourceName();
+
+  return ({ resource = resourceName, view, id }: UseResourceRedirectArgs) => {
     const basePath = `/${resource}`;
     const prefixPath =
       view !== 'list' && view !== 'create' ? `/${id}/${view}` : '';

@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { forwardRef, ReactNode, RefAttributes } from 'react';
 import {
-  Button as ChakraButton,
   ButtonProps as ChakraButtonProps,
-} from '@chakra-ui/react';
+  Button as ChakraButton,
+} from '../../chakra/snippets/button';
 
-export type ButtonProps = ChakraButtonProps;
+export type BaseButtonProps = ChakraButtonProps & {
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+} & RefAttributes<HTMLButtonElement>;
 
-export const Button = () => {
-  return <ChakraButton>Hello</ChakraButton>;
-};
+export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
+  (props, ref) => {
+    const { children, leftIcon, rightIcon, ...chakraButtonProps } = props;
+    return (
+      <ChakraButton ref={ref} {...chakraButtonProps}>
+        {leftIcon && leftIcon}
+        {children}
+        {rightIcon && rightIcon}
+      </ChakraButton>
+    );
+  }
+);
