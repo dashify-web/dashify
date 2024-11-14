@@ -1,29 +1,40 @@
-import React from 'react';
+import React, { ComponentType, forwardRef } from 'react';
 import { BaseButtonProps } from './base-button-type';
 import {
-  HocResourceLinkButtonComponentType,
-  ResourceLinkButttonProps,
+  ResourceLinkButtonProps,
   withResourceLinkButtonFeatures,
 } from './resource-link-button-hoc';
+import { AnyRefElement } from '../../types';
 
-export type CreateButtonProps<ComponentProps extends BaseButtonProps> = Omit<
-  ResourceLinkButttonProps<ComponentProps>,
+export type CreateButtonProps<
+  RefElementType extends AnyRefElement,
+  ComponentProps extends BaseButtonProps<RefElementType>,
+> = Omit<
+  ResourceLinkButtonProps<RefElementType, ComponentProps>,
   'id' | 'view'
 >;
 
-export type HocCreateButtonComponentType<
-  ComponentProps extends BaseButtonProps,
-> = HocResourceLinkButtonComponentType<ComponentProps>;
-
 export const withCreateButtonFeatures = <
-  ComponentProps extends BaseButtonProps,
+  RefElementType extends AnyRefElement,
+  ComponentProps extends BaseButtonProps<RefElementType>,
 >(
-  CreateButton: HocCreateButtonComponentType<ComponentProps>
+  CreateButton: ComponentType<ComponentProps>
 ) => {
-  const ResourceLinkButton =
-    withResourceLinkButtonFeatures<ComponentProps>(CreateButton);
+  const ResourceLinkButton = withResourceLinkButtonFeatures<
+    RefElementType,
+    ComponentProps
+  >(CreateButton);
 
-  return (props: CreateButtonProps<ComponentProps>) => {
-    return <ResourceLinkButton view="create" {...props} />;
-  };
+  return forwardRef<
+    RefElementType,
+    CreateButtonProps<RefElementType, ComponentProps>
+  >((props, ref) => {
+    return (
+      <ResourceLinkButton
+        ref={ref}
+        view="create"
+        {...(props as ComponentProps)}
+      />
+    );
+  });
 };

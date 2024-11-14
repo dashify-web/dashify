@@ -1,44 +1,39 @@
-import React, { useCallback } from 'react';
+import React, { ComponentType, forwardRef, useCallback } from 'react';
 import { BaseButtonProps } from './base-button-type';
-import { HocComponentType } from '../../types';
 import { UseResourceRedirectArgs, useResourceRedirect } from '../../../hooks';
+import { AnyRefElement } from '../../types';
 
-export type ResourceLinkButttonProps<ComponentProps extends BaseButtonProps> =
-  ComponentProps & UseResourceRedirectArgs;
-
-export type HocResourceLinkButtonComponentType<
-  ComponentProps extends BaseButtonProps,
-> = HocComponentType<
-  ResourceLinkButttonProps<ComponentProps>,
-  UseResourceRedirectArgs
->;
+export type ResourceLinkButtonProps<
+  RefElementType extends AnyRefElement,
+  ComponentProps extends BaseButtonProps<RefElementType>,
+> = ComponentProps & UseResourceRedirectArgs;
 
 export const withResourceLinkButtonFeatures = <
-  ComponentProps extends BaseButtonProps,
+  RefElementType extends AnyRefElement,
+  ComponentProps extends BaseButtonProps<RefElementType>,
 >(
-  ResourceLinkButtton: HocResourceLinkButtonComponentType<ComponentProps>
+  ResourceLinkButton: ComponentType<ComponentProps>
 ) => {
-  return ({
-    view,
-    id,
-    resource,
-    onClick,
-    ...componentProps
-  }: ResourceLinkButttonProps<ComponentProps>) => {
+  return forwardRef<
+    RefElementType,
+    ResourceLinkButtonProps<RefElementType, ComponentProps>
+  >((props, ref) => {
+    const { id, view, resource, onClick, ...componentProps } = props;
     const redirect = useResourceRedirect();
     const redirectOnClick = useCallback(() => {
       redirect({
-        id,
-        view,
-        resource,
+        id: id,
+        view: view,
+        resource: resource,
       } as UseResourceRedirectArgs);
     }, [resource, view, id]);
 
     return (
-      <ResourceLinkButtton
+      <ResourceLinkButton
+        ref={ref}
         onClick={onClick || redirectOnClick}
-        {...(componentProps as ResourceLinkButttonProps<ComponentProps>)}
+        {...(componentProps as unknown as ComponentProps)} //FIXME: fix type
       />
     );
-  };
+  });
 };

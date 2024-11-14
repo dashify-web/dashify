@@ -1,26 +1,45 @@
-import React from 'react';
+import React, { ComponentType, forwardRef } from 'react';
 import { BaseButtonProps } from './base-button-type';
 import {
-  HocResourceLinkButtonComponentType,
-  ResourceLinkButttonProps,
+  ResourceLinkButtonProps,
   withResourceLinkButtonFeatures,
 } from './resource-link-button-hoc';
+import { AnyRefElement } from '../../types';
 
-export type EditButtonProps<ComponentProps extends BaseButtonProps> = Omit<
-  ResourceLinkButttonProps<ComponentProps>,
-  'view'
->;
+export type EditButtonProps<
+  RefElementType extends AnyRefElement,
+  ComponentProps extends BaseButtonProps<RefElementType>,
+> = Omit<
+  ResourceLinkButtonProps<RefElementType, ComponentProps>,
+  'view' | 'id'
+> & { id: string };
 
-export type HocEditButtonComponentType<ComponentProps extends BaseButtonProps> =
-  HocResourceLinkButtonComponentType<ComponentProps>;
-
-export const withEditButtonFeatures = <ComponentProps extends BaseButtonProps>(
-  EditButton: HocEditButtonComponentType<ComponentProps>
+export const withEditButtonFeatures = <
+  RefElementType extends AnyRefElement,
+  ComponentProps extends BaseButtonProps<RefElementType>,
+>(
+  EditButton: ComponentType<ComponentProps>
 ) => {
-  const ResourceLinkButton =
-    withResourceLinkButtonFeatures<ComponentProps>(EditButton);
+  const ResourceLinkButton = withResourceLinkButtonFeatures<
+    RefElementType,
+    ComponentProps
+  >(EditButton);
 
-  return ({ id, ...props }: EditButtonProps<ComponentProps>) => {
-    return <ResourceLinkButton view="edit" id={id!} {...props} />;
-  };
+  return forwardRef<
+    RefElementType,
+    EditButtonProps<RefElementType, ComponentProps>
+  >((props, ref) => {
+    const { id, ...resourceLinkProps } = props as EditButtonProps<
+      RefElementType,
+      ComponentProps
+    >; //FIXME: fix type
+    return (
+      <ResourceLinkButton
+        ref={ref}
+        view="edit"
+        id={id!}
+        {...resourceLinkProps}
+      />
+    );
+  });
 };

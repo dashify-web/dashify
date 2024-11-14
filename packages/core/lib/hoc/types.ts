@@ -1,4 +1,3 @@
-import { ComponentType } from 'react';
-export type HocComponentType<ComponentProps, AddedProps> = ComponentType<
-  Omit<ComponentProps, keyof AddedProps>
->;
+import { ElementRef } from 'react';
+
+export type AnyRefElement = ElementRef<any>;

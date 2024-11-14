@@ -1,61 +1,63 @@
-import React, { ReactNode } from 'react';
-import {
-  ListContext,
-  Pagination,
-  ResourceType,
-  UseGetListArgsType,
-} from '@dashify/provider';
-import { HocComponentType } from '../../types';
+import React, {
+  ComponentType,
+  forwardRef,
+  ReactNode,
+  RefAttributes,
+} from 'react';
+import { ListContext, Pagination, UseGetListArgsType } from '@dashify/provider';
 import { useResourceName } from '../../../hooks';
 import { ResourceNameContext } from '../../../context';
+import { AnyRefElement } from '../../types';
 
-type FeatureProps = {
+type FeatureProps<RefElementType extends AnyRefElement> = {
   defaultFilters?: any;
   defaultPagination?: Pagination;
   resource?: string;
   children?: ReactNode;
-} & Omit<UseGetListArgsType, 'pagination' | 'resource' | 'params'>;
+} & Omit<UseGetListArgsType, 'pagination' | 'resource' | 'params'> &
+  RefAttributes<RefElementType>;
 
-export type ListProps<ComponentProps> = ComponentProps & FeatureProps;
+export type ListProps<
+  RefElementType extends AnyRefElement,
+  ComponentProps,
+> = ComponentProps & FeatureProps<RefElementType>;
 
-export type HocListComponentType<ComponentProps> = HocComponentType<
-  ListProps<ComponentProps>,
-  FeatureProps
->;
-
-export const withListFeatures = <ComponentProps,>(
-  List: HocListComponentType<ComponentProps>
+export const withListFeatures = <
+  RefElementType extends AnyRefElement,
+  ComponentProps,
+>(
+  List: ComponentType<ComponentProps>
 ) => {
-  return <
-    Resource extends ResourceType = any,
-    Meta = any,
-    Params = any,
-    Error = any,
-  >({
-    resource,
-    defaultPagination,
-    defaultFilters,
-    useQueryOptions,
-    sorts,
-    meta,
-    children,
-    ...componentProps
-  }: ListProps<ComponentProps>) => {
-    const resourceName = useResourceName();
+  return forwardRef<RefElementType, ListProps<RefElementType, ComponentProps>>(
+    (props, ref) => {
+      const {
+        resource,
+        defaultPagination,
+        defaultFilters,
+        useQueryOptions,
+        sorts,
+        meta,
+        children,
+        ...componentProps
+      } = props;
+      const resourceName = useResourceName();
 
-    return (
-      <ResourceNameContext resource={resource ?? resourceName}>
-        <ListContext<Resource, Meta, Params, Error>
-          sorts={sorts}
-          params={defaultFilters}
-          pagination={defaultPagination}
-          resource={resource ?? resourceName}
-          useQueryOptions={useQueryOptions}
-          meta={meta}
-        >
-          <List {...componentProps}>{children}</List>
-        </ListContext>
-      </ResourceNameContext>
-    );
-  };
+      return (
+        <ResourceNameContext resource={resource ?? resourceName}>
+          <ListContext
+            sorts={sorts}
+            params={defaultFilters}
+            pagination={defaultPagination}
+            resource={resource ?? resourceName}
+            useQueryOptions={useQueryOptions}
+            meta={meta}
+          >
+            <List ref={ref} {...(componentProps as ComponentProps)}>
+              {children}
+            </List>
+          </ListContext>
+        </ResourceNameContext>
+      );
+    }
+  );
 };

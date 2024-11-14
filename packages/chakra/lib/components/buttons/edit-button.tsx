@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, forwardRef } from 'react';
 import { Icon } from '@chakra-ui/react';
 import { MdEdit as EditIcon } from 'react-icons/md';
 import {
@@ -7,18 +7,33 @@ import {
 } from '@dashify/core';
 import { BaseButton, BaseButtonProps } from './base-button';
 
-export type EditButtonProps = CoreEditButtonProps<BaseButtonProps>;
+export type EditButtonProps = CoreEditButtonProps<
+  HTMLButtonElement,
+  BaseButtonProps
+>;
 
-const EditButtonIntance = withEditButtonFeatures<BaseButtonProps>(BaseButton);
+const EditButtonIntance = withEditButtonFeatures<
+  HTMLButtonElement,
+  BaseButtonProps
+>(BaseButton);
 
-export const EditButton: FC<EditButtonProps> = ({
-  children = 'Edit',
-  leftIcon = <Icon as={EditIcon} />,
-  ...baseButtonProps
-}) => {
+export const EditButton: FC<EditButtonProps> = forwardRef<
+  HTMLButtonElement,
+  EditButtonProps
+>((props, ref) => {
+  const {
+    children = 'Edit',
+    leftIcon = (
+      <Icon>
+        <EditIcon />
+      </Icon>
+    ),
+    ...baseButtonProps
+  } = props;
+
   return (
-    <EditButtonIntance leftIcon={leftIcon} {...baseButtonProps}>
+    <EditButtonIntance ref={ref} leftIcon={leftIcon} {...baseButtonProps}>
       {children}
     </EditButtonIntance>
   );
-};
+});

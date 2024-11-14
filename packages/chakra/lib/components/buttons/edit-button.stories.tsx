@@ -27,7 +27,11 @@ export const Default: Story = {};
 
 export const Custom: Story = {
   args: {
-    leftIcon: <Icon as={MdEditNote} />,
+    leftIcon: (
+      <Icon>
+        <MdEditNote />
+      </Icon>
+    ),
     children: 'Modify',
     variant: 'outline',
   },
