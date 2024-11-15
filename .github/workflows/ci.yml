@@ -7,47 +7,7 @@ on:
     branches: ['main']
 
 jobs:
-  check-style:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.4.x
-
-      - name: Install dependencies
-        run: npm install ; npm ci
-
-      - name: Run Prettier
-        run: npm run format:check
-
-      - name: Run Eslint
-        run: npm run lint
-
-      - name: Run Build
-        run: npm run build
-
-  test-unit:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.4.x
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Test
-        run: npm run test
-
-  # test-e2e:
+  # check-style:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Checkout
@@ -58,8 +18,54 @@ jobs:
   #       with:
   #         node-version: 22.4.x
 
-  #     - name: Run e2e tests
-  #       uses: cypress-io/github-action@v6
+  #     - name: Install dependencies
+  #       run: npm install ; npm ci
+
+  #     - name: Run Prettier
+  #       run: npm run format:check
+
+  #     - name: Run Eslint
+  #       run: npm run lint
+
+  #     - name: Run Build
+  #       run: npm run build
+
+  # test-unit:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+
+  #     - name: Setup node
+  #       uses: actions/setup-node@v4
   #       with:
-  #         start: npm run dev
-  #         working-directory: ./packages/e2e-tests
+  #         node-version: 22.4.x
+
+  #     - name: Install dependencies
+  #       run: npm ci
+
+  #     - name: Run Test
+  #       run: npm run test
+
+  test-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.4.x
+
+      - name: Install dependencies 
+        uses: cypress-io/github-action@v6
+        with:
+          runTests: false
+
+      - name: Run e2e tests
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          start: npm run dev
+          working-directory: ./e2e-tests
