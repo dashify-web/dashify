@@ -3,13 +3,11 @@ import { ResourceContextType, RESOURCE_CONTEXT } from '../context';
 import { ResourceType } from '@dashify/provider';
 
 export const useResource = <T extends ResourceType>() => {
-  const resourceName = useContext<ResourceContextType<T> | null>(
-    RESOURCE_CONTEXT
-  );
+  const resource = useContext<ResourceContextType<T> | null>(RESOURCE_CONTEXT);
 
-  if (resourceName === null) {
+  if (resource === null) {
     throw new Error('useResource must be wrapped by ResourceContext');
   }
 
-  return resourceName as ResourceContextType<T>;
+  return resource;
 };
