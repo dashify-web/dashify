@@ -15,25 +15,25 @@ const meta: Meta<typeof List> = {
     <ChakraProvider>
       <BrowserRouterProvider>
         <ProviderContext>
-          <List resource="dummies">
+          <List rowClick={false} resource="dummies">
             <FunctionCellField
-              label='Id'
+              label="Id"
               render={(dummy) => `Your Id: ${dummy.id}`}
             />
             <TextCellField
               label="Name"
-              source='name'
+              source="name"
               emptyValue="Not Defined"
             />
             <TextCellField
               label="Email"
-              source='email'
+              source="email"
               emptyValue="Not Defined"
             />
           </List>
         </ProviderContext>
-      </BrowserRouterProvider >
-    </ChakraProvider >
+      </BrowserRouterProvider>
+    </ChakraProvider>
   ),
 };
 

@@ -4,14 +4,14 @@ import { useResourceName } from './use-resource-name';
 
 export type UseResourceRedirectArgs =
   | {
-    resource?: string;
-    view: 'list' | 'create';
-    id?: never;
-  }
+      resource?: string;
+      view: 'list' | 'create';
+      id?: never;
+    }
   | (ResourceType & {
-    resource?: string;
-    view: 'show' | 'edit';
-  });
+      resource?: string;
+      view: 'show' | 'edit';
+    });
 
 export const useResourceRedirect = () => {
   const navigate = useNavigate();
