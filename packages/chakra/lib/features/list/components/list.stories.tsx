@@ -15,7 +15,11 @@ const meta: Meta<typeof List> = {
     <ChakraProvider>
       <BrowserRouterProvider>
         <ProviderContext>
-          <List rowClick={false} resource="dummies">
+          <List
+            defaultPagination={{ page: 1, pageSize: 2 }}
+            rowClick={false}
+            resource="dummies"
+          >
             <FunctionCellField
               label="Id"
               render={(dummy) => `Your Id: ${dummy.id}`}

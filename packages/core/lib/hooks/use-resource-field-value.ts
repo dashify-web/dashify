@@ -2,7 +2,7 @@ import { useResource } from './use-resource';
 
 export type UseResourceFieldValueArgs<Resource> = {
   source: keyof Resource;
-  emptyValue?: keyof Resource;
+  emptyValue?: string;
 };
 export const useResourceFieldValue = <Resource>(
   args: UseResourceFieldValueArgs<Resource>

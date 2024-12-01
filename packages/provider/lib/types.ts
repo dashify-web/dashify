@@ -60,9 +60,27 @@ export type Provider<T extends ResourceType> = RequiredResourceName & {
   ) => Promise<T>;
 };
 
+export type GetPageListInfosArgsType = RequiredResourceName &
+  GetListsArgsType & {
+    currentProvider: Provider<any>;
+  };
+
+export type PageInfos = {
+  total?: number;
+  prevPage?: number;
+  nextPage?: number;
+  hasNextPage?: boolean;
+  hasPrevPage?: boolean;
+};
+
+export type FacadeProviderOptions = {
+  getPageListInfos?: (args: GetPageListInfosArgsType) => Promise<PageInfos>;
+};
+
 export type FacadeProvider = {
   readonly providers: Provider<any>[];
   readonly getProvider: <T extends ResourceType = any>({
     resource,
   }: RequiredResourceName) => Provider<T>;
+  readonly options: FacadeProviderOptions;
 };

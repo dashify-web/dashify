@@ -33,7 +33,7 @@ export const useEdit = <
   const response = useMutation<T, Error, T>({
     mutationFn: (payload: T) =>
       edit<Meta, Params>({ payload, ...mutationProps }),
-    mutationKey: [resource, ...mutationKey],
+    mutationKey: [resource, mutationProps, ...mutationKey],
     ...restMutationOptions,
   });
 

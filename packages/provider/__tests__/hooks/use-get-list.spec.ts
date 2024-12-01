@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react';
 import { useQuery } from '@tanstack/react-query';
 
-import { GetListsArgsType, useGetList } from '../../lib';
-import { Dummy, DUMMIES, setupUseQueryMock } from './utils';
+import { GetListsArgsType, useGetList, UseGetListArgsType } from '../../lib';
+import { Dummy, DUMMIES, setupUseQueryMock, Meta, Params } from './utils';
 
 const dummyProviderGetList = jest.fn().mockResolvedValue(DUMMIES);
 
@@ -12,6 +12,12 @@ jest.mock('@tanstack/react-query', () => ({
 }));
 jest.mock('../../lib/hooks/use-provider', () => ({
   useProvider: jest.fn(),
+}));
+
+jest.mock('../../lib/hooks/use-facade-provider', () => ({
+  useFacadeProvider: () => ({
+    options: {},
+  }),
 }));
 
 describe('useGetList', () => {
@@ -32,18 +38,15 @@ describe('useGetList', () => {
     expect(dummyProviderGetList).toHaveBeenCalledWith({});
     expect(useQuery).toHaveBeenCalledWith({
       queryFn: expect.any(Function),
-      queryKey: [resource],
+      queryKey: [resource, {}],
     });
   });
 
   it('should return the correct getListResponse with queryOptions', async () => {
     const resource = 'dummy';
-    const queryOptions: GetListsArgsType<
-      { userName: string },
-      { minAge: number }
-    > = {
+    const getListArgs: GetListsArgsType<Meta, Params> = {
       meta: {
-        userName: 'dummyName',
+        username: 'dummyName',
       },
       params: {
         minAge: 1,
@@ -60,21 +63,21 @@ describe('useGetList', () => {
       ],
     };
 
-    const { result } = renderHook(() =>
-      useGetList<Dummy>({
-        ...queryOptions,
-        resource,
-        useQueryOptions: {
-          retry: 1,
-        },
-      })
-    );
+    const useGetListArgs: UseGetListArgsType<Dummy, Meta, Params> = {
+      ...getListArgs,
+      resource,
+      useQueryOptions: {
+        retry: 1,
+      },
+    };
+
+    const { result } = renderHook(() => useGetList<Dummy>(useGetListArgs));
 
     expect(result.current.data).toEqual(DUMMIES);
-    expect(dummyProviderGetList).toHaveBeenCalledWith(queryOptions);
+    expect(dummyProviderGetList).toHaveBeenCalledWith(getListArgs);
     expect(useQuery).toHaveBeenCalledWith({
       queryFn: expect.any(Function),
-      queryKey: [resource],
+      queryKey: [resource, getListArgs],
       retry: 1,
     });
   });

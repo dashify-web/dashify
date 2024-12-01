@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { UseQueryResult } from '@tanstack/react-query';
-import { ResourceType } from '../types';
+import { PageInfos, ResourceType } from '../types';
 import { useGetList, UseGetListArgsType } from '../hooks';
 
 export type ListControllerType<
@@ -23,8 +23,9 @@ export type ListContextType<
   Meta = any,
   Params = any,
   Error = any,
-> = UseQueryResult<T[], Error> &
-  ListControllerType<T, Meta, Params, Error> & {
+> = UseQueryResult<T[], Error> & {
+  pageInfosQueryResult: UseQueryResult<PageInfos, Error>;
+} & ListControllerType<T, Meta, Params, Error> & {
     controller: Dispatch<
       SetStateAction<ListControllerType<T, Meta, Params, Error>>
     >;

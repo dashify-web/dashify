@@ -32,7 +32,7 @@ export const useGetById = <
 
   const response = useQuery<T, Error>({
     queryFn: () => getById<Meta, Params>(queryProps),
-    queryKey: [resource, ...queryKey],
+    queryKey: [resource, queryProps, ...queryKey],
     ...restQueryOptions,
   });
 

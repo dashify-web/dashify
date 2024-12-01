@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import { v4 as uuid } from 'uuid';
-import { HStack, Table } from '@chakra-ui/react';
+import { HStack, ProgressRoot, Table } from '@chakra-ui/react';
 import {
   ListBase as CoreList,
   ListBaseProps as CoreListProps,
@@ -17,6 +17,7 @@ import {
   PaginationNextTrigger,
   PaginationPrevTrigger,
 } from '../../../chakra/snippets/pagination';
+import { ProgressBar } from '../../../chakra/snippets/progress';
 
 export type ListProps = CoreListProps & {
   rowClick?:
@@ -41,11 +42,16 @@ const ListContent: FC<ListProps> = ({
   componentProps,
   rowClick,
 }) => {
-  const { data = [], isLoading } = useListContext();
+  const { data = [], isLoading, pageInfosQueryResult } = useListContext();
+  const { data: pageInfos = {}, isLoading: isPageInfosLoading } =
+    pageInfosQueryResult;
+  const { total, hasPrevPage, hasNextPage } = pageInfos;
   const { doNextPage, doPrevPage, pagination } = usePagination();
   const labels = useRetrieveLabels(children);
   const resourceName = useResourceName();
   const redirect = useResourceRedirect();
+
+  console.log('pagination', pagination);
 
   const redirectToShow = <Resource extends ResourceType>(
     resource: Resource
@@ -118,17 +124,29 @@ const ListContent: FC<ListProps> = ({
             ))}
         </Table.Body>
       </Table.Root>
-      <PaginationRoot
-        count={50} //FIXME: Update @dashify/provider to get this
-        page={pagination?.page}
-        pageSize={pagination?.pageSize}
-      >
-        <HStack wrap="wrap">
-          <PaginationPrevTrigger disabled onClick={doPrevPage} />
-          <PaginationItems />
-          <PaginationNextTrigger onClick={doNextPage} />
-        </HStack>
-      </PaginationRoot>
+      {isPageInfosLoading ? (
+        <ProgressRoot maxW="240px" value={null}>
+          <ProgressBar />
+        </ProgressRoot>
+      ) : (
+        <PaginationRoot
+          count={total ?? 0}
+          page={pagination?.page}
+          pageSize={pagination?.pageSize}
+        >
+          <HStack wrap="wrap">
+            <PaginationPrevTrigger
+              disabled={!hasPrevPage}
+              onClick={doPrevPage}
+            />
+            <PaginationItems />
+            <PaginationNextTrigger
+              disabled={!hasNextPage}
+              onClick={doNextPage}
+            />
+          </HStack>
+        </PaginationRoot>
+      )}
     </>
   );
 };

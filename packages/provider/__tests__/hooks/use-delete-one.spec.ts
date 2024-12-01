@@ -1,8 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { useMutation } from '@tanstack/react-query';
 
-import { DeleteArgsType, useDelete } from '../../lib';
-import { Dummy, setupUseMutationMock, dummyOne } from './utils';
+import { DeleteArgsType, useDelete, UseDeleteArgsType } from '../../lib';
+import { Dummy, setupUseMutationMock, dummyOne, Meta, Params } from './utils';
 
 const dummyProviderDelete = jest.fn().mockResolvedValue(dummyOne);
 
@@ -25,37 +25,35 @@ describe('useDelete', () => {
 
   it('should return the correct deleteOneResponse', async () => {
     const resource = 'dummy';
-
-    const mutationOptions: DeleteArgsType<
-      Dummy,
-      { userName: string },
-      { minAge: number }
-    > = {
-      payload: dummyOne,
+    const baseArgs: Omit<DeleteArgsType<Dummy, Meta, Params>, 'payload'> = {
       meta: {
-        userName: 'dummyName',
+        username: 'dummyName',
       },
       params: {
         minAge: 1,
       },
     };
+    const deleteArgs: DeleteArgsType<Dummy, Meta, Params> = {
+      payload: dummyOne,
+      ...baseArgs,
+    };
 
-    const { result } = renderHook(() =>
-      useDelete<Dummy>({
-        ...mutationOptions,
-        resource,
-        useMutationOptions: {
-          retry: 1,
-        },
-      })
-    );
+    const useDeleteArgs: UseDeleteArgsType<Dummy, Meta, Params> = {
+      resource,
+      useMutationOptions: {
+        retry: 1,
+      },
+      ...baseArgs,
+    };
+
+    const { result } = renderHook(() => useDelete<Dummy>(useDeleteArgs));
 
     act(() => {
       result.current.mutate(dummyOne);
-      expect(dummyProviderDelete).toHaveBeenCalledWith(mutationOptions);
+      expect(dummyProviderDelete).toHaveBeenCalledWith(deleteArgs);
       expect(useMutation).toHaveBeenCalledWith({
         mutationFn: expect.any(Function),
-        mutationKey: [resource],
+        mutationKey: [resource, baseArgs],
         retry: 1,
       });
     });
