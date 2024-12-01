@@ -1,8 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { useMutation } from '@tanstack/react-query';
 
-import { CreateArgsType, useCreate } from '../../lib';
-import { Dummy, setupUseMutationMock, dummyOne } from './utils';
+import { CreateArgsType, useCreate, UseCreateArgsType } from '../../lib';
+import { Dummy, setupUseMutationMock, dummyOne, Params, Meta } from './utils';
 
 const dummyProviderCreate = jest.fn().mockResolvedValue(dummyOne);
 
@@ -25,37 +25,37 @@ describe('useCreate', () => {
 
   it('should return the correct createResponse', async () => {
     const resource = 'dummy';
-
-    const mutationOptions: CreateArgsType<
-      Dummy,
-      { userName: string },
-      { minAge: number }
-    > = {
-      payload: dummyOne,
+    const baseArgs: Omit<CreateArgsType<Dummy, Meta, Params>, 'payload'> = {
       meta: {
-        userName: 'dummyName',
+        username: 'dummyName',
       },
       params: {
         minAge: 1,
       },
     };
 
-    const { result } = renderHook(() =>
-      useCreate<Dummy>({
-        ...mutationOptions,
-        resource,
-        useMutationOptions: {
-          retry: 1,
-        },
-      })
-    );
+    const createArgs: CreateArgsType<Dummy, Meta, Params> = {
+      payload: dummyOne,
+      ...baseArgs,
+    };
+
+    const useCreateArgs: UseCreateArgsType<Dummy, Meta, Params> = {
+      ...baseArgs,
+      resource,
+      useMutationOptions: { retry: 1 },
+    };
+
+    const { result } = renderHook(() => useCreate<Dummy>(useCreateArgs));
 
     act(() => {
       result.current.mutate(dummyOne);
-      expect(dummyProviderCreate).toHaveBeenCalledWith(mutationOptions);
+      expect(dummyProviderCreate).toHaveBeenCalledWith({
+        ...createArgs,
+        payload: dummyOne,
+      });
       expect(useMutation).toHaveBeenCalledWith({
         mutationFn: expect.any(Function),
-        mutationKey: [resource],
+        mutationKey: [resource, baseArgs],
         retry: 1,
       });
     });

@@ -1,8 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { useMutation } from '@tanstack/react-query';
 
-import { EditArgsType, useEdit } from '../../lib';
-import { Dummy, setupUseMutationMock, dummyOne } from './utils';
+import { EditArgsType, useEdit, UseEditArgsType } from '../../lib';
+import { Dummy, setupUseMutationMock, dummyOne, Meta, Params } from './utils';
 
 const dummyProviderEdit = jest.fn().mockResolvedValue(dummyOne);
 
@@ -25,37 +25,35 @@ describe('useEdit', () => {
 
   it('should return the correct editResponse', async () => {
     const resource = 'dummy';
-
-    const mutationOptions: EditArgsType<
-      Dummy,
-      { userName: string },
-      { minAge: number }
-    > = {
-      payload: dummyOne,
+    const baseArgs: Omit<EditArgsType<Dummy, Meta, Params>, 'payload'> = {
       meta: {
-        userName: 'dummyName',
+        username: 'dummyName',
       },
       params: {
         minAge: 1,
       },
     };
+    const editArgs: EditArgsType<Dummy, Meta, Params> = {
+      payload: dummyOne,
+      ...baseArgs,
+    };
 
-    const { result } = renderHook(() =>
-      useEdit<Dummy>({
-        ...mutationOptions,
-        resource,
-        useMutationOptions: {
-          retry: 1,
-        },
-      })
-    );
+    const useEditArgs: UseEditArgsType<Dummy, Meta, Params> = {
+      resource,
+      useMutationOptions: {
+        retry: 1,
+      },
+      ...baseArgs,
+    };
+
+    const { result } = renderHook(() => useEdit<Dummy>(useEditArgs));
 
     act(() => {
       result.current.mutate(dummyOne);
-      expect(dummyProviderEdit).toHaveBeenCalledWith(mutationOptions);
+      expect(dummyProviderEdit).toHaveBeenCalledWith(editArgs);
       expect(useMutation).toHaveBeenCalledWith({
         mutationFn: expect.any(Function),
-        mutationKey: [resource],
+        mutationKey: [resource, baseArgs],
         retry: 1,
       });
     });

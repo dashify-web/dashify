@@ -63,3 +63,11 @@ export const setupUseQueryMock = ({
     };
   });
 };
+
+export type Meta = {
+  username: string;
+};
+
+export type Params = {
+  minAge: number;
+};

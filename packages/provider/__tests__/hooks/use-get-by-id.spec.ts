@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react';
 import { useQuery } from '@tanstack/react-query';
 
-import { GetByIdArgsType, useGetById } from '../../lib';
-import { Dummy, setupUseQueryMock, dummyOne } from './utils';
+import { GetByIdArgsType, useGetById, UseGetByIdArgsType } from '../../lib';
+import { Dummy, setupUseQueryMock, dummyOne, Meta, Params } from './utils';
 
 const dummyProviderGetById = jest.fn().mockResolvedValue(dummyOne);
 
@@ -27,34 +27,31 @@ describe('useGetById', () => {
     const resource = 'dummy';
     const resourceId = 'dummyId';
 
-    const queryOptions: GetByIdArgsType<
-      { userName: string },
-      { minAge: number }
-    > = {
+    const getByIdArgs: GetByIdArgsType<Meta, Params> = {
       id: resourceId,
       meta: {
-        userName: 'dummyName',
+        username: 'dummyName',
       },
       params: {
         minAge: 1,
       },
     };
 
-    const { result } = renderHook(() =>
-      useGetById<Dummy>({
-        ...queryOptions,
-        resource,
-        useQueryOptions: {
-          retry: 1,
-        },
-      })
-    );
+    const useGetByIdArgs: UseGetByIdArgsType<Dummy, Meta, Params> = {
+      ...getByIdArgs,
+      resource,
+      useQueryOptions: {
+        retry: 1,
+      },
+    };
+
+    const { result } = renderHook(() => useGetById<Dummy>(useGetByIdArgs));
 
     expect(result.current.data).toEqual(dummyOne);
-    expect(dummyProviderGetById).toHaveBeenCalledWith(queryOptions);
+    expect(dummyProviderGetById).toHaveBeenCalledWith(getByIdArgs);
     expect(useQuery).toHaveBeenCalledWith({
       queryFn: expect.any(Function),
-      queryKey: [resource],
+      queryKey: [resource, getByIdArgs],
       retry: 1,
     });
   });

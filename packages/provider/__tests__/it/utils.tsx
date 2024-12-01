@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react';
-import { Provider, ProviderContext } from '../../lib';
+import { FacadeProviderOptions, Provider, ProviderContext } from '../../lib';
 
 /* dummyProvider */
 export type Dummy = {
@@ -48,8 +48,8 @@ export type Person = {
   age: number;
 };
 
-export const PEOPLE_COUNT = 5;
-export const PEOPLE_MOCKS: Person[] = Array.from({ length: PEOPLE_COUNT }).map(
+export const PERSON_COUNT = 5;
+export const PERSON_MOCKS: Person[] = Array.from({ length: PERSON_COUNT }).map(
   (_person, index) => ({
     id: index.toString(),
     name: `Person ${index}`,
@@ -61,34 +61,62 @@ export const personProvider: Provider<Person> = {
   resource: 'persons',
   edit: async ({ payload }) => {
     return Promise.resolve(
-      PEOPLE_MOCKS.find((person) => payload.id === person.id)!
+      PERSON_MOCKS.find((person) => payload.id === person.id)!
     );
   },
   create: async ({ payload }) => {
     return Promise.resolve(
-      PEOPLE_MOCKS.find((person) => payload.id === person.id)!
+      PERSON_MOCKS.find((person) => payload.id === person.id)!
     );
   },
   getList: async ({ pagination }) => {
     const { page = 1, pageSize = 2 } = pagination || {};
     return new Promise((resolve) =>
-      setTimeout(() => resolve(PEOPLE_MOCKS.slice(page - 1, pageSize)!), 500)
+      setTimeout(() => resolve(PERSON_MOCKS.slice(page - 1, pageSize)!), 500)
     );
   },
   getById: async ({ id }) => {
-    return Promise.resolve(PEOPLE_MOCKS.find((person) => person.id === id)!);
+    return Promise.resolve(PERSON_MOCKS.find((person) => person.id === id)!);
   },
   deleteOne: async ({ payload }) => {
     return Promise.resolve(
-      PEOPLE_MOCKS.find((person) => payload.id === person.id)!
+      PERSON_MOCKS.find((person) => payload.id === person.id)!
     );
   },
 };
 
 /* main provider */
 export const ItWrapper: FC<{ children: ReactNode }> = ({ children }) => {
+  const getPageListInfos: FacadeProviderOptions['getPageListInfos'] = async ({
+    currentProvider,
+    resource,
+    pagination,
+    ...getListArgs
+  }) => {
+    const nextPage = pagination?.page ? pagination?.page + 1 : undefined;
+    const nextPageResponse = await currentProvider.getList({
+      ...getListArgs,
+      pagination: {
+        page: nextPage,
+        pageSize: pagination?.pageSize,
+      },
+    });
+
+    const total = resource === 'dummy' ? DUMMIES_COUNT : PERSON_COUNT;
+    return Promise.resolve({
+      total,
+      nextPage,
+      prevPage: (pagination?.page ?? 1) - 1,
+      hasNextPage: nextPageResponse.length > 0,
+      hasPrevPage: (pagination?.page ?? 1) > 1,
+    });
+  };
+
   return (
-    <ProviderContext providers={[dummyProvider, personProvider]}>
+    <ProviderContext
+      options={{ getPageListInfos }}
+      providers={[dummyProvider, personProvider]}
+    >
       {children}
     </ProviderContext>
   );

@@ -42,7 +42,7 @@ const ListContent: FC<ListProps> = ({
   rowClick,
 }) => {
   const { data = [], isLoading } = useListContext();
-  const { doNextPage, doPrevPage, pagination } = usePagination();
+  const { doNextPage, doPrevPage, pagination, setPage } = usePagination();
   const labels = useRetrieveLabels(children);
   const resourceName = useResourceName();
   const redirect = useResourceRedirect();
@@ -124,7 +124,10 @@ const ListContent: FC<ListProps> = ({
         pageSize={pagination?.pageSize}
       >
         <HStack wrap="wrap">
-          <PaginationPrevTrigger disabled onClick={doPrevPage} />
+          <PaginationPrevTrigger
+            disabled={pagination?.page === 1}
+            onClick={doPrevPage}
+          />
           <PaginationItems />
           <PaginationNextTrigger onClick={doNextPage} />
         </HStack>
