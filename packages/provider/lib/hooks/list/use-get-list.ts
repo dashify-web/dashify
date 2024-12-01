@@ -23,6 +23,7 @@ export type UseGetListArgsType<
     useQueryOptions?: Partial<UseQueryOptions<T[], Error>>;
   };
 
+export const PAGE_INFOS_KEYS = 'pageInfos';
 export const useGetList = <
   T extends ResourceType = any,
   Meta = any,
@@ -48,11 +49,11 @@ export const useGetList = <
             ...queryProps,
           })
         : Promise.resolve({}),
-    queryKey: [resource, queryProps, ...queryKey],
+    queryKey: [resource, queryProps, ...queryKey, 'pageInfos'],
   });
 
   const dataResponse = useQuery<T[], Error>({
-    queryFn: async () => provider.getList<Meta, Params>(queryProps),
+    queryFn: () => provider.getList<Meta, Params>(queryProps),
     queryKey: [resource, queryProps, ...queryKey],
     ...restQueryOptions,
   });
