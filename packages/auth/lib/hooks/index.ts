@@ -1,5 +1,4 @@
 export * from './use-role';
-export * from './use-required-role';
 export * from './use-user-credentials';
 export * from './use-auth-provider-context';
 export * from './use-authentication-status';
