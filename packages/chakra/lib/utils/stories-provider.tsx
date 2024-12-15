@@ -41,6 +41,7 @@ export const ProviderContext: FC<PropsWithChildren> = ({ children }) => {
     ...getListArgs
   }) => {
     const nextPage = (pagination?.page ?? 1) + 1;
+    const prevPage = nextPage - 2;
     const nextPageResponse = await currentProvider.getList({
       ...getListArgs,
       pagination: {
@@ -49,12 +50,14 @@ export const ProviderContext: FC<PropsWithChildren> = ({ children }) => {
       },
     });
 
+    console.log(nextPageResponse);
+
     return Promise.resolve({
-      total: DUMMY_MOCKS.length,
       nextPage,
-      prevPage: (pagination?.page ?? 1) - 1,
+      prevPage,
+      total: DUMMY_MOCKS.length,
+      hasPrevPage: prevPage > 0,
       hasNextPage: nextPageResponse.length > 0,
-      hasPrevPage: (pagination?.page ?? 1) > 1,
     });
   };
 

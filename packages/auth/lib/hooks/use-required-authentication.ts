@@ -45,7 +45,7 @@ export const useRequiredAuthentication = <Role = any>({
           candidateRole,
           requiredRoles: requiredRoles,
         });
-      } catch (error) {
+      } catch {
         onAuthError({
           errorType: 'ROLE_PERMISSION_ERROR',
           isExplicitlyRequired: true,

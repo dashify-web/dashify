@@ -5,7 +5,6 @@ import {
   NoAuthRoutes,
   WithAuthRoutes,
   useRequiredAuthentication,
-  useRequiredRole,
 } from '@dashify/auth';
 import { Role } from './types';
 import { CustomerList } from './customer-list';
@@ -13,16 +12,15 @@ import { authProvider } from './auth-provider';
 import { adminProvider, customerProvider } from './providers';
 
 const RoleAdminsComponent = () => {
-  useRequiredAuthentication({ requireAuth: true });
-  useRequiredRole<Role>({
+  useRequiredAuthentication<Role>({
+    requireAuth: true,
     requiredRoles: ['ADMIN'],
   });
-
   return <div>nrole-admins</div>;
 };
 
 const RoleAllComponent = () => {
-  useRequiredAuthentication({ requireAuth: true });
+  useRequiredAuthentication({});
   return <div>nrole-all</div>;
 };
 
