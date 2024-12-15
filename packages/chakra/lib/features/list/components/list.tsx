@@ -45,13 +45,12 @@ const ListContent: FC<ListProps> = ({
   const { data = [], isLoading, pageInfosQueryResult } = useListContext();
   const { data: pageInfos = {}, isLoading: isPageInfosLoading } =
     pageInfosQueryResult;
-  const { total, hasPrevPage, hasNextPage } = pageInfos;
-  const { doNextPage, doPrevPage, pagination } = usePagination();
+  const { total: dataCount, hasPrevPage, hasNextPage } = pageInfos;
+  const { doNextPage, doPrevPage, pagination, setPage, setPageSize } =
+    usePagination();
   const labels = useRetrieveLabels(children);
   const resourceName = useResourceName();
   const redirect = useResourceRedirect();
-
-  console.log('pagination', pagination);
 
   const redirectToShow = <Resource extends ResourceType>(
     resource: Resource
@@ -130,9 +129,11 @@ const ListContent: FC<ListProps> = ({
         </ProgressRoot>
       ) : (
         <PaginationRoot
-          count={total ?? 0}
+          count={dataCount ?? 0}
           page={pagination?.page}
           pageSize={pagination?.pageSize}
+          onPageChange={({ page }) => setPage(page)}
+          onPageSizeChange={({ pageSize }) => setPageSize(pageSize)}
         >
           <HStack wrap="wrap">
             <PaginationPrevTrigger

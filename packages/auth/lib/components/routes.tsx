@@ -7,14 +7,16 @@ import {
 } from 'react-router-dom';
 import {
   useRequiredAuthentication,
+  UseRequiredAuthenticationArgs,
   useRequiredAuthValueContext,
-  useRequiredRole,
 } from '../hooks';
 
 const RouteWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   const { requireAuth, requireRoles } = useRequiredAuthValueContext();
-  useRequiredAuthentication({ requireAuth });
-  useRequiredRole({ requiredRoles: requireRoles });
+  useRequiredAuthentication({
+    requireAuth,
+    requireRoles,
+  } as UseRequiredAuthenticationArgs);
 
   return <>{children}</>;
 };

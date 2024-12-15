@@ -4,7 +4,7 @@ import { Routes } from './routes';
 
 export type WithAuthRoutesProps = {
   children: ReactNode;
-  requireRoles?: any;
+  requireRoles?: any[];
 };
 
 export const WithAuthRoutes: FC<WithAuthRoutesProps> = ({

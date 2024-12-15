@@ -4,13 +4,11 @@ export type AuthErrorType =
   | 'AUTHENTICATION_ERROR'
   | 'UNKNOWN_ERROR';
 
-export type OnErrorType = (args: {
+export type OnAuthErrorType = (args: {
   errorType: AuthErrorType;
-  isRequired: boolean;
+  isExplicitlyRequired: boolean;
   navigate: (path: string) => void;
 }) => void;
-
-export type Dict = Record<string, any>;
 
 export type AuthProviderBase<
   UserCredentials = any,
@@ -22,7 +20,7 @@ export type AuthProviderBase<
   signout: () => Promise<void>;
   checkAuth: () => Promise<UserCredentials>;
   checkError: (error: any) => Promise<void>;
-  onError: OnErrorType;
+  onError: OnAuthErrorType;
   getRole: never;
   compareRole: never;
 };

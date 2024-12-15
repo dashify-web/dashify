@@ -54,13 +54,13 @@ export const authProvider: AuthProvider<
     }
     return Promise.resolve();
   },
-  onError: ({ errorType, isRequired, navigate }) => {
-    if (errorType === 'AUTHENTICATION_ERROR' && isRequired) {
+  onError: ({ errorType, isExplicitlyRequired, navigate }) => {
+    if (errorType === 'AUTHENTICATION_ERROR' && isExplicitlyRequired) {
       navigate('/auth-error');
       return;
     }
 
-    if (errorType === 'ROLE_PERMISSION_ERROR' && isRequired) {
+    if (errorType === 'ROLE_PERMISSION_ERROR' && isExplicitlyRequired) {
       navigate('/role-error');
       return;
     }

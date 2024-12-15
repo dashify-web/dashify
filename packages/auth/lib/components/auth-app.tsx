@@ -37,27 +37,27 @@ const AuthAppBase: FC<Required<AuthAppBaseProps>> = ({
   authLoadingComponent,
 }) => {
   const { provider: authProvider } = useAuthProviderContext();
+  const setRole = useAuthStore((authStore) => authStore.setRole);
   const setUserCredentials = useAuthStore(
     (authStore) => authStore.setUserCredentials
   );
   const setAuthenticationStatus = useAuthStore(
     (authStore) => authStore.setAuthenticationStatus
   );
-  const setRole = useAuthStore((authStore) => authStore.setRole);
   const navigate = useNavigate();
 
   const { onError } = authProvider;
   const location = useLocation();
 
   const handleAuthError = useCallback(
-    async (baseError: any) => {
+    (baseError: any) => {
       setAuthenticationStatus('NOT_CONNECTED');
       authProvider
         .checkError(baseError)
         .then(() => {
           onError({
             errorType: 'UNKNOWN_ERROR',
-            isRequired: false,
+            isExplicitlyRequired: false,
             navigate,
           });
         })
@@ -67,14 +67,14 @@ const AuthAppBase: FC<Required<AuthAppBaseProps>> = ({
             .then(() => {
               onError({
                 errorType: 'AUTHENTICATION_ERROR',
-                isRequired: false,
+                isExplicitlyRequired: false,
                 navigate,
               });
             })
             .catch(() => {
               onError({
                 errorType: 'UNKNOWN_ERROR',
-                isRequired: false,
+                isExplicitlyRequired: false,
                 navigate,
               });
             });
@@ -84,7 +84,7 @@ const AuthAppBase: FC<Required<AuthAppBaseProps>> = ({
   );
 
   const handleAuthSuccess = useCallback(
-    async (userCredentials: any) => {
+    (userCredentials: any) => {
       setAuthenticationStatus('CONNECTED');
       setUserCredentials(userCredentials);
 
@@ -98,7 +98,11 @@ const AuthAppBase: FC<Required<AuthAppBaseProps>> = ({
           setRole(role);
         })
         .catch(() => {
-          onError({ errorType: 'UNKNOWN_ERROR', isRequired: false, navigate });
+          onError({
+            errorType: 'UNKNOWN_ERROR',
+            isExplicitlyRequired: false,
+            navigate,
+          });
         });
     },
     [
