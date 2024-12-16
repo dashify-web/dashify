@@ -4,41 +4,36 @@ import {
   ResourceLinkButtonProps,
   withResourceLinkButtonFeatures,
 } from './resource-link-button-hoc';
-import { AnyRefElement } from '../../../utils/types-tools';
+import { AnyRefElement } from '../../utils/types-tools';
 
-export type EditButtonProps<
+export type CreateButtonProps<
   RefElementType extends AnyRefElement,
   ComponentProps extends BaseButtonProps<RefElementType>,
 > = Omit<
   ResourceLinkButtonProps<RefElementType, ComponentProps>,
-  'view' | 'id'
-> & { id: string };
+  'id' | 'view'
+>;
 
-export const withEditButtonFeatures = <
+export const withCreateButtonFeatures = <
   RefElementType extends AnyRefElement,
   ComponentProps extends BaseButtonProps<RefElementType>,
 >(
-  EditButton: ComponentType<ComponentProps>
+  CreateButton: ComponentType<ComponentProps>
 ) => {
   const ResourceLinkButton = withResourceLinkButtonFeatures<
     RefElementType,
     ComponentProps
-  >(EditButton);
+  >(CreateButton);
 
   return forwardRef<
     RefElementType,
-    EditButtonProps<RefElementType, ComponentProps>
+    CreateButtonProps<RefElementType, ComponentProps>
   >((props, ref) => {
-    const { id, ...resourceLinkProps } = props as EditButtonProps<
-      RefElementType,
-      ComponentProps
-    >; //FIXME: fix type
     return (
       <ResourceLinkButton
         ref={ref}
-        view="edit"
-        id={id!}
-        {...resourceLinkProps}
+        view="create"
+        {...(props as ComponentProps)}
       />
     );
   });

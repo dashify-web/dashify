@@ -2,7 +2,7 @@ import React, { forwardRef, ReactNode, RefAttributes } from 'react';
 import {
   ButtonProps as ChakraButtonProps,
   Button as ChakraButton,
-} from '../../../chakra/snippets/button';
+} from '../../chakra/snippets/button';
 
 export type BaseButtonProps = ChakraButtonProps & {
   leftIcon?: ReactNode;

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { CommonFieldProps } from './field-type';
-import { mapReactChildrens } from '../../utils/react-tools';
+import { mapReactChildrens } from './react-tools';
 
 export const useRetrieveLabels = (children: ReactNode) => {
   return mapReactChildrens<CommonFieldProps, string>(

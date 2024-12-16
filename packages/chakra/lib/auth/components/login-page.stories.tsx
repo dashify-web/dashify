@@ -4,7 +4,7 @@ import { LoginPage } from './login-page';
 import {
   BrowserRouterProvider,
   ChakraProvider,
-} from '../../../utils/stories-provider';
+} from '../../utils/stories-provider';
 
 const meta: Meta<typeof LoginPage> = {
   component: LoginPage,

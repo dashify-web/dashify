@@ -1,19 +1,19 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { MdEditNote } from 'react-icons/md';
 import { Icon } from '@chakra-ui/react';
-import { EditButton } from './edit-button';
+import { MdExtension } from 'react-icons/md';
+import { CreateButton } from './create-button';
 import {
-  ChakraProvider,
   BrowserRouterProvider,
-} from '../../../utils/stories-provider';
+  ChakraProvider,
+} from '../../utils/stories-provider';
 
-const meta: Meta<typeof EditButton> = {
-  component: EditButton,
+const meta: Meta<typeof CreateButton> = {
+  component: CreateButton,
   render: (props) => (
     <ChakraProvider>
       <BrowserRouterProvider>
-        <EditButton {...props} />
+        <CreateButton {...props} />
       </BrowserRouterProvider>
     </ChakraProvider>
   ),
@@ -21,7 +21,7 @@ const meta: Meta<typeof EditButton> = {
 
 export default meta;
 
-type Story = StoryObj<typeof EditButton>;
+type Story = StoryObj<typeof CreateButton>;
 
 export const Default: Story = {};
 
@@ -29,10 +29,10 @@ export const Custom: Story = {
   args: {
     leftIcon: (
       <Icon>
-        <MdEditNote />
+        <MdExtension />
       </Icon>
     ),
-    children: 'Modify',
+    children: 'New',
     variant: 'outline',
   },
 };

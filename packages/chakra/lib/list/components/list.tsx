@@ -10,14 +10,14 @@ import {
   useRetrieveLabels,
 } from '@dashify/core';
 import { ResourceType, usePagination, useListContext } from '@dashify/provider';
-import { Skeleton } from '../../../chakra/snippets/skeleton';
+import { Skeleton } from '../../chakra/snippets/skeleton';
 import {
   PaginationItems,
   PaginationRoot,
   PaginationNextTrigger,
   PaginationPrevTrigger,
-} from '../../../chakra/snippets/pagination';
-import { ProgressBar } from '../../../chakra/snippets/progress';
+} from '../../chakra/snippets/pagination';
+import { ProgressBar } from '../../chakra/snippets/progress';
 
 export type ListProps = CoreListProps & {
   rowClick?:

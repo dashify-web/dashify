@@ -4,7 +4,7 @@ import {
   UseResourceRedirectArgs,
   useResourceRedirect,
 } from '../../resources/hooks';
-import { AnyRefElement } from '../../../utils/types-tools';
+import { AnyRefElement } from '../../utils/types-tools';
 
 export type ResourceLinkButtonProps<
   RefElementType extends AnyRefElement,
