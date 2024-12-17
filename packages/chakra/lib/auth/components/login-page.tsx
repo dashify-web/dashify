@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { Box, Flex, Input, Stack, Text } from '@chakra-ui/react';
 import { Field } from '../../chakra/snippets/field';
 import { BaseButton } from '../../buttons';
-
-import { FC, useState } from 'react';
 
 export type LoginPageProps = {
   signup?: boolean;
