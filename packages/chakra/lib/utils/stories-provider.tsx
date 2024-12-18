@@ -50,8 +50,6 @@ export const ProviderContext: FC<PropsWithChildren> = ({ children }) => {
       },
     });
 
-    console.log(nextPageResponse);
-
     return Promise.resolve({
       nextPage,
       prevPage,

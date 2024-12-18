@@ -17,7 +17,7 @@ const meta: Meta<typeof List> = {
         <ProviderContext>
           <List
             defaultPagination={{ page: 1, pageSize: 2 }}
-            rowClick={false}
+            rowClick={(dummy) => alert(JSON.stringify(dummy))}
             resource="dummies"
           >
             <FunctionCellField

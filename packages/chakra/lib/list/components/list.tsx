@@ -68,7 +68,7 @@ const ListContent: FC<ListProps> = ({
       if (rowClick === false) {
         return undefined;
       }
-      return () => (rowClick ? rowClick(resource) : redirectToShow(resource));
+      return rowClick ? rowClick(resource) : redirectToShow(resource);
     };
 
   return (
@@ -108,9 +108,8 @@ const ListContent: FC<ListProps> = ({
           )}
           {!isLoading &&
             data.map((item) => (
-              <ResourceContext resource={item}>
+              <ResourceContext key={item.id} resource={item}>
                 <Table.Row
-                  key={item.id}
                   _hover={{
                     cursor: 'pointer',
                   }}
@@ -153,14 +152,19 @@ const ListContent: FC<ListProps> = ({
 };
 
 export const List: FC<ListProps> = ({
+  children,
+  rowClick,
   components,
   componentProps,
-  children,
   ...coreProps
 }) => {
   return (
     <CoreList {...coreProps}>
-      <ListContent components={components} componentProps={componentProps}>
+      <ListContent
+        rowClick={rowClick}
+        components={components}
+        componentProps={componentProps}
+      >
         {children}
       </ListContent>
     </CoreList>
