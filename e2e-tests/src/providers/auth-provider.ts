@@ -1,7 +1,9 @@
 import { AuthProvider } from '@dashify/auth';
-import { UserDetails, SignupData, SigninData, Role } from './types';
-import { ADMIN_MOCKS, CUSTOMER_MOCKS } from './users';
-import axios, { AxiosError } from 'axios';
+import { isAxiosError } from 'axios';
+
+import { UserDetails, SignupData, SigninData, Role } from '../types';
+import { ADMIN_MOCKS, CUSTOMER_MOCKS } from '../mocks';
+import { axiosInstance } from '../config/axios';
 
 const verifyUsernameAndPassword = ({
   password,
@@ -26,7 +28,6 @@ const verifyUsernameAndPassword = ({
 };
 
 export const TOKEN_SEPARATOR = '--';
-
 export const TOKEN_CACHE_NAME = 'token';
 export const authProvider: AuthProvider<
   UserDetails,
@@ -41,12 +42,12 @@ export const authProvider: AuthProvider<
     return verifyUsernameAndPassword(signupData);
   },
   checkAuth: async () => {
-    return axios
+    return axiosInstance
       .get<UserDetails>('http://dummy.com/whoami')
       .then((response) => response.data);
   },
   checkError: (error) => {
-    if (!(error instanceof AxiosError)) {
+    if (!isAxiosError(error)) {
       return Promise.resolve();
     }
     if (error.status! === 403) {
@@ -68,7 +69,6 @@ export const authProvider: AuthProvider<
     if (errorType === 'UNKNOWN_ERROR') {
       navigate('/unknown-error');
     }
-
     return;
   },
   signout: () => Promise.resolve(localStorage.setItem(TOKEN_CACHE_NAME, '')),

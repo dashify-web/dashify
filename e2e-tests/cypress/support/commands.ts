@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
+import { ADMIN_ONE, CUSTOME_ONE } from '../../src/mocks';
 import { Role } from '../../src/types';
-import { ADMIN_ONE, CUSTOME_ONE } from '../../src/users';
 
 const getResponse = (role: Role | 'ANONYMOUS') => {
   if (role === 'ANONYMOUS') {

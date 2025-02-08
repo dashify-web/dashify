@@ -1,4 +1,4 @@
-import { CUSTOME_ONE, CUSTOMER_MOCKS } from '../../src/users';
+import { CUSTOME_ONE, CUSTOMER_MOCKS } from "../../src/mocks";
 
 describe('list', () => {
   beforeEach(() => {
@@ -7,6 +7,8 @@ describe('list', () => {
 
   it('list.data', () => {
     cy.visit('/customers');
+    cy.contains("auth-loading");
+    cy.wait("@getWhoAmi");
     cy.contains(CUSTOME_ONE.username);
     cy.contains(CUSTOME_ONE.email);
     cy.get('li').should('have.length', 2);
