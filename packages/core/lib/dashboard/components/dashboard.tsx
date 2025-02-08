@@ -12,11 +12,11 @@ export const Dashboard: FC<DashboardProps> = ({
   authProvider,
   children,
   requireAuth,
-  authLoadingComponent,
+  AuthLoadingComponent,
 }) => {
   return (
     <AuthApp
-      authLoadingComponent={authLoadingComponent}
+      AuthLoadingComponent={AuthLoadingComponent}
       requireAuth={requireAuth}
       authProvider={authProvider}
     >

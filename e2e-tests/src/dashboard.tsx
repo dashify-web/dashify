@@ -34,7 +34,7 @@ export const DashboardApp: FC = () => {
     <Dashboard
       requireAuth
       authProvider={authProvider}
-      authLoadingComponent={<p>auth-loading</p>}
+      AuthLoadingComponent={() => <p>auth-loading</p>}
       providers={[adminProvider, customerProvider]}
     >
       <Resource

@@ -1,19 +1,29 @@
-import React, { FC, ReactNode, useCallback, useEffect } from 'react';
+import React, {
+  ComponentType,
+  FC,
+  ReactNode,
+  useCallback,
+  useEffect,
+} from 'react';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProviderContext, REQUIRED_AUTH_VALUE_CONTEXT } from '../context';
 import { AuthProvider } from '../types';
+import { ClientConfigurer, ClientConfigurerProps } from './client-configurer';
 import { useAuthProviderContext, useAuthenticationStatus } from '../hooks';
 import { useAuthStore } from '../stores';
 
-export type AuthAppBaseProps = {
-  authLoadingComponent: ReactNode;
+export type AuthAppProps = {
+  requireAuth?: boolean;
   children: ReactNode;
+  authProvider: AuthProvider<any>;
+  AuthLoadingComponent: ComponentType;
+  clientConfigurer?: ClientConfigurerProps['configure'];
 };
 
-export type AuthAppProps = AuthAppBaseProps & {
-  authProvider: AuthProvider<any>;
-  requireAuth?: boolean;
-};
+type AuthAppBaseProps = Required<
+  Pick<AuthAppProps, 'AuthLoadingComponent' | 'children'>
+> &
+  Pick<AuthAppProps, 'clientConfigurer'>;
 
 export const AuthApp: FC<AuthAppProps> = ({
   children,
@@ -32,10 +42,13 @@ export const AuthApp: FC<AuthAppProps> = ({
   );
 };
 
-const AuthAppBase: FC<Required<AuthAppBaseProps>> = ({
+const AuthAppBase: FC<AuthAppBaseProps> = ({
   children,
-  authLoadingComponent,
+  AuthLoadingComponent,
+  clientConfigurer,
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { provider: authProvider } = useAuthProviderContext();
   const setRole = useAuthStore((authStore) => authStore.setRole);
   const setUserCredentials = useAuthStore(
@@ -44,47 +57,40 @@ const AuthAppBase: FC<Required<AuthAppBaseProps>> = ({
   const setAuthenticationStatus = useAuthStore(
     (authStore) => authStore.setAuthenticationStatus
   );
-  const navigate = useNavigate();
-
   const { onError } = authProvider;
-  const location = useLocation();
 
   const handleAuthError = useCallback(
-    (baseError: any) => {
+    async (baseError: any) => {
       setAuthenticationStatus('NOT_CONNECTED');
-      authProvider
-        .checkError(baseError)
-        .then(() => {
+      try {
+        await authProvider.checkError(baseError);
+        onError({
+          errorType: 'UNKNOWN_ERROR',
+          isExplicitlyRequired: false,
+          navigate,
+        });
+      } catch {
+        try {
+          await authProvider.signout();
+          onError({
+            errorType: 'AUTHENTICATION_ERROR',
+            isExplicitlyRequired: false,
+            navigate,
+          });
+        } catch {
           onError({
             errorType: 'UNKNOWN_ERROR',
             isExplicitlyRequired: false,
             navigate,
           });
-        })
-        .catch(() => {
-          authProvider
-            .signout()
-            .then(() => {
-              onError({
-                errorType: 'AUTHENTICATION_ERROR',
-                isExplicitlyRequired: false,
-                navigate,
-              });
-            })
-            .catch(() => {
-              onError({
-                errorType: 'UNKNOWN_ERROR',
-                isExplicitlyRequired: false,
-                navigate,
-              });
-            });
-        });
+        }
+      }
     },
     [authProvider, onError, navigate, setRole, setAuthenticationStatus]
   );
 
   const handleAuthSuccess = useCallback(
-    (userCredentials: any) => {
+    async (userCredentials: any) => {
       setAuthenticationStatus('CONNECTED');
       setUserCredentials(userCredentials);
 
@@ -92,18 +98,16 @@ const AuthAppBase: FC<Required<AuthAppBaseProps>> = ({
         return;
       }
 
-      authProvider
-        .getRole(userCredentials)
-        .then((role) => {
-          setRole(role);
-        })
-        .catch(() => {
-          onError({
-            errorType: 'UNKNOWN_ERROR',
-            isExplicitlyRequired: false,
-            navigate,
-          });
+      try {
+        const role = await authProvider.getRole(userCredentials);
+        setRole(role);
+      } catch {
+        onError({
+          errorType: 'UNKNOWN_ERROR',
+          isExplicitlyRequired: false,
+          navigate,
         });
+      }
     },
     [
       authProvider,
@@ -116,25 +120,46 @@ const AuthAppBase: FC<Required<AuthAppBaseProps>> = ({
   );
 
   useEffect(() => {
-    authProvider.checkAuth().then(handleAuthSuccess).catch(handleAuthError);
+    const doCheckAuth = async () => {
+      try {
+        const response = await authProvider.checkAuth();
+        handleAuthSuccess(response);
+      } catch (error) {
+        handleAuthError(error);
+      }
+    };
+    doCheckAuth();
   }, [location, handleAuthSuccess, handleAuthError]);
 
   return (
-    <AuthAppContent authLoadingComponent={authLoadingComponent}>
+    <AuthAppContent
+      handleAuthError={handleAuthError}
+      clientConfigurer={clientConfigurer}
+      AuthLoadingComponent={AuthLoadingComponent}
+    >
       {children}
     </AuthAppContent>
   );
 };
 
-const AuthAppContent: FC<Required<AuthAppBaseProps>> = ({
-  authLoadingComponent,
-  children,
-}) => {
+const AuthAppContent: FC<
+  AuthAppBaseProps & Pick<ClientConfigurerProps, 'handleAuthError'>
+> = ({ children, handleAuthError, clientConfigurer, AuthLoadingComponent }) => {
   const { authenticationStatus } = useAuthenticationStatus();
 
   if (authenticationStatus === 'UNKNOWN') {
-    return authLoadingComponent;
+    return <AuthLoadingComponent />;
   }
 
-  return <>{children} </>;
+  return clientConfigurer ? (
+    <ClientConfigurer
+      configure={clientConfigurer}
+      handleAuthError={handleAuthError}
+      AuthLoadingComponent={AuthLoadingComponent}
+    >
+      {children}
+    </ClientConfigurer>
+  ) : (
+    children
+  );
 };
