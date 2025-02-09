@@ -1,16 +1,17 @@
 import React, {
-  ComponentType,
   FC,
+  ComponentType,
   PropsWithChildren,
   useEffect,
   useState,
 } from 'react';
 import { AuthProvider } from '../types';
 import { useAuthProviderContext } from '../hooks';
+import { HandleAuthErrorType } from './auth-app';
 
 export type ClientConfigurerProps = PropsWithChildren<{
   AuthLoadingComponent: ComponentType;
-  handleAuthError: (baseError: any) => Promise<void>;
+  handleAuthError: HandleAuthErrorType;
   configure: (
     handleAuthError: (baseError: any) => Promise<void>,
     authProvider: AuthProvider
@@ -29,7 +30,15 @@ export const ClientConfigurer: FC<ClientConfigurerProps> = ({
   useEffect(() => {
     const doConfigure = async () => {
       try {
-        await configure(handleAuthError, authProvider);
+        await configure(
+          async (error) =>
+            handleAuthError({
+              baseError: error,
+              makeUnknownErrorRequired: false,
+              makeAuthAndRoleErrorRequired: true,
+            }),
+          authProvider
+        );
       } finally {
         setIsLoading(false);
       }

@@ -5,17 +5,11 @@ import { useAuthenticationStatus } from './use-authentication-status';
 import { useAuthProviderContext } from './use-auth-provider-context';
 import { useRole } from './use-role';
 
-export type UseRequiredAuthenticationArgs<Role = any> =
-  | {
-      requireAuth?: true;
-      requiredRoles?: Role[];
-      onError?: OnAuthErrorType;
-    }
-  | {
-      requireAuth?: false;
-      onError?: never;
-      requiredRoles?: never;
-    };
+export type UseRequiredAuthenticationArgs<Role = any> = {
+  requireAuth?: boolean;
+  requiredRoles?: Role[];
+  onError?: OnAuthErrorType;
+};
 
 export const useRequiredAuthentication = <Role = any>({
   requiredRoles = [],

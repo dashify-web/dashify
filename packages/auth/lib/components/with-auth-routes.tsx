@@ -12,7 +12,7 @@ export const WithAuthRoutes: FC<WithAuthRoutesProps> = ({
   requireRoles,
 }) => {
   return (
-    <RequiredAuthValueContext requireAuth requireRoles={requireRoles}>
+    <RequiredAuthValueContext requireAuth requiredRoles={requireRoles}>
       <Routes>{children}</Routes>
     </RequiredAuthValueContext>
   );

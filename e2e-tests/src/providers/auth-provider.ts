@@ -56,6 +56,10 @@ export const authProvider: AuthProvider<
     return Promise.resolve();
   },
   onError: ({ errorType, isExplicitlyRequired, navigate }) => {
+    if (window.location.pathname.endsWith('error')) {
+      return Promise.resolve();
+    }
+
     if (errorType === 'AUTHENTICATION_ERROR' && isExplicitlyRequired) {
       navigate('/auth-error');
       return;
@@ -66,7 +70,7 @@ export const authProvider: AuthProvider<
       return;
     }
 
-    if (errorType === 'UNKNOWN_ERROR') {
+    if (errorType === 'UNKNOWN_ERROR' && isExplicitlyRequired) {
       navigate('/unknown-error');
     }
     return;

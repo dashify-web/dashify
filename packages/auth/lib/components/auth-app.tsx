@@ -1,6 +1,6 @@
 import React, {
-  ComponentType,
   FC,
+  ComponentType,
   ReactNode,
   useCallback,
   useEffect,
@@ -25,6 +25,11 @@ type AuthAppBaseProps = Required<
 > &
   Pick<AuthAppProps, 'clientConfigurer'>;
 
+export type HandleAuthErrorType = (args: {
+  makeAuthAndRoleErrorRequired: boolean;
+  makeUnknownErrorRequired: boolean;
+  baseError: any;
+}) => Promise<void>;
 export const AuthApp: FC<AuthAppProps> = ({
   children,
   authProvider,
@@ -53,28 +58,33 @@ const AuthAppBase: FC<AuthAppBaseProps> = ({
   const { provider: authProvider } = useAuthProviderContext();
   const { onError } = authProvider;
 
-  const handleAuthError = useCallback(
-    async (baseError: any) => {
+  const handleAuthError: HandleAuthErrorType = useCallback(
+    //TODO: Refactor
+    async ({
+      makeUnknownErrorRequired,
+      makeAuthAndRoleErrorRequired,
+      baseError,
+    }) => {
+      setAuthStore({ authenticationStatus: 'NOT_CONNECTED' });
       try {
         await authProvider.checkError(baseError);
         onError({
           errorType: 'UNKNOWN_ERROR',
-          isExplicitlyRequired: false,
+          isExplicitlyRequired: makeUnknownErrorRequired,
           navigate,
         });
       } catch {
         try {
-          setAuthStore({ authenticationStatus: 'NOT_CONNECTED' });
           await authProvider.signout();
           onError({
             errorType: 'AUTHENTICATION_ERROR',
-            isExplicitlyRequired: false,
+            isExplicitlyRequired: makeAuthAndRoleErrorRequired,
             navigate,
           });
         } catch {
           onError({
             errorType: 'UNKNOWN_ERROR',
-            isExplicitlyRequired: true,
+            isExplicitlyRequired: makeUnknownErrorRequired,
             navigate,
           });
         }
@@ -97,7 +107,7 @@ const AuthAppBase: FC<AuthAppBaseProps> = ({
         } catch {
           onError({
             errorType: 'UNKNOWN_ERROR',
-            isExplicitlyRequired: false,
+            isExplicitlyRequired: true,
             navigate,
           });
         }
@@ -114,7 +124,11 @@ const AuthAppBase: FC<AuthAppBaseProps> = ({
         const response = await authProvider.checkAuth();
         handleAuthSuccess(response);
       } catch (error) {
-        handleAuthError(error);
+        handleAuthError({
+          makeUnknownErrorRequired: true,
+          makeAuthAndRoleErrorRequired: false,
+          baseError: error,
+        });
       }
     };
     doCheckAuth();

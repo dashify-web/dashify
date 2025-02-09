@@ -1,3 +1,8 @@
+export type Dummy = {
+  name: string;
+  id: string;
+};
+
 export type Admin = {
   id: string;
   email: string;

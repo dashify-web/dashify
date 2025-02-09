@@ -5,6 +5,7 @@ export declare global {
   namespace Cypress {
     interface Chainable {
       useRole(role: Role | 'ANONYMOUS'): void;
+      interceptWithError(path: string, statucCode: number, alias: string): void;
       getByTestid<Subject>(testid: string): Chainable<Subject>;
     }
   }

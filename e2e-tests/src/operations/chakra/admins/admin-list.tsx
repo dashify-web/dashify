@@ -3,7 +3,7 @@ import { EMPTY_VALUE, renderMoney } from '../../../config/typo';
 
 export const AdminList = () => {
   return (
-    <List>
+    <List defaultPagination={{ page: 1, pageSize: 2 }}>
       <TextCellField label="Id" source="id" emptyValue={EMPTY_VALUE} />
       <TextCellField label="Email" source="email" emptyValue={EMPTY_VALUE} />
       <FunctionCellField
