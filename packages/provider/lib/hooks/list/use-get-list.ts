@@ -41,14 +41,15 @@ export const useGetList = <
   const { options } = useFacadeProvider();
 
   const pageInfosResponse = useQuery<PageInfos, Error>({
-    queryFn: () =>
-      options.getPageListInfos
+    queryFn: () => {
+      return options.getPageListInfos
         ? options.getPageListInfos({
             currentProvider: provider,
             resource,
             ...queryProps,
           })
-        : Promise.resolve({}),
+        : Promise.resolve({});
+    },
     queryKey: [resource, queryProps, ...queryKey, 'pageInfos'],
   });
 

@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import { v4 as uuid } from 'uuid';
-import { HStack, ProgressRoot, Table } from '@chakra-ui/react';
+import { HStack, Table } from '@chakra-ui/react';
 import {
   ListBase as CoreList,
   ListBaseProps as CoreListProps,
@@ -17,7 +17,6 @@ import {
   PaginationNextTrigger,
   PaginationPrevTrigger,
 } from '../../chakra/snippets/pagination';
-import { ProgressBar } from '../../chakra/snippets/progress';
 
 export type ListProps = CoreListProps & {
   rowClick?:
@@ -38,19 +37,17 @@ export type ListProps = CoreListProps & {
 
 const ListContent: FC<ListProps> = ({
   children,
+  rowClick,
   components,
   componentProps,
-  rowClick,
 }) => {
-  const { data = [], isLoading, pageInfosQueryResult } = useListContext();
-  const { data: pageInfos = {}, isLoading: isPageInfosLoading } =
-    pageInfosQueryResult;
-  const { total: dataCount, hasPrevPage, hasNextPage } = pageInfos;
-  const { doNextPage, doPrevPage, pagination, setPage, setPageSize } =
-    usePagination();
   const labels = useRetrieveLabels(children);
   const resourceName = useResourceName();
   const redirect = useResourceRedirect();
+  const { data = [], isLoading, pageInfosQueryResult } = useListContext();
+  const { data: pageInfos = {} } = pageInfosQueryResult;
+  const { setPage, doNextPage, doPrevPage, setPageSize, pagination } =
+    usePagination();
 
   const redirectToShow = <Resource extends ResourceType>(
     resource: Resource
@@ -122,31 +119,27 @@ const ListContent: FC<ListProps> = ({
             ))}
         </Table.Body>
       </Table.Root>
-      {isPageInfosLoading ? (
-        <ProgressRoot maxW="240px" value={null}>
-          <ProgressBar />
-        </ProgressRoot>
-      ) : (
-        <PaginationRoot
-          count={dataCount ?? 0}
-          page={pagination?.page}
-          pageSize={pagination?.pageSize}
-          onPageChange={({ page }) => setPage(page)}
-          onPageSizeChange={({ pageSize }) => setPageSize(pageSize)}
-        >
-          <HStack wrap="wrap">
-            <PaginationPrevTrigger
-              disabled={!hasPrevPage}
-              onClick={doPrevPage}
-            />
-            <PaginationItems />
-            <PaginationNextTrigger
-              disabled={!hasNextPage}
-              onClick={doNextPage}
-            />
-          </HStack>
-        </PaginationRoot>
-      )}
+      <PaginationRoot
+        count={pageInfos?.total ?? 0}
+        page={pagination?.page ?? 1}
+        pageSize={pagination?.pageSize ?? 1}
+        onPageChange={({ page }) => setPage(page)}
+        onPageSizeChange={({ pageSize }) => setPageSize(pageSize)}
+      >
+        <HStack wrap="wrap">
+          <PaginationPrevTrigger
+            disabled={!pageInfos.hasPrevPage}
+            onClick={doPrevPage}
+            data-testid="dashify-list-prev-button"
+          />
+          <PaginationItems />
+          <PaginationNextTrigger
+            disabled={!pageInfos.hasNextPage}
+            onClick={doNextPage}
+            data-testid="dashify-list-next-button"
+          />
+        </HStack>
+      </PaginationRoot>
     </>
   );
 };

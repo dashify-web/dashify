@@ -5,17 +5,11 @@ import { useAuthenticationStatus } from './use-authentication-status';
 import { useAuthProviderContext } from './use-auth-provider-context';
 import { useRole } from './use-role';
 
-export type UseRequiredAuthenticationArgs<Role = any> =
-  | {
-      requireAuth?: true;
-      requiredRoles?: Role[];
-      onError?: OnAuthErrorType;
-    }
-  | {
-      requireAuth?: false;
-      onError?: never;
-      requiredRoles?: never;
-    };
+export type UseRequiredAuthenticationArgs<Role = any> = {
+  requireAuth?: boolean;
+  requiredRoles?: Role[];
+  onError?: OnAuthErrorType;
+};
 
 export const useRequiredAuthentication = <Role = any>({
   requiredRoles = [],
@@ -43,7 +37,7 @@ export const useRequiredAuthentication = <Role = any>({
       try {
         await authProvider.compareRole({
           candidateRole,
-          requiredRoles: requiredRoles,
+          requiredRoles,
         });
       } catch {
         onAuthError({
@@ -54,8 +48,8 @@ export const useRequiredAuthentication = <Role = any>({
       }
     };
 
-    if (authenticationStatus === 'CONNECTED' && requiredRoles) {
+    if (authenticationStatus === 'CONNECTED' && requiredRoles.length) {
       checkRole();
     }
-  }, [onError, requireAuth, authenticationStatus, navigate]);
+  }, [onError, candidateRole, requireAuth, authenticationStatus, navigate]);
 };

@@ -5,5 +5,6 @@ export default defineConfig({
     setupNodeEvents(_on, _config) {},
     baseUrl: 'http://localhost:5173',
     requestTimeout: 15_000,
+    defaultCommandTimeout: 10_000,
   },
 });

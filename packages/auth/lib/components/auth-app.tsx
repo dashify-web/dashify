@@ -1,6 +1,6 @@
 import React, {
-  ComponentType,
   FC,
+  ComponentType,
   ReactNode,
   useCallback,
   useEffect,
@@ -9,8 +9,8 @@ import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProviderContext, REQUIRED_AUTH_VALUE_CONTEXT } from '../context';
 import { AuthProvider } from '../types';
 import { ClientConfigurer, ClientConfigurerProps } from './client-configurer';
+import { AuthStoreType, useAuthStore } from '../stores';
 import { useAuthProviderContext, useAuthenticationStatus } from '../hooks';
-import { useAuthStore } from '../stores';
 
 export type AuthAppProps = {
   requireAuth?: boolean;
@@ -25,6 +25,11 @@ type AuthAppBaseProps = Required<
 > &
   Pick<AuthAppProps, 'clientConfigurer'>;
 
+export type HandleAuthErrorType = (args: {
+  makeAuthAndRoleErrorRequired: boolean;
+  makeUnknownErrorRequired: boolean;
+  baseError: any;
+}) => Promise<void>;
 export const AuthApp: FC<AuthAppProps> = ({
   children,
   authProvider,
@@ -47,26 +52,25 @@ const AuthAppBase: FC<AuthAppBaseProps> = ({
   AuthLoadingComponent,
   clientConfigurer,
 }) => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
+  const setAuthStore = useAuthStore((state) => state.setAuthStore);
   const { provider: authProvider } = useAuthProviderContext();
-  const setRole = useAuthStore((authStore) => authStore.setRole);
-  const setUserCredentials = useAuthStore(
-    (authStore) => authStore.setUserCredentials
-  );
-  const setAuthenticationStatus = useAuthStore(
-    (authStore) => authStore.setAuthenticationStatus
-  );
   const { onError } = authProvider;
 
-  const handleAuthError = useCallback(
-    async (baseError: any) => {
-      setAuthenticationStatus('NOT_CONNECTED');
+  const handleAuthError: HandleAuthErrorType = useCallback(
+    //TODO: Refactor
+    async ({
+      makeUnknownErrorRequired,
+      makeAuthAndRoleErrorRequired,
+      baseError,
+    }) => {
+      setAuthStore({ authenticationStatus: 'NOT_CONNECTED' });
       try {
         await authProvider.checkError(baseError);
         onError({
           errorType: 'UNKNOWN_ERROR',
-          isExplicitlyRequired: false,
+          isExplicitlyRequired: makeUnknownErrorRequired,
           navigate,
         });
       } catch {
@@ -74,49 +78,44 @@ const AuthAppBase: FC<AuthAppBaseProps> = ({
           await authProvider.signout();
           onError({
             errorType: 'AUTHENTICATION_ERROR',
-            isExplicitlyRequired: false,
+            isExplicitlyRequired: makeAuthAndRoleErrorRequired,
             navigate,
           });
         } catch {
           onError({
             errorType: 'UNKNOWN_ERROR',
-            isExplicitlyRequired: false,
+            isExplicitlyRequired: makeUnknownErrorRequired,
             navigate,
           });
         }
       }
     },
-    [authProvider, onError, navigate, setRole, setAuthenticationStatus]
+    [authProvider, onError, navigate, setAuthStore]
   );
 
   const handleAuthSuccess = useCallback(
     async (userCredentials: any) => {
-      setAuthenticationStatus('CONNECTED');
-      setUserCredentials(userCredentials);
+      const authStoreSuccessValue: Partial<AuthStoreType> = {
+        authenticationStatus: 'CONNECTED',
+        userCredentials,
+      };
 
-      if (!authProvider.getRole) {
-        return;
+      if (authProvider.getRole) {
+        try {
+          authStoreSuccessValue.role =
+            await authProvider.getRole(userCredentials);
+        } catch {
+          onError({
+            errorType: 'UNKNOWN_ERROR',
+            isExplicitlyRequired: true,
+            navigate,
+          });
+        }
       }
 
-      try {
-        const role = await authProvider.getRole(userCredentials);
-        setRole(role);
-      } catch {
-        onError({
-          errorType: 'UNKNOWN_ERROR',
-          isExplicitlyRequired: false,
-          navigate,
-        });
-      }
+      setAuthStore(authStoreSuccessValue);
     },
-    [
-      authProvider,
-      onError,
-      navigate,
-      setRole,
-      setAuthenticationStatus,
-      setUserCredentials,
-    ]
+    [authProvider, onError, navigate, setAuthStore]
   );
 
   useEffect(() => {
@@ -125,7 +124,11 @@ const AuthAppBase: FC<AuthAppBaseProps> = ({
         const response = await authProvider.checkAuth();
         handleAuthSuccess(response);
       } catch (error) {
-        handleAuthError(error);
+        handleAuthError({
+          makeUnknownErrorRequired: true,
+          makeAuthAndRoleErrorRequired: false,
+          baseError: error,
+        });
       }
     };
     doCheckAuth();

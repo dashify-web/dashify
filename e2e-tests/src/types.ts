@@ -1,9 +1,15 @@
+export type Dummy = {
+  name: string;
+  id: string;
+};
+
 export type Admin = {
   id: string;
   email: string;
   salary: number;
   username: string;
   password: string;
+  role: Role;
 };
 
 export type Customer = {
@@ -11,6 +17,7 @@ export type Customer = {
   email: string;
   username: string;
   password: string;
+  role: Role;
 };
 
 export type Role = 'CUSTOMER' | 'ADMIN';

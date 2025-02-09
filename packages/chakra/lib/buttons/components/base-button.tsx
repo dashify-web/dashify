@@ -13,7 +13,11 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
   (props, ref) => {
     const { children, leftIcon, rightIcon, ...chakraButtonProps } = props;
     return (
-      <ChakraButton ref={ref} {...chakraButtonProps}>
+      <ChakraButton
+        data-testid="dashify-base-button"
+        ref={ref}
+        {...chakraButtonProps}
+      >
         {leftIcon && leftIcon}
         {children}
         {rightIcon && rightIcon}

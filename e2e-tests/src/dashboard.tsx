@@ -1,62 +1,57 @@
 import { FC } from 'react';
-import { Route } from 'react-router-dom';
+import { ChakraProvider, createSystem, defaultConfig } from '@chakra-ui/react';
 import { Dashboard, Resource } from '@dashify/core';
+import { NoAuthRoutes } from '@dashify/auth';
+import { Route } from 'react-router-dom';
+
+import { CustomerList } from './operations/chakra/customers';
+import { AdminList } from './operations/chakra/admins';
+import { DummyShow } from './operations/core/dummies';
 import {
-  NoAuthRoutes,
-  WithAuthRoutes,
-  useRequiredAuthentication,
-} from '@dashify/auth';
-import { Role } from './types';
-import { CustomerList } from './customer-list';
-import { authProvider } from './auth-provider';
-import { adminProvider, customerProvider } from './providers';
+  authProvider,
+  adminProvider,
+  customerProvider,
+  getPageListInfos,
+  dummyProvider,
+} from './providers';
+import { axiosInstance } from './config/axios';
 
-const RoleAdminsComponent = () => {
-  useRequiredAuthentication<Role>({
-    requireAuth: true,
-    requiredRoles: ['ADMIN'],
-  });
-  return <div>nrole-admins</div>;
-};
-
-const RoleAllComponent = () => {
-  useRequiredAuthentication({});
-  return <div>nrole-all</div>;
-};
-
-const RoleAnonymousComponent = () => {
-  useRequiredAuthentication({ requireAuth: false });
-  return <div>nrole-anonymous</div>;
-};
-
+const chakraProvider = createSystem(defaultConfig);
 export const DashboardApp: FC = () => {
   return (
-    <Dashboard
-      requireAuth
-      authProvider={authProvider}
-      AuthLoadingComponent={() => <p>auth-loading</p>}
-      providers={[adminProvider, customerProvider]}
-    >
-      <Resource
-        name="admins"
-        requireRoles={['ADMIN']}
-        list={<p>admins-list</p>}
-      />
-      <Resource requireAuth={false} name="customers" list={<CustomerList />} />
-      <NoAuthRoutes>
-        <Route path="/auth-error" element={<p>auth-error</p>} />
-        <Route path="/role-error" element={<p>role-error</p>} />
-        <Route path="/unknown-error" element={<p>unknown-error</p>} />
-        <Route path="/nrole-anonymous" element={<RoleAnonymousComponent />} />
-        <Route path="/nrole-all" element={<RoleAllComponent />} />
-        <Route path="/nrole-admins" element={<RoleAdminsComponent />} />
-      </NoAuthRoutes>
-      <WithAuthRoutes>
-        <Route path="/wrole-all" element={<p>wrole-all</p>} />
-      </WithAuthRoutes>
-      <WithAuthRoutes requireRoles={['ADMIN']}>
-        <Route path="/wrole-admins" element={<p>wrole-admins</p>} />
-      </WithAuthRoutes>
-    </Dashboard>
+    <ChakraProvider value={chakraProvider}>
+      <Dashboard
+        requireAuth
+        authProvider={authProvider}
+        AuthLoadingComponent={() => <p>auth-loading</p>}
+        providers={[adminProvider, customerProvider, dummyProvider]}
+        options={{ getPageListInfos }}
+        clientConfigurer={async (handleAuthError) => {
+          axiosInstance.interceptors.response.use(
+            (response) => response,
+            async (error) => handleAuthError(error)
+          );
+        }}
+      >
+        <Resource
+          requireAuth
+          name="admins"
+          list={<AdminList />}
+          requiredRoles={['ADMIN']}
+        />
+        <Resource
+          requireAuth
+          name="customers"
+          list={<CustomerList />}
+          requiredRoles={['ADMIN', 'CUSTOMER']}
+        />
+        <Resource name="dummies" requireAuth={false} show={<DummyShow />} />
+        <NoAuthRoutes>
+          <Route path="/role-error" element={<p>role-error</p>} />
+          <Route path="/auth-error" element={<p>auth-error</p>} />
+          <Route path="/unknown-error" element={<p>unknown-error</p>} />
+        </NoAuthRoutes>
+      </Dashboard>
+    </ChakraProvider>
   );
 };

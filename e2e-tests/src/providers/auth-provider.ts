@@ -1,7 +1,9 @@
 import { AuthProvider } from '@dashify/auth';
-import { UserDetails, SignupData, SigninData, Role } from './types';
-import { ADMIN_MOCKS, CUSTOMER_MOCKS } from './users';
-import axios, { AxiosError } from 'axios';
+import { isAxiosError } from 'axios';
+
+import { UserDetails, SignupData, SigninData, Role } from '../types';
+import { axiosInstance } from '../config/axios';
+import { ADMIN_MOCKS, CUSTOMER_MOCKS } from '../mocks';
 
 const verifyUsernameAndPassword = ({
   password,
@@ -26,7 +28,6 @@ const verifyUsernameAndPassword = ({
 };
 
 export const TOKEN_SEPARATOR = '--';
-
 export const TOKEN_CACHE_NAME = 'token';
 export const authProvider: AuthProvider<
   UserDetails,
@@ -41,20 +42,24 @@ export const authProvider: AuthProvider<
     return verifyUsernameAndPassword(signupData);
   },
   checkAuth: async () => {
-    return axios
+    return axiosInstance
       .get<UserDetails>('http://dummy.com/whoami')
       .then((response) => response.data);
   },
   checkError: (error) => {
-    if (!(error instanceof AxiosError)) {
+    if (!isAxiosError(error)) {
       return Promise.resolve();
     }
-    if (error.status! === 403) {
+    if (error.response?.status! === 403) {
       return Promise.reject();
     }
     return Promise.resolve();
   },
   onError: ({ errorType, isExplicitlyRequired, navigate }) => {
+    if (window.location.pathname.endsWith('error')) {
+      return Promise.resolve();
+    }
+
     if (errorType === 'AUTHENTICATION_ERROR' && isExplicitlyRequired) {
       navigate('/auth-error');
       return;
@@ -65,10 +70,9 @@ export const authProvider: AuthProvider<
       return;
     }
 
-    if (errorType === 'UNKNOWN_ERROR') {
+    if (errorType === 'UNKNOWN_ERROR' && isExplicitlyRequired) {
       navigate('/unknown-error');
     }
-
     return;
   },
   signout: () => Promise.resolve(localStorage.setItem(TOKEN_CACHE_NAME, '')),
@@ -76,6 +80,10 @@ export const authProvider: AuthProvider<
     return Promise.resolve(useDetails.role);
   },
   compareRole: ({ requiredRoles, candidateRole }) => {
+    if (!candidateRole) {
+      return Promise.reject();
+    }
+
     if (requiredRoles.includes(candidateRole)) {
       return Promise.resolve();
     }
