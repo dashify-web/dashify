@@ -1,9 +1,9 @@
-import { Provider } from "@dashify/provider";
-import { Admin } from "../types";
-import { ADMIN_MOCKS } from "../mocks";
+import { Provider } from '@dashify/provider';
+import { Admin } from '../types';
+import { ADMIN_MOCKS } from '../mocks';
 
 export const adminProvider: Provider<Admin> = {
-  resource: 'admin',
+  resource: 'admins',
   edit: async ({ payload }) => {
     return Promise.resolve(
       ADMIN_MOCKS.find((admin) => payload.id === admin.id)!

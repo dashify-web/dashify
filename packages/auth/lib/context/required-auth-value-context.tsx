@@ -19,13 +19,13 @@ export const RequiredAuthValueContext = <Role = any,>({
   requireRoles,
   requireAuth,
 }: RequiredAuthValueContextProps<Role>) => {
-  const { requireAuth: inheritRequireAuth, requireRoles: inheritRequireRole } =
+  const { requireAuth: inheritRequireAuth, requireRoles: inheritRequireRoles } =
     useRequiredAuthValueContext();
   return (
     <REQUIRED_AUTH_VALUE_CONTEXT.Provider
       value={{
         requireAuth: requireAuth ?? inheritRequireAuth,
-        requireRoles: requireRoles ?? inheritRequireRole,
+        requireRoles: requireRoles ?? inheritRequireRoles,
       }}
     >
       {children}

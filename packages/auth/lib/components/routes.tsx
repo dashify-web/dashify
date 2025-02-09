@@ -7,8 +7,8 @@ import {
 } from 'react-router-dom';
 import {
   useRequiredAuthentication,
-  UseRequiredAuthenticationArgs,
   useRequiredAuthValueContext,
+  UseRequiredAuthenticationArgs,
 } from '../hooks';
 
 const RouteWrapper: FC<{ children: ReactNode }> = ({ children }) => {

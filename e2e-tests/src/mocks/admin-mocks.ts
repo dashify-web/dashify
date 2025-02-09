@@ -1,11 +1,12 @@
-import { Admin } from "../types";
+import { Admin, Role } from '../types';
 
 export const ADMIN_ONE: Admin = {
   id: 'adminOneId',
-  username: 'customerOneUsername',
+  username: 'adminOneUsername',
   password: 'adminOnePassword',
   email: 'adminOne@gmail.com',
   salary: 5_000,
+  role: 'ADMIN',
 };
 
 export const ADMIN_MOCKS: Admin[] = [
@@ -18,5 +19,6 @@ export const ADMIN_MOCKS: Admin[] = [
       id: 'admin' + index,
       email: 'admin@gmail.com' + index,
       salary: index,
+      role: 'ADMIN' as Role,
     })),
 ];

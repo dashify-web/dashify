@@ -8,6 +8,7 @@ export type AuthStoreType<UserCredentials = any, Role = any> = {
   setRole: (data: Role) => void;
   setUserCredentials: (userCredentials: UserCredentials) => void;
   setAuthenticationStatus: (authenticationStatus: AuthenticationStatus) => void;
+  setAuthStore: (authStore: Partial<AuthStoreType<UserCredentials>>) => void;
 };
 
 const useAuthStoreBase = create<AuthStoreType>((set) => ({
@@ -18,6 +19,7 @@ const useAuthStoreBase = create<AuthStoreType>((set) => ({
   setUserCredentials: (userCredentials) => set({ userCredentials }),
   setAuthenticationStatus: (authenticationStatus) =>
     set({ authenticationStatus }),
+  setAuthStore: (authStore) => set(authStore),
 }));
 
 export const useAuthStore = <UserCredentials = any, Role = any, Slice = any>(

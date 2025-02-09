@@ -9,8 +9,8 @@ import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProviderContext, REQUIRED_AUTH_VALUE_CONTEXT } from '../context';
 import { AuthProvider } from '../types';
 import { ClientConfigurer, ClientConfigurerProps } from './client-configurer';
+import { AuthStoreType, useAuthStore } from '../stores';
 import { useAuthProviderContext, useAuthenticationStatus } from '../hooks';
-import { useAuthStore } from '../stores';
 
 export type AuthAppProps = {
   requireAuth?: boolean;
@@ -47,21 +47,14 @@ const AuthAppBase: FC<AuthAppBaseProps> = ({
   AuthLoadingComponent,
   clientConfigurer,
 }) => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
+  const setAuthStore = useAuthStore((state) => state.setAuthStore);
   const { provider: authProvider } = useAuthProviderContext();
-  const setRole = useAuthStore((authStore) => authStore.setRole);
-  const setUserCredentials = useAuthStore(
-    (authStore) => authStore.setUserCredentials
-  );
-  const setAuthenticationStatus = useAuthStore(
-    (authStore) => authStore.setAuthenticationStatus
-  );
   const { onError } = authProvider;
 
   const handleAuthError = useCallback(
     async (baseError: any) => {
-      setAuthenticationStatus('NOT_CONNECTED');
       try {
         await authProvider.checkError(baseError);
         onError({
@@ -71,6 +64,7 @@ const AuthAppBase: FC<AuthAppBaseProps> = ({
         });
       } catch {
         try {
+          setAuthStore({ authenticationStatus: 'NOT_CONNECTED' });
           await authProvider.signout();
           onError({
             errorType: 'AUTHENTICATION_ERROR',
@@ -80,43 +74,38 @@ const AuthAppBase: FC<AuthAppBaseProps> = ({
         } catch {
           onError({
             errorType: 'UNKNOWN_ERROR',
-            isExplicitlyRequired: false,
+            isExplicitlyRequired: true,
             navigate,
           });
         }
       }
     },
-    [authProvider, onError, navigate, setRole, setAuthenticationStatus]
+    [authProvider, onError, navigate, setAuthStore]
   );
 
   const handleAuthSuccess = useCallback(
     async (userCredentials: any) => {
-      setAuthenticationStatus('CONNECTED');
-      setUserCredentials(userCredentials);
+      const authStoreSuccessValue: Partial<AuthStoreType> = {
+        authenticationStatus: 'CONNECTED',
+        userCredentials,
+      };
 
-      if (!authProvider.getRole) {
-        return;
+      if (authProvider.getRole) {
+        try {
+          authStoreSuccessValue.role =
+            await authProvider.getRole(userCredentials);
+        } catch {
+          onError({
+            errorType: 'UNKNOWN_ERROR',
+            isExplicitlyRequired: false,
+            navigate,
+          });
+        }
       }
 
-      try {
-        const role = await authProvider.getRole(userCredentials);
-        setRole(role);
-      } catch {
-        onError({
-          errorType: 'UNKNOWN_ERROR',
-          isExplicitlyRequired: false,
-          navigate,
-        });
-      }
+      setAuthStore(authStoreSuccessValue);
     },
-    [
-      authProvider,
-      onError,
-      navigate,
-      setRole,
-      setAuthenticationStatus,
-      setUserCredentials,
-    ]
+    [authProvider, onError, navigate, setAuthStore]
   );
 
   useEffect(() => {

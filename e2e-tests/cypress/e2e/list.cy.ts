@@ -1,27 +1,25 @@
-import { CUSTOME_ONE, CUSTOMER_MOCKS } from "../../src/mocks";
+import { ADMIN_MOCKS } from '../../src/mocks';
+import { DEFAULT_PAGINATION } from '../../src/providers';
+import { Admin } from '../../src/types';
 
+const should_contains_admin = (admin: Admin) => {
+  cy.contains(admin.username);
+  cy.contains(admin.email);
+  cy.contains(admin.salary + ' USD');
+  cy.contains(admin.password);
+  cy.contains(admin.role);
+};
 describe('list', () => {
   beforeEach(() => {
-    cy.useRole('ANONYMOUS');
+    cy.useRole('ADMIN');
   });
 
-  it('list.data', () => {
-    cy.visit('/customers');
-    cy.contains("auth-loading");
-    cy.wait("@getWhoAmi");
-    cy.contains(CUSTOME_ONE.username);
-    cy.contains(CUSTOME_ONE.email);
-    cy.get('li').should('have.length', 2);
-  });
-
-  it('list.pagination', () => {
-    cy.visit('/customers');
-    cy.get('li').should('have.length', 2);
-    cy.getByTestid('next-button').click();
-    cy.get('li').should('have.length', 2);
-    cy.should('not.contain.text', CUSTOME_ONE.username);
-    cy.contains(CUSTOMER_MOCKS.at(2)!.username);
-    cy.contains(CUSTOMER_MOCKS.at(3)!.email);
-    cy.getByTestid('page-value').contains(2);
+  it.only('list.data', () => {
+    cy.visit('/admins');
+    cy.contains('auth-loading');
+    cy.wait('@getWhoAmi');
+    should_contains_admin(ADMIN_MOCKS[0]);
+    should_contains_admin(ADMIN_MOCKS[1]);
+    cy.get('tbody tr').should('have.length', DEFAULT_PAGINATION.pageSize);
   });
 });

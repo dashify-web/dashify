@@ -1,3 +1,3 @@
-import Axios from "axios";
+import Axios from 'axios';
 
-export const axiosInstance = Axios.create({ baseURL: "https://dummy.com" });
+export const axiosInstance = Axios.create({ baseURL: 'https://dummy.com' });

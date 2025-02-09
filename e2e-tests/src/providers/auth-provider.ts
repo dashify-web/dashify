@@ -2,8 +2,8 @@ import { AuthProvider } from '@dashify/auth';
 import { isAxiosError } from 'axios';
 
 import { UserDetails, SignupData, SigninData, Role } from '../types';
-import { ADMIN_MOCKS, CUSTOMER_MOCKS } from '../mocks';
 import { axiosInstance } from '../config/axios';
+import { ADMIN_MOCKS, CUSTOMER_MOCKS } from '../mocks';
 
 const verifyUsernameAndPassword = ({
   password,
@@ -50,7 +50,7 @@ export const authProvider: AuthProvider<
     if (!isAxiosError(error)) {
       return Promise.resolve();
     }
-    if (error.status! === 403) {
+    if (error.response?.status! === 403) {
       return Promise.reject();
     }
     return Promise.resolve();
@@ -76,6 +76,10 @@ export const authProvider: AuthProvider<
     return Promise.resolve(useDetails.role);
   },
   compareRole: ({ requiredRoles, candidateRole }) => {
+    if (!candidateRole) {
+      return Promise.reject();
+    }
+
     if (requiredRoles.includes(candidateRole)) {
       return Promise.resolve();
     }

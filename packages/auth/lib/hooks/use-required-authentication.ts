@@ -43,7 +43,7 @@ export const useRequiredAuthentication = <Role = any>({
       try {
         await authProvider.compareRole({
           candidateRole,
-          requiredRoles: requiredRoles,
+          requiredRoles,
         });
       } catch {
         onAuthError({
@@ -54,8 +54,8 @@ export const useRequiredAuthentication = <Role = any>({
       }
     };
 
-    if (authenticationStatus === 'CONNECTED' && requiredRoles) {
+    if (authenticationStatus === 'CONNECTED' && requiredRoles.length) {
       checkRole();
     }
-  }, [onError, requireAuth, authenticationStatus, navigate]);
+  }, [onError, candidateRole, requireAuth, authenticationStatus, navigate]);
 };

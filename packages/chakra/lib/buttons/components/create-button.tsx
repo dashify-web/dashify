@@ -32,7 +32,12 @@ export const CreateButton: FC<CreateButtonProps> = forwardRef<
   } = props;
 
   return (
-    <CreateButtonInstance ref={ref} leftIcon={leftIcon} {...baseButtonProps}>
+    <CreateButtonInstance
+      data-testid="dashify-create-button"
+      ref={ref}
+      leftIcon={leftIcon}
+      {...baseButtonProps}
+    >
       {children}
     </CreateButtonInstance>
   );

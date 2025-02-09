@@ -1,14 +1,15 @@
-import { Customer } from "../types";
+import { Customer, Role } from '../types';
 
-export const CUSTOME_ONE: Customer = {
+export const CUSTOMER_ONE: Customer = {
   id: 'customerOneId',
   email: 'customerOne@gmail.com',
   password: 'customerOnePassword',
   username: 'customerOneUsername',
+  role: 'CUSTOMER',
 };
 
 export const CUSTOMER_MOCKS: Customer[] = [
-  CUSTOME_ONE,
+  CUSTOMER_ONE,
   ...Array(5)
     .fill(0)
     .map((_, index) => ({
@@ -16,5 +17,6 @@ export const CUSTOMER_MOCKS: Customer[] = [
       password: 'customer' + index,
       id: 'customer' + index,
       email: 'customer@gmail.com' + index,
+      role: 'CUSTOMER' as Role,
     })),
 ];

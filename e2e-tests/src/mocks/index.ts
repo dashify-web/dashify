@@ -1,2 +1,2 @@
-export * from "./admin-mocks"
-export * from "./customer-mocks"
+export * from './admin-mocks';
+export * from './customer-mocks';

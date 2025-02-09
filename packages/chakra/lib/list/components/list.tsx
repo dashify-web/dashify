@@ -138,11 +138,13 @@ const ListContent: FC<ListProps> = ({
             <PaginationPrevTrigger
               disabled={!hasPrevPage}
               onClick={doPrevPage}
+              data-testid="dashify-list-prev-button"
             />
             <PaginationItems />
             <PaginationNextTrigger
               disabled={!hasNextPage}
               onClick={doNextPage}
+              data-testid="dashify-list-next-button"
             />
           </HStack>
         </PaginationRoot>

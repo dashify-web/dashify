@@ -32,7 +32,12 @@ export const EditButton: FC<EditButtonProps> = forwardRef<
   } = props;
 
   return (
-    <EditButtonIntance ref={ref} leftIcon={leftIcon} {...baseButtonProps}>
+    <EditButtonIntance
+      data-testid="dashify-edit-button"
+      ref={ref}
+      leftIcon={leftIcon}
+      {...baseButtonProps}
+    >
       {children}
     </EditButtonIntance>
   );
