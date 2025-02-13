@@ -1,5 +1,5 @@
 import React, { ComponentType, forwardRef, useCallback } from 'react';
-import { BaseButtonProps } from '../base-button-type';
+import { BaseButtonProps } from '../types';
 import {
   UseResourceRedirectArgs,
   useResourceRedirect,
