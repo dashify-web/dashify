@@ -7,15 +7,21 @@ export type LoginPageProps = {
   signup?: boolean;
 };
 
-type LoginType = 'signin' | 'signup';
+enum LoginType {
+  SIGNIN = 'SIGNIN',
+  SIGNUP = 'SIGNUP',
+}
+
 export const LoginPage: FC<LoginPageProps> = ({
   signup: allowSignup = true,
 }) => {
-  const [loginType, setLoginType] = useState<LoginType>('signin');
-  const isSignin = loginType === 'signin';
+  const [loginType, setLoginType] = useState<LoginType>(LoginType.SIGNIN);
+  const isSignin = loginType === LoginType.SIGNIN;
 
   const toggleLoginType = () => {
-    setLoginType((prev) => (prev === 'signin' ? 'signup' : 'signin'));
+    setLoginType((prev) =>
+      prev === LoginType.SIGNIN ? LoginType.SIGNUP : LoginType.SIGNIN
+    );
   };
 
   return (

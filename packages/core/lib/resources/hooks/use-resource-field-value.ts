@@ -1,3 +1,4 @@
+import { getObjValue } from '../../utils/get-obj-value';
 import { useResource } from './use-resource';
 
 export type UseResourceFieldValueArgs<Resource> = {
@@ -9,5 +10,5 @@ export const useResourceFieldValue = <Resource>(
 ) => {
   const { source, emptyValue } = args;
   const resource = useResource();
-  return resource[source as keyof typeof resource] || emptyValue;
+  return getObjValue(resource, source as string) || emptyValue;
 };

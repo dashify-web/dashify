@@ -32,7 +32,7 @@ export const withEditButtonFeatures = <
     const { id, ...resourceLinkProps } = props as EditButtonProps<
       RefElementType,
       ComponentProps
-    >; //FIXME: fix type
+    >;
     return (
       <ResourceLinkButton
         ref={ref}

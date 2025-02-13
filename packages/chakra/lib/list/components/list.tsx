@@ -1,15 +1,14 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import { v4 as uuid } from 'uuid';
 import { HStack, Table } from '@chakra-ui/react';
 import {
   ListBase as CoreList,
   ListBaseProps as CoreListProps,
   ResourceContext,
-  useResourceName,
-  useResourceRedirect,
   useRetrieveLabels,
+  useRowClickHandler,
 } from '@dashify/core';
-import { ResourceType, usePagination, useListContext } from '@dashify/provider';
+import { usePagination, useListContext } from '@dashify/provider';
 import { Skeleton } from '../../chakra/snippets/skeleton';
 import {
   PaginationItems,
@@ -19,13 +18,6 @@ import {
 } from '../../chakra/snippets/pagination';
 
 export type ListProps = CoreListProps & {
-  rowClick?:
-    | (<Resource extends ResourceType>(resource: Resource) => void)
-    | false;
-  components?: {
-    header?: ReactNode;
-    headerRow?: ReactNode;
-  };
   componentProps?: {
     root?: Table.RootProps;
     body?: Table.BodyProps;
@@ -35,38 +27,13 @@ export type ListProps = CoreListProps & {
   };
 };
 
-const ListContent: FC<ListProps> = ({
-  children,
-  rowClick,
-  components,
-  componentProps,
-}) => {
+const ListContent: FC<ListProps> = ({ children, rowClick, componentProps }) => {
   const labels = useRetrieveLabels(children);
-  const resourceName = useResourceName();
-  const redirect = useResourceRedirect();
+  const clickHandler = useRowClickHandler({ rowClick });
   const { data = [], isLoading, pageInfosQueryResult } = useListContext();
   const { data: pageInfos = {} } = pageInfosQueryResult;
   const { setPage, doNextPage, doPrevPage, setPageSize, pagination } =
     usePagination();
-
-  const redirectToShow = <Resource extends ResourceType>(
-    resource: Resource
-  ) => {
-    redirect({
-      resource: resourceName,
-      id: resource?.id,
-      view: 'show',
-    });
-  };
-
-  const clickHandler =
-    <Resource extends ResourceType>(resource: Resource) =>
-    () => {
-      if (rowClick === false) {
-        return undefined;
-      }
-      return rowClick ? rowClick(resource) : redirectToShow(resource);
-    };
 
   return (
     <>
@@ -76,23 +43,15 @@ const ListContent: FC<ListProps> = ({
         interactive={rowClick !== false}
         {...(componentProps?.root || {})}
       >
-        {components?.headerRow ? (
-          components?.headerRow
-        ) : (
-          <Table.Header>
-            {components?.headerRow ? (
-              components?.headerRow
-            ) : (
-              <Table.Row {...(componentProps?.headerRow || {})}>
-                {labels.map((label) => (
-                  <Table.ColumnHeader fontWeight="bold" key={uuid()}>
-                    {label}
-                  </Table.ColumnHeader>
-                ))}
-              </Table.Row>
-            )}
-          </Table.Header>
-        )}
+        <Table.Header>
+          <Table.Row {...(componentProps?.headerRow || {})}>
+            {labels.map((label) => (
+              <Table.ColumnHeader fontWeight="bold" key={uuid()}>
+                {label}
+              </Table.ColumnHeader>
+            ))}
+          </Table.Row>
+        </Table.Header>
         <Table.Body {...(componentProps?.body || {})}>
           {isLoading && (
             <Table.Row>
@@ -147,17 +106,12 @@ const ListContent: FC<ListProps> = ({
 export const List: FC<ListProps> = ({
   children,
   rowClick,
-  components,
   componentProps,
   ...coreProps
 }) => {
   return (
     <CoreList {...coreProps}>
-      <ListContent
-        rowClick={rowClick}
-        components={components}
-        componentProps={componentProps}
-      >
+      <ListContent rowClick={rowClick} componentProps={componentProps}>
         {children}
       </ListContent>
     </CoreList>

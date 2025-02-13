@@ -35,7 +35,7 @@ export const withResourceLinkButtonFeatures = <
       <ResourceLinkButton
         ref={ref}
         onClick={onClick || redirectOnClick}
-        {...(componentProps as unknown as ComponentProps)} //FIXME: fix type
+        {...(componentProps as unknown as ComponentProps)}
       />
     );
   });

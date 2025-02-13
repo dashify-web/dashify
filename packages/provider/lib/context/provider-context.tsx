@@ -2,9 +2,9 @@ import React, { createContext, FC, ReactNode } from 'react';
 
 import { ReactQueryProvider } from './react-query-provider';
 import {
-  FacadeProvider,
-  ResourceType,
   Provider,
+  ResourceType,
+  FacadeProvider,
   RequiredResourceName,
   FacadeProviderOptions,
 } from '../types';

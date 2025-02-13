@@ -7,3 +7,4 @@ export * from './utils/field-type';
 export * from './utils/react-tools';
 export * from './utils/types-tools';
 export * from './utils/use-retrieve-labels';
+export * from './utils/get-obj-value';
