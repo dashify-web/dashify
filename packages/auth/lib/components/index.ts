@@ -3,3 +3,4 @@ export * from './auth-app';
 export * from './no-auth-routes';
 export * from './with-auth-routes';
 export * from './client-configurer';
+export * from './guarded-render';
