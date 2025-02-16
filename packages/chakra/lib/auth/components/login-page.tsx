@@ -1,63 +1,109 @@
 import React, { FC, useState } from 'react';
-import { Box, Flex, Input, Stack, Text } from '@chakra-ui/react';
-import { Field } from '../../chakra/snippets/field';
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
+import { Box, Flex, Stack, Text } from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+
 import { BaseButton } from '../../buttons';
+import { TextInput } from '../../form/components';
+import { LoginFormSchema, LoginFormType, LoginType } from './types';
+import { useAuthProviderContext } from '@dashify/auth';
 
 export type LoginPageProps = {
   signup?: boolean;
 };
 
-enum LoginType {
-  SIGNIN = 'SIGNIN',
-  SIGNUP = 'SIGNUP',
-}
-
 export const LoginPage: FC<LoginPageProps> = ({
   signup: allowSignup = true,
 }) => {
-  const [loginType, setLoginType] = useState<LoginType>(LoginType.SIGNIN);
+  const form = useForm<LoginFormType>({
+    defaultValues: {
+      username: '',
+      password: '',
+      confirmPassword: '',
+      type: LoginType.SIGNIN,
+    },
+    resolver: zodResolver(LoginFormSchema),
+  });
+
+  return (
+    <Box
+      px="10"
+      py="7"
+      boxShadow="0px 0px 5px rgba(0,0,0,.1)"
+      borderRadius="15px"
+      w="100%"
+      maxW="450px"
+    >
+      <FormProvider {...form}>
+        <LoginFormContent allowSignup={allowSignup} />
+      </FormProvider>
+    </Box>
+  );
+};
+
+const LoginFormContent = ({ allowSignup }: { allowSignup: boolean }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { provider: authProvider } = useAuthProviderContext();
+  const { handleSubmit, setValue } = useFormContext<LoginFormType>();
+  const loginType = useWatch<LoginFormType>({ name: 'type' });
   const isSignin = loginType === LoginType.SIGNIN;
 
   const toggleLoginType = () => {
-    setLoginType((prev) =>
-      prev === LoginType.SIGNIN ? LoginType.SIGNUP : LoginType.SIGNIN
-    );
+    setValue('type', isSignin ? LoginType.SIGNUP : LoginType.SIGNIN);
+  };
+
+  const doLogin = async (data: LoginFormType) => {
+    try {
+      setIsLoading(true);
+      if (isSignin) {
+        await authProvider.signin(data);
+      } else {
+        await authProvider.signup(data);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <Box px="10" py="7" borderRadius="15px" w="100%" maxW="450px">
-      <Text as="h1" fontSize="1.5rem" fontWeight="bold" mb="10px">
+    <>
+      <Text fontSize="1.5rem" fontWeight="bold" mb="10px">
         {isSignin ? 'Sign In' : 'Sign Up'}
       </Text>
-      <form style={{ width: '100%' }}>
-        <Stack gap="4" align="flex-start" width="100%">
-          <Field label={<Text fontSize="1rem">Username</Text>}>
-            <Input />
-          </Field>
-          <Field label={<Text fontSize="1rem">Password</Text>}>
-            <Input type="password" />
-          </Field>
+      <form onSubmit={handleSubmit(doLogin)} style={{ width: '100%' }}>
+        <Stack gap="4" width="100%">
+          <TextInput source="username" label="Username" />
+          <TextInput
+            source="password"
+            label="Password"
+            inputProps={{ type: 'password' }}
+          />
           {!isSignin && (
-            <Field label={<Text fontSize="17px">Confirm password</Text>}>
-              <Input type="password" />
-            </Field>
+            <TextInput
+              source="confirmPassword"
+              label="Confirm Password"
+              inputProps={{ type: 'password' }}
+            />
           )}
           <Flex
-            mt="20px"
-            flexDirection={{ base: 'column', md: 'row' }}
-            justifyContent={{ base: 'center' }}
-            flexWrap={'wrap'}
+            mt="4"
+            flexDirection="row"
+            justifyContent="space-between"
             alignItems="center"
-            gap="35px"
-            width={{ base: '100%', md: 'initial' }}
+            width="100%"
           >
-            <BaseButton type="submit">
+            <BaseButton loading={isLoading} type="submit">
               {isSignin ? 'Sign In' : 'Sign Up'}
             </BaseButton>
             {allowSignup && (
               <BaseButton
-                onClick={allowSignup ? toggleLoginType : undefined}
                 variant="plain"
+                onClick={allowSignup ? toggleLoginType : undefined}
               >
                 {isSignin ? "Don't have an account ?" : 'Have an account ?'}
               </BaseButton>
@@ -65,6 +111,6 @@ export const LoginPage: FC<LoginPageProps> = ({
           </Flex>
         </Stack>
       </form>
-    </Box>
+    </>
   );
 };

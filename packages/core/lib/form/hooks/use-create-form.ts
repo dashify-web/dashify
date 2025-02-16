@@ -20,7 +20,6 @@ export const useCreateForm = <
   Error = any,
 >({
   transform,
-  defaultValues,
   resource,
   useCreateArgs,
   ...useFormProps

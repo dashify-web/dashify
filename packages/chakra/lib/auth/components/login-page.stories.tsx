@@ -5,13 +5,25 @@ import {
   BrowserRouterProvider,
   ChakraProvider,
 } from '../../utils/stories-provider';
+import { AuthProviderContext } from '@dashify/auth';
 
 const meta: Meta<typeof LoginPage> = {
   component: LoginPage,
   render: (props) => (
     <ChakraProvider>
       <BrowserRouterProvider>
-        <LoginPage {...props} />
+        <AuthProviderContext
+          provider={
+            {
+              signin: async () =>
+                new Promise((resolve) => setTimeout(resolve, 2000)),
+              signup: async () =>
+                new Promise((resolve) => setTimeout(resolve, 2000)),
+            } as any
+          }
+        >
+          <LoginPage {...props} />
+        </AuthProviderContext>
       </BrowserRouterProvider>
     </ChakraProvider>
   ),

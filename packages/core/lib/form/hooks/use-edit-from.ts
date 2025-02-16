@@ -29,7 +29,6 @@ export const useEditForm = <
 >({
   id,
   transform,
-  defaultValues,
   resource,
   useEditArgs,
   ...useFormProps
