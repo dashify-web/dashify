@@ -7,7 +7,7 @@ export type UseResourceFieldValueArgs<Resource> = {
 };
 export const useResourceFieldValue = <Resource>(
   args: UseResourceFieldValueArgs<Resource>
-) => {
+): any /*TODO*/ => {
   const { source, emptyValue } = args;
   const resource = useResource();
   return getObjValue(resource, source as string) || emptyValue;
