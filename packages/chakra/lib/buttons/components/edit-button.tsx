@@ -5,7 +5,10 @@ import {
   EditButtonProps as CoreEditButtonProps,
   withEditButtonFeatures,
 } from '@dashify/core';
-import { BaseButton, BaseButtonProps } from './base-button';
+import {
+  Button as BaseButton,
+  ButtonProps as BaseButtonProps,
+} from './base-button';
 
 export type EditButtonProps = CoreEditButtonProps<
   HTMLButtonElement,

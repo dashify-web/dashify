@@ -2,7 +2,10 @@ import {
   ResourceLinkButtonProps as CoreResourceLinkButtonProps,
   withResourceLinkButtonFeatures,
 } from '@dashify/core';
-import { BaseButton, BaseButtonProps } from './base-button';
+import {
+  Button as BaseButton,
+  ButtonProps as BaseButtonProps,
+} from './base-button';
 
 export type ResourceLinkButtonProps = CoreResourceLinkButtonProps<
   HTMLButtonElement,

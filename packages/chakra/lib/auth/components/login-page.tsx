@@ -8,7 +8,7 @@ import {
 import { Box, Flex, Stack, Text } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { BaseButton } from '../../buttons';
+import { Button } from '../../buttons';
 import { TextInput } from '../../form/components';
 import { LoginFormSchema, LoginFormType, LoginType } from './types';
 import { useAuthProviderContext } from '@dashify/auth';
@@ -97,16 +97,16 @@ const LoginFormContent = ({ allowSignup }: { allowSignup: boolean }) => {
             alignItems="center"
             width="100%"
           >
-            <BaseButton loading={isLoading} type="submit">
+            <Button loading={isLoading} type="submit">
               {isSignin ? 'Sign In' : 'Sign Up'}
-            </BaseButton>
+            </Button>
             {allowSignup && (
-              <BaseButton
+              <Button
                 variant="plain"
                 onClick={allowSignup ? toggleLoginType : undefined}
               >
                 {isSignin ? "Don't have an account ?" : 'Have an account ?'}
-              </BaseButton>
+              </Button>
             )}
           </Flex>
         </Stack>

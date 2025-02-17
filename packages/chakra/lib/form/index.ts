@@ -1,1 +1,1 @@
-export * from './utils/get-form-field-props';
+export * from './components';
