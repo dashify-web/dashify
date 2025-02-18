@@ -1,5 +1,5 @@
 {
-  "private": false,
+  "private": true,
   "name": "@dashify/provider",
   "version": "0.0.1",
   "description": "provider",
