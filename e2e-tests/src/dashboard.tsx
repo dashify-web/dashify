@@ -15,6 +15,7 @@ import {
   dummyProvider,
 } from './providers';
 import { axiosInstance } from './config/axios';
+import { Layout } from './layout';
 
 const chakraProvider = createSystem(defaultConfig);
 export const DashboardApp: FC = () => {
@@ -22,7 +23,7 @@ export const DashboardApp: FC = () => {
     <ChakraProvider value={chakraProvider}>
       <Dashboard
         requireAuth
-        Layout={({ children }) => <>{children}</>}
+        Layout={Layout}
         authProvider={authProvider}
         AuthLoadingComponent={() => <p>auth-loading</p>}
         providers={[adminProvider, customerProvider, dummyProvider]}

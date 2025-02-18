@@ -11,32 +11,27 @@ import {
   useRequiredAuthValueContext,
 } from '../hooks';
 
-const RouteWrapper: FC<{ children: ReactNode; noLayout: boolean }> = ({
-  noLayout,
-  children,
-}) => {
-  const { Layout } = useAuthProviderContext();
+export type RoutesProps = _RoutesProps & { noLayout?: boolean };
+
+const RouteWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   const { requireAuth, requiredRoles } = useRequiredAuthValueContext();
   useRequiredAuthentication({
     requireAuth,
     requiredRoles,
   });
 
-  return noLayout ? children : <Layout>{children}</Layout>;
+  return <>{children}</>;
 };
 
-export type RoutesProps = _RoutesProps & { noLayout?: boolean };
-
-export const Routes: FC<RoutesProps> = ({
+const RoutesContent: FC<Omit<RoutesProps, 'noLayout'>> = ({
   children,
-  noLayout = false,
-  ..._routesProps
+  ...routesProps
 }) => {
   return (
-    <_Routes {..._routesProps}>
+    <_Routes {...routesProps}>
       <_Route
         element={
-          <RouteWrapper noLayout={noLayout}>
+          <RouteWrapper>
             <Outlet />
           </RouteWrapper>
         }
@@ -44,5 +39,20 @@ export const Routes: FC<RoutesProps> = ({
         {children}
       </_Route>
     </_Routes>
+  );
+};
+
+export const Routes: FC<RoutesProps> = ({
+  children,
+  noLayout = false,
+  ..._routesProps
+}) => {
+  const { Layout } = useAuthProviderContext();
+  return noLayout ? (
+    <RoutesContent {..._routesProps}>{children}</RoutesContent>
+  ) : (
+    <Layout>
+      <RoutesContent {..._routesProps}>{children}</RoutesContent>
+    </Layout>
   );
 };
