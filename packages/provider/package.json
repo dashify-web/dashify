@@ -1,7 +1,7 @@
 {
-  "private": true,
+  "private": false,
   "name": "@dashify/provider",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "provider",
   "keywords": [
     "dashboard",
@@ -47,5 +47,8 @@
   },
   "devDependencies": {
     "typescript": "^5.6.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
