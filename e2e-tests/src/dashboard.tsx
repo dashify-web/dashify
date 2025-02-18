@@ -53,6 +53,6 @@ export const DashboardApp: FC = () => {
           <Route path="/unknown-error" element={<p>unknown-error</p>} />
         </NoAuthRoutes>
       </Dashboard>
-    </ChakraProvider >
+    </ChakraProvider>
   );
 };
