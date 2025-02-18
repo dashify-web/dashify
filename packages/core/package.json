@@ -1,7 +1,7 @@
 {
-  "private": true,
+  "private": false,
   "name": "@dashify/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "core",
   "keywords": [
     "dashboard",
