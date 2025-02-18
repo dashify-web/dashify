@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "private": false,
   "name": "@dashify/chakra",
   "version": "0.0.3",
   "description": "> TODO: description",
