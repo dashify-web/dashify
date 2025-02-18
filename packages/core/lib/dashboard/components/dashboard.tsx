@@ -8,6 +8,7 @@ export type DashboardProps = AuthAppProps &
   };
 
 export const Dashboard: FC<DashboardProps> = ({
+  Layout,
   options,
   children,
   providers,
@@ -18,6 +19,7 @@ export const Dashboard: FC<DashboardProps> = ({
 }) => {
   return (
     <AuthApp
+      Layout={Layout}
       requireAuth={requireAuth}
       authProvider={authProvider}
       clientConfigurer={clientConfigurer}

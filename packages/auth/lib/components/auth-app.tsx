@@ -17,6 +17,7 @@ export type AuthAppProps = {
   children: ReactNode;
   authProvider: AuthProvider<any>;
   AuthLoadingComponent: ComponentType;
+  Layout: ComponentType<{ children: ReactNode }>;
   clientConfigurer?: ClientConfigurerProps['configure'];
 };
 
@@ -34,11 +35,12 @@ export const AuthApp: FC<AuthAppProps> = ({
   children,
   authProvider,
   requireAuth = true,
+  Layout,
   ...appBaseProps
 }) => {
   return (
     <REQUIRED_AUTH_VALUE_CONTEXT.Provider value={{ requireAuth }}>
-      <AuthProviderContext provider={authProvider}>
+      <AuthProviderContext Layout={Layout} provider={authProvider}>
         <BrowserRouter>
           <AuthAppBase {...appBaseProps}>{children}</AuthAppBase>
         </BrowserRouter>

@@ -6,28 +6,37 @@ import {
   Outlet,
 } from 'react-router-dom';
 import {
+  useAuthProviderContext,
   useRequiredAuthentication,
   useRequiredAuthValueContext,
 } from '../hooks';
 
-const RouteWrapper: FC<{ children: ReactNode }> = ({ children }) => {
+const RouteWrapper: FC<{ children: ReactNode; noLayout: boolean }> = ({
+  noLayout,
+  children,
+}) => {
+  const { Layout } = useAuthProviderContext();
   const { requireAuth, requiredRoles } = useRequiredAuthValueContext();
   useRequiredAuthentication({
     requireAuth,
     requiredRoles,
   });
 
-  return <>{children}</>;
+  return noLayout ? children : <Layout>{children}</Layout>;
 };
 
-export type RoutesProps = _RoutesProps;
+export type RoutesProps = _RoutesProps & { noLayout?: boolean };
 
-export const Routes: FC<_RoutesProps> = ({ children, ..._routesProps }) => {
+export const Routes: FC<RoutesProps> = ({
+  children,
+  noLayout = false,
+  ..._routesProps
+}) => {
   return (
     <_Routes {..._routesProps}>
       <_Route
         element={
-          <RouteWrapper>
+          <RouteWrapper noLayout={noLayout}>
             <Outlet />
           </RouteWrapper>
         }

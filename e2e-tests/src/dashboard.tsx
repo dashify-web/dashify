@@ -22,6 +22,7 @@ export const DashboardApp: FC = () => {
     <ChakraProvider value={chakraProvider}>
       <Dashboard
         requireAuth
+        Layout={({ children }) => <>{children}</>}
         authProvider={authProvider}
         AuthLoadingComponent={() => <p>auth-loading</p>}
         providers={[adminProvider, customerProvider, dummyProvider]}
@@ -52,6 +53,6 @@ export const DashboardApp: FC = () => {
           <Route path="/unknown-error" element={<p>unknown-error</p>} />
         </NoAuthRoutes>
       </Dashboard>
-    </ChakraProvider>
+    </ChakraProvider >
   );
 };

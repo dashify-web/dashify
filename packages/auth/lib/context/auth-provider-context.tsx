@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, FC } from 'react';
+import React, { createContext, ReactNode, FC, ComponentType } from 'react';
 import { AuthProvider } from '../types';
 
 export type AuthProviderContextType<
@@ -8,6 +8,7 @@ export type AuthProviderContextType<
   Role = any,
 > = {
   provider: AuthProvider<UserCredentials, SigninData, SignupData, Role>;
+  Layout: ComponentType<{ children: ReactNode }>;
 };
 
 export const AUTH_PROVIDER_CONTEXT =
@@ -20,9 +21,10 @@ export type AuthProviderContextProps = AuthProviderContextType & {
 export const AuthProviderContext: FC<AuthProviderContextProps> = ({
   children,
   provider,
+  Layout,
 }) => {
   return (
-    <AUTH_PROVIDER_CONTEXT.Provider value={{ provider }}>
+    <AUTH_PROVIDER_CONTEXT.Provider value={{ provider, Layout }}>
       {children}
     </AUTH_PROVIDER_CONTEXT.Provider>
   );
