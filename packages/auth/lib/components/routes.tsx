@@ -36,6 +36,7 @@ const RoutesContent: FC<Omit<RoutesProps, 'noLayout'>> = ({
           </RouteWrapper>
         }
       >
+        <_Route index element={<div />} />
         {children}
       </_Route>
     </_Routes>
