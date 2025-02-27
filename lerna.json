@@ -1,8 +1,5 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "version": "0.0.305",
-  "packages": [
-    "packages/*",
-    "e2e-tests"
-  ]
+  "version": "0.0.306",
+  "packages": ["packages/*", "e2e-tests"]
 }
